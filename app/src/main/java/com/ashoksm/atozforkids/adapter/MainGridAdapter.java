@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ashoksm.atozforkids.R;
-import com.ashoksm.atozforkids.com.ashoksm.atozforkids.dto.ItemsDTO;
+import com.ashoksm.atozforkids.dto.ItemsDTO;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.ashoksm.atozforkids.com.ashoksm.atozforkids.dto;
+package com.ashoksm.atozforkids.dto;
 
 public class ItemsDTO {
 

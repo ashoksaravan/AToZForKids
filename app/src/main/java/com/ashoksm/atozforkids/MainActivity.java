@@ -6,7 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.ashoksm.atozforkids.adapter.MainGridAdapter;
-import com.ashoksm.atozforkids.com.ashoksm.atozforkids.dto.ItemsDTO;
+import com.ashoksm.atozforkids.dto.ItemsDTO;
 
 import java.util.ArrayList;
 import java.util.List;
