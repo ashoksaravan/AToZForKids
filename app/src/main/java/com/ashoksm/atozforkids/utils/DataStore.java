@@ -34,6 +34,18 @@ public class DataStore {
             alphabets.add(new ItemsDTO("Lion", R.drawable.lion));
             alphabets.add(new ItemsDTO("Mango", R.drawable.mango));
             alphabets.add(new ItemsDTO("Nest", R.drawable.nest));
+            alphabets.add(new ItemsDTO("Owl", R.drawable.owl));
+            alphabets.add(new ItemsDTO("Pig", R.drawable.pig));
+            alphabets.add(new ItemsDTO("Queen", R.drawable.queen));
+            alphabets.add(new ItemsDTO("Rabbit", R.drawable.rabbit));
+            alphabets.add(new ItemsDTO("Swan", R.drawable.swan));
+            alphabets.add(new ItemsDTO("Truck", R.drawable.truck));
+            alphabets.add(new ItemsDTO("Umbrella", R.drawable.umbrella));
+            alphabets.add(new ItemsDTO("Violin", R.drawable.violin));
+            alphabets.add(new ItemsDTO("Watermelon", R.drawable.watermelon));
+            alphabets.add(new ItemsDTO("Xylophone", R.drawable.xylophone));
+            alphabets.add(new ItemsDTO("Yoyo", R.drawable.yoyo));
+            alphabets.add(new ItemsDTO("Zebra", R.drawable.zebra));
         }
         return alphabets;
     }

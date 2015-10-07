@@ -17,17 +17,16 @@
         android:layout_gravity="bottom"
         android:background="#80000000"
         android:orientation="vertical"
-        android:paddingBottom="20dp"
-        android:paddingTop="10dp">
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingBottom="10dp"
-            android:textColor="@color/icons"
-            android:textSize="25sp" />
+            android:paddingBottom="5dp"
+            android:textSize="30sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +36,7 @@
             <Button
                 android:id="@+id/previous"
                 android:layout_width="125dp"
-                android:layout_height="36dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/button_selector"
@@ -62,7 +61,7 @@
             <Button
                 android:id="@+id/next"
                 android:layout_width="125dp"
-                android:layout_height="36dp"
+                android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginStart="5dp"
                 android:background="@drawable/button_selector"
