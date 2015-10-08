@@ -46,6 +46,14 @@ public class SliderActivity extends AppCompatActivity {
                 if (status == TextToSpeech.SUCCESS) {
                     textToSpeech.setLanguage(Locale.getDefault());
                     textToSpeech.setPitch(0.8f);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        try {
+                            Voice v = textToSpeech.getVoices().iterator().next();
+                            textToSpeech.setVoice(v);
+                        } catch (Exception ex) {
+                            Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
+                        }
+                    }
                     speak(0);
                 } else {
                     Log.i("SliderActivity", "TextToSpeech onInit failed with status::::::::" + status);
@@ -70,7 +78,7 @@ public class SliderActivity extends AppCompatActivity {
         html = html.replaceAll("<FIRST>", items.get(0).getItemName().substring(0, 1)).replaceAll
                 ("<SECOND>", items.get(0).getItemName().substring(1));
         name.setText(Html.fromHtml(html));
-        SliderPagerAdapter adapter = new SliderPagerAdapter(items, this);
+        final SliderPagerAdapter adapter = new SliderPagerAdapter(items, this, textToSpeech);
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -128,9 +136,7 @@ public class SliderActivity extends AppCompatActivity {
         try {
             String s = items.get(position).getItemName().substring(0, 1) + " For " + items.get(position).getItemName();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    Voice v = textToSpeech.getVoices().iterator().next();
-                    textToSpeech.setVoice(v);
-                    textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
+                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
             } else {
                 textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
             }
