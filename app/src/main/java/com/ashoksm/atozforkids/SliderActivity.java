@@ -38,6 +38,8 @@ public class SliderActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        final String itemName = intent.getStringExtra(MainActivity.EXTRA_ITEM_NAME);
+
 
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -51,17 +53,16 @@ public class SliderActivity extends AppCompatActivity {
                             Voice v = textToSpeech.getVoices().iterator().next();
                             textToSpeech.setVoice(v);
                         } catch (Exception ex) {
-                            Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
+                            Log.e("Voice not found", ex.getMessage());
                         }
                     }
-                    speak(0);
+                    speak(0, itemName);
                 } else {
                     Log.i("SliderActivity", "TextToSpeech onInit failed with status::::::::" + status);
                 }
             }
         });
 
-        String itemName = intent.getStringExtra(MainActivity.EXTRA_ITEM_NAME);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(itemName);
         }
@@ -71,6 +72,12 @@ public class SliderActivity extends AppCompatActivity {
         switch (itemName) {
             case "Alphabets":
                 items = DataStore.getInstance().getAlphabets();
+                break;
+            case "Colors":
+                items = DataStore.getInstance().getColors();
+                break;
+            case "Shapes":
+                items = DataStore.getInstance().getShapes();
                 break;
         }
         String html = "<font size='8' color='#FF4081'><b><FIRST></b></font><font size='7' " +
@@ -93,7 +100,7 @@ public class SliderActivity extends AppCompatActivity {
                 html = html.replaceAll("<FIRST>", items.get(position).getItemName().substring(0, 1)).replaceAll
                         ("<SECOND>", items.get(position).getItemName().substring(1));
                 name.setText(Html.fromHtml(html));
-                speak(position);
+                speak(position, itemName);
             }
 
             @Override
@@ -132,9 +139,15 @@ public class SliderActivity extends AppCompatActivity {
 
     }
 
-    private void speak(int position) {
+    private void speak(int position, String itemName) {
         try {
-            String s = items.get(position).getItemName().substring(0, 1) + " For " + items.get(position).getItemName();
+            String s;
+            if (itemName.equalsIgnoreCase("Alphabets")) {
+                s = items.get(position).getItemName().substring(0, 1) + " For " + items.get(position).getItemName();
+            } else {
+                s = items.get(position).getItemName();
+            }
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
             } else {

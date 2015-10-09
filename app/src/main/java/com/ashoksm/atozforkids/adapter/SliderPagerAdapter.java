@@ -52,6 +52,7 @@ public class SliderPagerAdapter extends PagerAdapter {
         performerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.clearAnimation();
                 v.startAnimation(shake);
                 v.invalidate();
                 String s = (String) v.getTag();

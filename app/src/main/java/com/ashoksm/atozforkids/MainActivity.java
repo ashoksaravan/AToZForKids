@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         })
         );
-        //int id = getResources().getIdentifier("yourpackagename:drawable/" + StringGenerated, null, null);
     }
 
     private void startActivity(Class clazz, String itemName) {

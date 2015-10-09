@@ -9,6 +9,8 @@ import java.util.List;
 public class DataStore {
     private static DataStore ourInstance = new DataStore();
     private List<ItemsDTO> alphabets = null;
+    private List<ItemsDTO> colors = null;
+    private List<ItemsDTO> shapes = null;
 
     public static DataStore getInstance() {
         return ourInstance;
@@ -17,8 +19,8 @@ public class DataStore {
     private DataStore() {
     }
 
-    public List<ItemsDTO> getAlphabets () {
-        if(alphabets == null) {
+    public List<ItemsDTO> getAlphabets() {
+        if (alphabets == null) {
             alphabets = new ArrayList<>();
             alphabets.add(new ItemsDTO("Apple", R.drawable.apple));
             alphabets.add(new ItemsDTO("Ball", R.drawable.ball));
@@ -48,5 +50,37 @@ public class DataStore {
             alphabets.add(new ItemsDTO("Zebra", R.drawable.zebra));
         }
         return alphabets;
+    }
+
+    public List<ItemsDTO> getColors() {
+        if (colors == null) {
+            colors = new ArrayList<>();
+            colors.add(new ItemsDTO("Red", R.drawable.red));
+            colors.add(new ItemsDTO("Pink", R.drawable.pink));
+            colors.add(new ItemsDTO("Purple", R.drawable.purple));
+            colors.add(new ItemsDTO("Indigo", R.drawable.indigo));
+            colors.add(new ItemsDTO("Blue", R.drawable.blue));
+            colors.add(new ItemsDTO("Cyan", R.drawable.cyan));
+            colors.add(new ItemsDTO("Green", R.drawable.green));
+            colors.add(new ItemsDTO("Yellow", R.drawable.yellow));
+            colors.add(new ItemsDTO("Orange", R.drawable.orange));
+            colors.add(new ItemsDTO("Brown", R.drawable.brown));
+            colors.add(new ItemsDTO("Grey", R.drawable.grey));
+            colors.add(new ItemsDTO("Black", R.drawable.black));
+        }
+        return colors;
+    }
+
+    public List<ItemsDTO> getShapes() {
+        if (shapes == null) {
+            shapes = new ArrayList<>();
+            shapes.add(new ItemsDTO("Circle", R.drawable.circle));
+            shapes.add(new ItemsDTO("Triangle", R.drawable.triangle));
+            shapes.add(new ItemsDTO("Square", R.drawable.square));
+            shapes.add(new ItemsDTO("Rectangle", R.drawable.rectangle));
+            shapes.add(new ItemsDTO("Pentagon", R.drawable.pentagon));
+            shapes.add(new ItemsDTO("Hexagon", R.drawable.hexagon));
+        }
+        return shapes;
     }
 }
