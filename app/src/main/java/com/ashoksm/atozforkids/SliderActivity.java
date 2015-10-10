@@ -108,7 +108,7 @@ public class SliderActivity extends AppCompatActivity {
             }
         });
 
-        viewPager.setPageTransformer(true, new DepthPageTransformer());
+        //viewPager.setPageTransformer(true, new DepthPageTransformer());
 
         final ImageButton replay = (ImageButton) findViewById(R.id.replay);
         final Button next = (Button) findViewById(R.id.next);
