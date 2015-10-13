@@ -22,12 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
     static {
         titles.add(new ItemsDTO("Alphabets", R.drawable.abc));
-        titles.add(new ItemsDTO("Colors", R.drawable.abc));
-        titles.add(new ItemsDTO("Shapes", R.drawable.abc));
         titles.add(new ItemsDTO("Numbers", R.drawable.numbers));
-        titles.add(new ItemsDTO("Fruits", R.drawable.abc));
-        titles.add(new ItemsDTO("Vegetables", R.drawable.abc));
-        titles.add(new ItemsDTO("Animals", R.drawable.abc));
+        titles.add(new ItemsDTO("Colors", R.drawable.colors));
+        titles.add(new ItemsDTO("Shapes", R.drawable.shapes));
+        titles.add(new ItemsDTO("Animals", R.drawable.animals));
+        titles.add(new ItemsDTO("Fruits", R.drawable.fruits));
+        titles.add(new ItemsDTO("Vegetables", R.drawable.vegetables));
         titles.add(new ItemsDTO("Puzzles", R.drawable.abc));
     }
 

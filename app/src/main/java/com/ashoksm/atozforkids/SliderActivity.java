@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.ashoksm.atozforkids.adapter.SliderPagerAdapter;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DataStore;
-import com.ashoksm.atozforkids.utils.DepthPageTransformer;
 
 import java.util.List;
 import java.util.Locale;
@@ -78,6 +77,12 @@ public class SliderActivity extends AppCompatActivity {
                 break;
             case "Shapes":
                 items = DataStore.getInstance().getShapes();
+                break;
+            case "Numbers":
+                items = DataStore.getInstance().getNumbers();
+                break;
+            case "Animals":
+                items = DataStore.getInstance().getAnimals();
                 break;
         }
         String html = "<font size='8' color='#FF4081'><b><FIRST></b></font><font size='7' " +
