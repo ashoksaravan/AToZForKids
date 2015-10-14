@@ -65,7 +65,7 @@ public class DataStore {
             colors.add(new ItemsDTO("Cyan", R.drawable.cyan));
             colors.add(new ItemsDTO("Green", R.drawable.green));
             colors.add(new ItemsDTO("Yellow", R.drawable.yellow));
-            colors.add(new ItemsDTO("Orange", R.drawable.orange));
+            colors.add(new ItemsDTO("Orange", R.drawable.orange_color));
             colors.add(new ItemsDTO("Brown", R.drawable.brown));
             colors.add(new ItemsDTO("Grey", R.drawable.grey));
             colors.add(new ItemsDTO("Black", R.drawable.black));
