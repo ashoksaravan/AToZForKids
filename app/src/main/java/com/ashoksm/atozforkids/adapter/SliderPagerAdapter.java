@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.ashoksm.atozforkids.R;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
@@ -46,6 +48,8 @@ public class SliderPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         final View itemView = mLayoutInflater.inflate(R.layout.slider_image_view, container, false);
+        final TextView name = (TextView) itemView.findViewById(R.id.name);
+        name.setText(items.get(position).getItemName());
         final ImageView performerImage = (ImageView) itemView.findViewById(R.id.slider_image);
         performerImage.setImageResource(items.get(position).getImageResource());
         performerImage.setTag(items.get(position).getItemName());
@@ -70,6 +74,6 @@ public class SliderPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((RelativeLayout) object);
+        container.removeView((FrameLayout) object);
     }
 }

@@ -1,76 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fff"
-    tools:context="com.ashoksm.thiraseela.ui.ArtistDetailActivity">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="#fff"
+             tools:context="com.ashoksm.thiraseela.ui.ArtistDetailActivity">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/slider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:paddingBottom="60dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#80000000"
-        android:orientation="vertical"
+        android:background="#809C27B0"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:paddingBottom="10dp"
         android:paddingTop="5dp">
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/previous"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingBottom="5dp"
-            android:textSize="30sp" />
+            android:background="@null"
+            android:contentDescription="@string/previous"
+            android:paddingEnd="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingStart="5dp"
+            android:src="@drawable/ic_navigation_arrow_back"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/replay"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:background="@null"
+            android:contentDescription="@string/reply"
+            android:paddingEnd="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingStart="5dp"
+            android:src="@drawable/ic_navigation_refresh"/>
 
-            <Button
-                android:id="@+id/previous"
-                android:layout_width="125dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/button_selector"
-                android:drawableLeft="@drawable/ic_chevron_left"
-                android:drawableStart="@drawable/ic_chevron_left"
-                android:gravity="center"
-                android:text="@string/previous"
-                android:textColor="@color/icons" />
-
-            <ImageButton
-                android:id="@+id/replay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:contentDescription="@string/reply"
-                android:paddingEnd="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingStart="5dp"
-                android:src="@drawable/ic_replay" />
-
-            <Button
-                android:id="@+id/next"
-                android:layout_width="125dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:background="@drawable/button_selector"
-                android:drawableEnd="@drawable/ic_chevron_right"
-                android:drawableRight="@drawable/ic_chevron_right"
-                android:gravity="center"
-                android:text="@string/next"
-                android:textColor="@color/icons" />
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:contentDescription="@string/next"
+            android:paddingEnd="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingStart="5dp"
+            android:src="@drawable/ic_navigation_arrow_forward"/>
     </LinearLayout>
 
 </FrameLayout>

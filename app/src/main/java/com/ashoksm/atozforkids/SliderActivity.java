@@ -65,7 +65,6 @@ public class SliderActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(itemName);
         }
-        final TextView name = (TextView) findViewById(R.id.name);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.slider);
 
         switch (itemName) {
@@ -84,12 +83,10 @@ public class SliderActivity extends AppCompatActivity {
             case "Animals":
                 items = DataStore.getInstance().getAnimals();
                 break;
+            case "Fruits":
+                items = DataStore.getInstance().getFruits();
+                break;
         }
-        String html = "<font size='8' color='#FF4081'><b><FIRST></b></font><font size='7' " +
-                "color='#FFFFFF'><SECOND></font>";
-        html = html.replaceAll("<FIRST>", items.get(0).getItemName().substring(0, 1)).replaceAll
-                ("<SECOND>", items.get(0).getItemName().substring(1));
-        name.setText(Html.fromHtml(html));
         final SliderPagerAdapter adapter = new SliderPagerAdapter(items, this, textToSpeech);
         viewPager.setAdapter(adapter);
 
@@ -100,11 +97,6 @@ public class SliderActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                String html = "<font size='7' color='#FF4081'><FIRST></font><font size='6' " +
-                        "color='#FFFFFF'><SECOND></font>";
-                html = html.replaceAll("<FIRST>", items.get(position).getItemName().substring(0, 1)).replaceAll
-                        ("<SECOND>", items.get(position).getItemName().substring(1));
-                name.setText(Html.fromHtml(html));
                 speak(position, itemName);
             }
 
@@ -116,8 +108,8 @@ public class SliderActivity extends AppCompatActivity {
         //viewPager.setPageTransformer(true, new DepthPageTransformer());
 
         final ImageButton replay = (ImageButton) findViewById(R.id.replay);
-        final Button next = (Button) findViewById(R.id.next);
-        final Button previous = (Button) findViewById(R.id.previous);
+        final ImageButton next = (ImageButton) findViewById(R.id.next);
+        final ImageButton previous = (ImageButton) findViewById(R.id.previous);
         replay.setOnClickListener(new View.OnClickListener() {
 
             @Override

@@ -13,6 +13,7 @@ public class DataStore {
     private List<ItemsDTO> shapes = null;
     private List<ItemsDTO> numbers = null;
     private List<ItemsDTO> animals = null;
+    private List<ItemsDTO> fruits = null;
 
     public static DataStore getInstance() {
         return ourInstance;
@@ -162,5 +163,46 @@ public class DataStore {
             animals.add(new ItemsDTO("Zebra", R.drawable.zebra));
         }
         return animals;
+    }
+
+    public List<ItemsDTO> getFruits() {
+        if (fruits == null) {
+            fruits = new ArrayList<>();
+            fruits.add(new ItemsDTO("Apple", R.drawable.apple));
+            fruits.add(new ItemsDTO("Apricot", R.drawable.apricot));
+            fruits.add(new ItemsDTO("Avocado", R.drawable.avocado));
+            fruits.add(new ItemsDTO("Banana", R.drawable.banana));
+            fruits.add(new ItemsDTO("Blackberry", R.drawable.blackberry));
+            fruits.add(new ItemsDTO("Blueberry", R.drawable.blueberry));
+            fruits.add(new ItemsDTO("Cherries", R.drawable.cherries));
+            fruits.add(new ItemsDTO("Dragon Fruit", R.drawable.dragonfruit));
+            fruits.add(new ItemsDTO("Durian", R.drawable.durian));
+            fruits.add(new ItemsDTO("Fig", R.drawable.fig));
+            fruits.add(new ItemsDTO("Grapes", R.drawable.grape));
+            fruits.add(new ItemsDTO("Grape Fruit", R.drawable.grapefruit));
+            fruits.add(new ItemsDTO("Guava", R.drawable.guava));
+            fruits.add(new ItemsDTO("Jack Fruit", R.drawable.jackfurit));
+            fruits.add(new ItemsDTO("Kiwi", R.drawable.kiwi));
+            fruits.add(new ItemsDTO("Lemon", R.drawable.lemon));
+            fruits.add(new ItemsDTO("Lime", R.drawable.lime));
+            fruits.add(new ItemsDTO("Litchi", R.drawable.lychee));
+            fruits.add(new ItemsDTO("Mango", R.drawable.mango));
+            fruits.add(new ItemsDTO("Mangosteen", R.drawable.mangosteen));
+            fruits.add(new ItemsDTO("melon", R.drawable.melon));
+            fruits.add(new ItemsDTO("Orange", R.drawable.orange));
+            fruits.add(new ItemsDTO("Papaya", R.drawable.papaya));
+            fruits.add(new ItemsDTO("Passion fruit", R.drawable.passionfruit));
+            fruits.add(new ItemsDTO("Peach", R.drawable.peach));
+            fruits.add(new ItemsDTO("Pear", R.drawable.pear));
+            fruits.add(new ItemsDTO("Pineapple", R.drawable.pineapple));
+            fruits.add(new ItemsDTO("Plum", R.drawable.plum));
+            fruits.add(new ItemsDTO("Pomegranate", R.drawable.pomegranate));
+            fruits.add(new ItemsDTO("Raspberries", R.drawable.raspberries));
+            fruits.add(new ItemsDTO("Rose Hip", R.drawable.rosehip));
+            fruits.add(new ItemsDTO("Sapodilla", R.drawable.sapodilla));
+            fruits.add(new ItemsDTO("Strawberry", R.drawable.strawberry));
+            fruits.add(new ItemsDTO("Watermelon", R.drawable.watermelon));
+        }
+        return fruits;
     }
 }

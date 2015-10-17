@@ -20,7 +20,8 @@
         </activity>
         <activity
             android:name=".SliderActivity"
-            android:label="@string/title_activity_slider" >
+            android:label="@string/title_activity_slider"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
