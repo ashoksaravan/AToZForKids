@@ -1,6 +1,7 @@
 package com.ashoksm.atozforkids;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,9 +17,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final List<ItemsDTO> titles = new ArrayList<>();
-
     public static final String EXTRA_ITEM_NAME = "EXTRA_ITEM_NAME";
+    private static final List<ItemsDTO> titles = new ArrayList<>();
 
     static {
         titles.add(new ItemsDTO("Alphabets", R.drawable.abc));
@@ -42,8 +42,11 @@ public class MainActivity extends AppCompatActivity {
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
 
-        final GridLayoutManager manager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(manager);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        }
 
         MainGridAdapter adapter = new MainGridAdapter(titles);
         recyclerView.setAdapter(adapter);

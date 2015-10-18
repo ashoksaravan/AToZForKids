@@ -14,6 +14,7 @@ public class DataStore {
     private List<ItemsDTO> numbers = null;
     private List<ItemsDTO> animals = null;
     private List<ItemsDTO> fruits = null;
+    private List<ItemsDTO> vegetables = null;
 
     public static DataStore getInstance() {
         return ourInstance;
@@ -107,12 +108,14 @@ public class DataStore {
         if(animals == null) {
             animals = new ArrayList<>();
             animals.add(new ItemsDTO("Bear", R.drawable.bear));
+            animals.add(new ItemsDTO("Bison", R.drawable.bison));
             animals.add(new ItemsDTO("Black Panther", R.drawable.black_panther));
             animals.add(new ItemsDTO("Cat", R.drawable.cat));
             animals.add(new ItemsDTO("Cheetah", R.drawable.cheetah));
             animals.add(new ItemsDTO("Chimpanzee", R.drawable.chimpanzee));
             animals.add(new ItemsDTO("Cow", R.drawable.cow));
             animals.add(new ItemsDTO("Crocodile", R.drawable.crocodile));
+            animals.add(new ItemsDTO("Crow", R.drawable.crow));
             animals.add(new ItemsDTO("Deer", R.drawable.deer));
             animals.add(new ItemsDTO("Dog", R.drawable.dog));
             animals.add(new ItemsDTO("Dolphin", R.drawable.dolphin));
@@ -133,6 +136,7 @@ public class DataStore {
             animals.add(new ItemsDTO("Jaguar", R.drawable.jaguar));
             animals.add(new ItemsDTO("Kangaroo", R.drawable.kangaroo));
             animals.add(new ItemsDTO("Koala Bear", R.drawable.koala_bear));
+            animals.add(new ItemsDTO("Lady Bird", R.drawable.ladybird));
             animals.add(new ItemsDTO("Leopard", R.drawable.leopard));
             animals.add(new ItemsDTO("Lion", R.drawable.lion));
             animals.add(new ItemsDTO("Macaw", R.drawable.macaw));
@@ -152,8 +156,10 @@ public class DataStore {
             animals.add(new ItemsDTO("Seagull", R.drawable.seagull));
             animals.add(new ItemsDTO("Seal", R.drawable.seal));
             animals.add(new ItemsDTO("Shark", R.drawable.shark));
+            animals.add(new ItemsDTO("Sparrow", R.drawable.sparrow));
             animals.add(new ItemsDTO("Snake", R.drawable.snake));
             animals.add(new ItemsDTO("Spider", R.drawable.spider));
+            animals.add(new ItemsDTO("Squirrel", R.drawable.squirrel));
             animals.add(new ItemsDTO("Swan", R.drawable.swan));
             animals.add(new ItemsDTO("Tiger", R.drawable.tiger));
             animals.add(new ItemsDTO("Turkey", R.drawable.turkey));
@@ -204,5 +210,53 @@ public class DataStore {
             fruits.add(new ItemsDTO("Watermelon", R.drawable.watermelon));
         }
         return fruits;
+    }
+
+    public List<ItemsDTO> getVegetables() {
+        if (vegetables == null) {
+            vegetables = new ArrayList<>();
+            vegetables.add(new ItemsDTO("Artichoke", R.drawable.artichoke));
+            vegetables.add(new ItemsDTO("Ash Gourd", R.drawable.ash_gourd));
+            vegetables.add(new ItemsDTO("Asparagus", R.drawable.asparagus));
+            vegetables.add(new ItemsDTO("Beetroot", R.drawable.beetroot));
+            vegetables.add(new ItemsDTO("Bell Peppers", R.drawable.bell_peppers));
+            vegetables.add(new ItemsDTO("Bitter Gourd", R.drawable.bitter_gourd));
+            vegetables.add(new ItemsDTO("Bottle Gourd", R.drawable.bottle_gourd));
+            vegetables.add(new ItemsDTO("Broccoli", R.drawable.broccoli));
+            vegetables.add(new ItemsDTO("Brussell Sprouts", R.drawable.brussell_sprouts));
+            vegetables.add(new ItemsDTO("Cabbage", R.drawable.cabbage));
+            vegetables.add(new ItemsDTO("Carrot", R.drawable.carrot));
+            vegetables.add(new ItemsDTO("Celery", R.drawable.celery));
+            vegetables.add(new ItemsDTO("Chilli", R.drawable.chilli_green));
+            vegetables.add(new ItemsDTO("Coriander", R.drawable.coriander));
+            vegetables.add(new ItemsDTO("Corn", R.drawable.corn));
+            vegetables.add(new ItemsDTO("Cucumber", R.drawable.cucumber));
+            vegetables.add(new ItemsDTO("Drumstick", R.drawable.drumstick));
+            vegetables.add(new ItemsDTO("Egg Plant", R.drawable.brinjal));
+            vegetables.add(new ItemsDTO("Endive", R.drawable.endive));
+            vegetables.add(new ItemsDTO("Fennel", R.drawable.fennel));
+            vegetables.add(new ItemsDTO("Garlic", R.drawable.garlic));
+            vegetables.add(new ItemsDTO("Ginger", R.drawable.ginger));
+            vegetables.add(new ItemsDTO("Green Beans", R.drawable.green_beans));
+            vegetables.add(new ItemsDTO("Lettuce", R.drawable.lettuce));
+            vegetables.add(new ItemsDTO("Mint", R.drawable.mint));
+            vegetables.add(new ItemsDTO("Mushroom", R.drawable.mushroom));
+            vegetables.add(new ItemsDTO("Okra(Ladies Finger)", R.drawable.okra));
+            vegetables.add(new ItemsDTO("Olives", R.drawable.olives));
+            vegetables.add(new ItemsDTO("Onion", R.drawable.onion));
+            vegetables.add(new ItemsDTO("Peas", R.drawable.peas));
+            vegetables.add(new ItemsDTO("Potato", R.drawable.potato));
+            vegetables.add(new ItemsDTO("Pumpkin", R.drawable.pumpkin));
+            vegetables.add(new ItemsDTO("Radish", R.drawable.radish));
+            vegetables.add(new ItemsDTO("Ridge Gourd", R.drawable.ridge_gourd));
+            vegetables.add(new ItemsDTO("Snake Gourd", R.drawable.snake_gourd));
+            vegetables.add(new ItemsDTO("Squash", R.drawable.squash));
+            vegetables.add(new ItemsDTO("Sweet Potato", R.drawable.sweet_potato));
+            vegetables.add(new ItemsDTO("Tomato", R.drawable.tamato));
+            vegetables.add(new ItemsDTO("Turnip", R.drawable.turnip));
+            vegetables.add(new ItemsDTO("Yam", R.drawable.yam));
+            vegetables.add(new ItemsDTO("Zucchini", R.drawable.zucchini));
+        }
+        return vegetables;
     }
 }

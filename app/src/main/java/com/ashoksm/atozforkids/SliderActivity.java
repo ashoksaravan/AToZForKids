@@ -8,12 +8,9 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.adapter.SliderPagerAdapter;
@@ -85,6 +82,9 @@ public class SliderActivity extends AppCompatActivity {
                 break;
             case "Fruits":
                 items = DataStore.getInstance().getFruits();
+                break;
+            case "Vegetables":
+                items = DataStore.getInstance().getVegetables();
                 break;
         }
         final SliderPagerAdapter adapter = new SliderPagerAdapter(items, this, textToSpeech);
