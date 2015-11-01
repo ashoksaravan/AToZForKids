@@ -12,3 +12,6 @@
 .idea/libraries/cardview_v7_23_0_1.xml
 .idea/libraries/recyclerview_v7_23_0_1.xml
 .idea/misc.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
+app/app.iml

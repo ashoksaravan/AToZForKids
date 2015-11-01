@@ -57,7 +57,11 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(View view, int position) {
                                 String itemName = titles.get(position).getItemName();
-                                startActivity(SliderActivity.class, itemName);
+                                if("Puzzles".equals(itemName)) {
+                                    startActivity(PuzzleActivity.class, itemName);
+                                } else {
+                                    startActivity(SliderActivity.class, itemName);
+                                }
                             }
                         })
         );

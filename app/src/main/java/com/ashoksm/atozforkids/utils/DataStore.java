@@ -234,7 +234,7 @@ public class DataStore {
             vegetables.add(new ItemsDTO("Cabbage", R.drawable.cabbage));
             vegetables.add(new ItemsDTO("Carrot", R.drawable.carrot));
             vegetables.add(new ItemsDTO("Celery", R.drawable.celery));
-            vegetables.add(new ItemsDTO("Chilli", R.drawable.chilli_green));
+            vegetables.add(new ItemsDTO("Chili", R.drawable.chilli_green));
             vegetables.add(new ItemsDTO("Coriander", R.drawable.coriander));
             vegetables.add(new ItemsDTO("Corn", R.drawable.corn));
             vegetables.add(new ItemsDTO("Cucumber", R.drawable.cucumber));
