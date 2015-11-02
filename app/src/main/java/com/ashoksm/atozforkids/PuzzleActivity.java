@@ -35,6 +35,9 @@ public class PuzzleActivity extends AppCompatActivity {
     private Animation fadeInAnimation;
     private TextToSpeech textToSpeech;
     private static List<String> statusValues = new ArrayList<>();
+    private int count = 0;
+    private int currentCount = 0;
+    private int randInt;
 
     static {
         statusValues.add("Well Done!!!");
@@ -71,16 +74,42 @@ public class PuzzleActivity extends AppCompatActivity {
 
         right = (ImageView) findViewById(R.id.right);
         fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-        ImageView content = (ImageView) findViewById(R.id.content_image);
+        final ImageView content = (ImageView) findViewById(R.id.content_image);
 
+        loadContent(content);
+
+        fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                right.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                right.setVisibility(View.GONE);
+                if(count == currentCount) {
+                    count = 0;
+                    currentCount = 0;
+                    loadContent(content);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+    }
+
+    private void loadContent(ImageView content) {
         List<ItemsDTO> itemsDTOs = DataStore.getInstance().getAlphabets();
-        ItemsDTO itemsDTO = itemsDTOs.get(randInt(0, itemsDTOs.size()));
+        ItemsDTO itemsDTO = itemsDTOs.get(randInt(0, itemsDTOs.size() - 1));
         content.setImageResource(itemsDTO.getImageResource());
         List<String> chars = new ArrayList<>();
         for (char c : itemsDTO.getItemName().toCharArray()){
             chars.add(String.valueOf(c));
         }
         Collections.shuffle(chars);
+        count = itemsDTO.getItemName().length();
 
         for (int i = 1; i <= 10; i++) {
             int optionId = getResources().getIdentifier("option_" + i, "id", getPackageName());
@@ -94,27 +123,13 @@ public class PuzzleActivity extends AppCompatActivity {
                 choice.setOnDragListener(new ChoiceDragListener());
                 option.setText(chars.get(i - 1).toUpperCase());
                 choice.setText(String.valueOf(itemsDTO.getItemName().charAt(i - 1)).toUpperCase());
+                choice.setTextColor(Color.parseColor("#E5E4E2"));
+                choice.setTag(null);
             } else {
                 option.setVisibility(View.GONE);
                 choice.setVisibility(View.GONE);
             }
         }
-
-        fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                right.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                right.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
     }
 
     /**
@@ -185,7 +200,18 @@ public class PuzzleActivity extends AppCompatActivity {
                         //set the tag in the target view being dropped on - to the ID of the view being dropped
                         dropTarget.setTag(dropped.getId());
                         right.startAnimation(fadeInAnimation);
-                        speak();
+                        currentCount++;
+                        while (true) {
+                            int temp = randInt(1, 3) - 1;
+                            if(temp != randInt) {
+                                randInt = temp;
+                                break;
+                            }
+                        }
+                        String s = statusValues.get(randInt);
+                        speak(s);
+                    } else {
+                        speak("Try Again");
                     }
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
@@ -198,9 +224,8 @@ public class PuzzleActivity extends AppCompatActivity {
         }
     }
 
-    private void speak() {
+    private void speak(String s) {
         try {
-            String s = statusValues.get(randInt(1, 3) - 1);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
             } else {

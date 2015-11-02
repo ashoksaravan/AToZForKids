@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -31,8 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:gravity="center"
-                android:text="@string/option_1"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -41,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -50,8 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:gravity="center"
-                android:text="@string/option_2"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -60,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -69,8 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:gravity="center"
-                android:text="@string/option_3"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -79,8 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:gravity="center"
-                android:text="@string/option_3"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -89,8 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:gravity="center"
-                android:text="@string/option_3"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -99,8 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:gravity="center"
-                android:text="@string/option_3"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
             <TextView
@@ -109,8 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:gravity="center"
-                android:text="@string/option_3"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"/>
 
         </LinearLayout>
@@ -143,7 +136,6 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/choice"
                 android:gravity="center"
-                android:text="@string/option_1"
                 android:textColor="#E5E4E2"
                 android:textSize="16sp"/>
 
@@ -154,7 +146,6 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/choice"
                 android:gravity="center"
-                android:text="@string/option_3"
                 android:textColor="#E5E4E2"
                 android:textSize="16sp"/>
 
@@ -165,7 +156,6 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/choice"
                 android:gravity="center"
-                android:text="@string/option_3"
                 android:textColor="#E5E4E2"
                 android:textSize="16sp"/>
 
@@ -176,7 +166,6 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/choice"
                 android:gravity="center"
-                android:text="@string/option_2"
                 android:textColor="#E5E4E2"
                 android:textSize="16sp"/>
 
@@ -187,7 +176,6 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/choice"
                 android:gravity="center"
-                android:text="@string/option_4"
                 android:textColor="#E5E4E2"
                 android:textSize="16sp"/>
 
@@ -198,7 +186,6 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/choice"
                 android:gravity="center"
-                android:text="@string/option_4"
                 android:textColor="#E5E4E2"
                 android:textSize="16sp"/>
 
@@ -209,7 +196,6 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/choice"
                 android:gravity="center"
-                android:text="@string/option_4"
                 android:textColor="#E5E4E2"
                 android:textSize="16sp"/>
 
@@ -220,7 +206,6 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/choice"
                 android:gravity="center"
-                android:text="@string/option_4"
                 android:textColor="#E5E4E2"
                 android:textSize="16sp"/>
 
@@ -231,7 +216,6 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/choice"
                 android:gravity="center"
-                android:text="@string/option_4"
                 android:textColor="#E5E4E2"
                 android:textSize="16sp"/>
 
@@ -242,7 +226,6 @@
                 android:layout_margin="1dp"
                 android:background="@drawable/choice"
                 android:gravity="center"
-                android:text="@string/option_4"
                 android:textColor="#E5E4E2"
                 android:textSize="16sp"/>
 
