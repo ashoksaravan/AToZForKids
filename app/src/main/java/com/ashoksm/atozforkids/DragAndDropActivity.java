@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.DragEvent;
@@ -29,7 +28,7 @@ import java.util.Locale;
 import java.util.Random;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class PuzzleActivity extends AppCompatActivity {
+public class DragAndDropActivity extends AppCompatActivity {
 
     private ImageView right;
     private Animation fadeInAnimation;
@@ -49,7 +48,7 @@ public class PuzzleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_puzzle);
+        setContentView(R.layout.activity_drag_and_drop);
 
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -58,14 +57,6 @@ public class PuzzleActivity extends AppCompatActivity {
                 if (status == TextToSpeech.SUCCESS) {
                     textToSpeech.setLanguage(Locale.getDefault());
                     textToSpeech.setPitch(0.8f);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        try {
-                            Voice v = textToSpeech.getVoices().iterator().next();
-                            textToSpeech.setVoice(v);
-                        } catch (Exception ex) {
-                            Log.e("Voice not found", ex.getMessage());
-                        }
-                    }
                 } else {
                     Log.i("SliderActivity", "TextToSpeech onInit failed with status::::::::" + status);
                 }
@@ -101,8 +92,32 @@ public class PuzzleActivity extends AppCompatActivity {
     }
 
     private void loadContent(ImageView content) {
-        List<ItemsDTO> itemsDTOs = DataStore.getInstance().getAlphabets();
-        ItemsDTO itemsDTO = itemsDTOs.get(randInt(0, itemsDTOs.size() - 1));
+        ItemsDTO itemsDTO;
+        while(true) {
+            List<ItemsDTO> itemsDTOs = null;
+            int choice = randInt(1, 4);
+            switch (choice) {
+                case 1 :
+                    itemsDTOs = DataStore.getInstance().getAlphabets();
+                    break;
+                case 2 :
+                    itemsDTOs = DataStore.getInstance().getAnimals();
+                    break;
+                case 3 :
+                    itemsDTOs = DataStore.getInstance().getFruits();
+                    break;
+                case 4 :
+                    itemsDTOs = DataStore.getInstance().getVegetables();
+                    break;
+            }
+            if (itemsDTOs != null) {
+                itemsDTO = itemsDTOs.get(randInt(0, itemsDTOs.size() - 1));
+                if(itemsDTO.getItemName().length() <= 10) {
+                    break;
+                }
+            }
+        }
+
         content.setImageResource(itemsDTO.getImageResource());
         List<String> chars = new ArrayList<>();
         for (char c : itemsDTO.getItemName().toCharArray()){

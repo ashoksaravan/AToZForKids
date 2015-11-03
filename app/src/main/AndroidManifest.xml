@@ -29,12 +29,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".PuzzleActivity"
+        <activity
+            android:name=".DragAndDropActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/puzzles">
+            android:label="@string/puzzles" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".FindImageActivity" >
         </activity>
     </application>
 

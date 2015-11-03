@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onItemClick(View view, int position) {
                                 String itemName = titles.get(position).getItemName();
                                 if("Puzzles".equals(itemName)) {
-                                    startActivity(PuzzleActivity.class, itemName);
+                                    startActivity(DragAndDropActivity.class, itemName);
                                 } else {
                                     startActivity(SliderActivity.class, itemName);
                                 }
