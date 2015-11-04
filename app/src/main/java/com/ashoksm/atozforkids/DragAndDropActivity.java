@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.DragEvent;
@@ -19,13 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
+import com.ashoksm.atozforkids.utility.RandomNumber;
 import com.ashoksm.atozforkids.utils.DataStore;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class DragAndDropActivity extends AppCompatActivity {
@@ -57,6 +58,14 @@ public class DragAndDropActivity extends AppCompatActivity {
                 if (status == TextToSpeech.SUCCESS) {
                     textToSpeech.setLanguage(Locale.getDefault());
                     textToSpeech.setPitch(0.8f);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        try {
+                            Voice v = textToSpeech.getVoices().iterator().next();
+                            textToSpeech.setVoice(v);
+                        } catch (Exception ex) {
+                            Log.e("Voice not found", ex.getMessage());
+                        }
+                    }
                 } else {
                     Log.i("SliderActivity", "TextToSpeech onInit failed with status::::::::" + status);
                 }
@@ -95,7 +104,7 @@ public class DragAndDropActivity extends AppCompatActivity {
         ItemsDTO itemsDTO;
         while(true) {
             List<ItemsDTO> itemsDTOs = null;
-            int choice = randInt(1, 4);
+            int choice = RandomNumber.randInt(1, 4);
             switch (choice) {
                 case 1 :
                     itemsDTOs = DataStore.getInstance().getAlphabets();
@@ -111,7 +120,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                     break;
             }
             if (itemsDTOs != null) {
-                itemsDTO = itemsDTOs.get(randInt(0, itemsDTOs.size() - 1));
+                itemsDTO = itemsDTOs.get(RandomNumber.randInt(0, itemsDTOs.size() - 1));
                 if(itemsDTO.getItemName().length() <= 10) {
                     break;
                 }
@@ -217,7 +226,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                         right.startAnimation(fadeInAnimation);
                         currentCount++;
                         while (true) {
-                            int temp = randInt(1, 3) - 1;
+                            int temp = RandomNumber.randInt(1, 3) - 1;
                             if(temp != randInt) {
                                 randInt = temp;
                                 break;
@@ -249,10 +258,5 @@ public class DragAndDropActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
         }
-    }
-
-    public static int randInt(int min, int max) {
-        Random rand = new Random();
-        return rand.nextInt((max - min) + 1) + min;
     }
 }
