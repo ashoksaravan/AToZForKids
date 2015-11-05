@@ -17,4 +17,8 @@
     <string name="choice_1">C</string>
     <string name="choice_2">B</string>
     <string name="choice_3">A</string>
+    <string name="spell_it">Spell It</string>
+    <string name="find_image">Find Image</string>
+    <string name="admob_banner_id">ca-app-pub-1841174173430884/1192379059</string>
+    <string name="admob_interstitial_id">ca-app-pub-1841174173430884/5622578655</string>
 </resources>
