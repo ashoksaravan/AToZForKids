@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.ashoksm.atozforkids.PuzzleActivity"
-    android:orientation="vertical"
-    android:gravity="center">
+    tools:context="com.ashoksm.atozforkids.PuzzleActivity">
 
-    <Button
-        android:id="@+id/drag_and_drop"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#d50000"
-        android:layout_margin="20dp"
-        android:textColor="@color/icons"
-        android:text="@string/spell_it"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/adLayout"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/find_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#1b5e20"
-        android:layout_margin="20dp"
-        android:textColor="@color/icons"
-        android:text="@string/find_image"/>
+        <Button
+            android:id="@+id/drag_and_drop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/button_selector_red"
+            android:text="@string/spell_it"
+            android:textColor="@color/icons" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/find_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/button_selector_green"
+            android:text="@string/find_image"
+            android:textColor="@color/icons" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/adLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:visibility="gone" />
+</RelativeLayout>

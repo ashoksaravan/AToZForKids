@@ -16,12 +16,17 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utility.RandomNumber;
 import com.ashoksm.atozforkids.utils.DataStore;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,6 +55,8 @@ public class DragAndDropActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drag_and_drop);
+
+        loadAd();
 
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -258,5 +265,34 @@ public class DragAndDropActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void loadAd() {
+        // load ad
+        final LinearLayout adParent = (LinearLayout) this.findViewById(R.id.adLayout);
+        final AdView ad = new AdView(this);
+        ad.setAdUnitId(getString(R.string.admob_banner_id));
+        ad.setAdSize(AdSize.SMART_BANNER);
+
+        final AdListener listener = new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                adParent.setVisibility(View.VISIBLE);
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                adParent.setVisibility(View.GONE);
+                super.onAdFailedToLoad(errorCode);
+            }
+        };
+
+        ad.setAdListener(listener);
+
+        adParent.addView(ad);
+        AdRequest.Builder builder = new AdRequest.Builder();
+        AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        ad.loadAd(adRequest);
     }
 }

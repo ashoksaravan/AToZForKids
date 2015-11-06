@@ -11,11 +11,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.adapter.SliderPagerAdapter;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DataStore;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +39,7 @@ public class SliderActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+        loadAd();
         final String itemName = intent.getStringExtra(MainActivity.EXTRA_ITEM_NAME);
 
 
@@ -155,4 +161,32 @@ public class SliderActivity extends AppCompatActivity {
         }
     }
 
+    private void loadAd() {
+        // load ad
+        final LinearLayout adParent = (LinearLayout) this.findViewById(R.id.adLayout);
+        final AdView ad = new AdView(this);
+        ad.setAdUnitId(getString(R.string.admob_banner_id));
+        ad.setAdSize(AdSize.SMART_BANNER);
+
+        final AdListener listener = new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                adParent.setVisibility(View.VISIBLE);
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                adParent.setVisibility(View.GONE);
+                super.onAdFailedToLoad(errorCode);
+            }
+        };
+
+        ad.setAdListener(listener);
+
+        adParent.addView(ad);
+        AdRequest.Builder builder = new AdRequest.Builder();
+        AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        ad.loadAd(adRequest);
+    }
 }

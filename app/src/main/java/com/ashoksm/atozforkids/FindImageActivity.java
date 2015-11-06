@@ -11,11 +11,16 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utility.RandomNumber;
 import com.ashoksm.atozforkids.utils.DataStore;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +47,8 @@ public class FindImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_image);
+
+        loadAd();
 
         view = findViewById(R.id.find_image_main_view);
         image1 = (ImageView) findViewById(R.id.image1);
@@ -206,5 +213,34 @@ public class FindImageActivity extends AppCompatActivity {
                 unbindDrawables(((ViewGroup) view).getChildAt(i));
             }
         }
+    }
+
+    private void loadAd() {
+        // load ad
+        final LinearLayout adParent = (LinearLayout) this.findViewById(R.id.adLayout);
+        final AdView ad = new AdView(this);
+        ad.setAdUnitId(getString(R.string.admob_banner_id));
+        ad.setAdSize(AdSize.SMART_BANNER);
+
+        final AdListener listener = new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                adParent.setVisibility(View.VISIBLE);
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                adParent.setVisibility(View.GONE);
+                super.onAdFailedToLoad(errorCode);
+            }
+        };
+
+        ad.setAdListener(listener);
+
+        adParent.addView(ad);
+        AdRequest.Builder builder = new AdRequest.Builder();
+        AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        ad.loadAd(adRequest);
     }
 }
