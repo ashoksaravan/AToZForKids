@@ -8,13 +8,25 @@ android {
         applicationId "com.ashoksm.atozforkids"
         minSdkVersion 9
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.2"
     }
+
+    signingConfigs {
+        release {
+            storeFile file("../keystore/atozforkids.jks")
+            storePassword "ashok1984"
+            keyAlias "atozforkids"
+            keyPassword "ashok1984"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.release
         }
     }
 }

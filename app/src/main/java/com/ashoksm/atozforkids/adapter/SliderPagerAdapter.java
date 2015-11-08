@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.ashoksm.atozforkids.R;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
+import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 
 import java.util.List;
 
@@ -25,13 +26,18 @@ public class SliderPagerAdapter extends PagerAdapter {
     Context context;
     Animation shake;
     TextToSpeech textToSpeech;
+    private int width;
+    private int height;
 
-    public SliderPagerAdapter(List<ItemsDTO> itemsIn, Context contextIn, TextToSpeech textToSpeech) {
+    public SliderPagerAdapter(List<ItemsDTO> itemsIn, Context contextIn, TextToSpeech textToSpeech, int widthIn,
+                              int heightIn) {
         this.items = itemsIn;
         this.context = contextIn;
         mLayoutInflater = (LayoutInflater) contextIn.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         shake = AnimationUtils.loadAnimation(contextIn, R.anim.shake);
         this.textToSpeech = textToSpeech;
+        this.width = widthIn;
+        this.height = heightIn;
     }
 
     @Override
@@ -50,7 +56,8 @@ public class SliderPagerAdapter extends PagerAdapter {
         final TextView name = (TextView) itemView.findViewById(R.id.name);
         name.setText(items.get(position).getItemName());
         final ImageView performerImage = (ImageView) itemView.findViewById(R.id.slider_image);
-        performerImage.setImageResource(items.get(position).getImageResource());
+        performerImage.setImageBitmap(DecodeSampledBitmapFromResource.execute(context.getResources(), items.get
+                (position).getImageResource(), width, height));
         performerImage.setTag(items.get(position).getItemName());
         performerImage.setOnClickListener(new View.OnClickListener() {
             @Override

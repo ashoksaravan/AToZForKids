@@ -2,6 +2,7 @@ package com.ashoksm.atozforkids;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
-import com.ashoksm.atozforkids.utility.RandomNumber;
 import com.ashoksm.atozforkids.utils.DataStore;
+import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
+import com.ashoksm.atozforkids.utils.RandomNumber;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -26,8 +28,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class FindImageActivity extends AppCompatActivity {
+
+    private static List<String> statusValues = new ArrayList<>();
+
+    static {
+        statusValues.add("Well Done!!!");
+        statusValues.add("Great Job!!!");
+        statusValues.add("Excellent!!!");
+        statusValues.add("Marvellous!!!");
+        statusValues.add("Bravo!!!");
+    }
 
     private ImageView right;
     private Animation fadeInAnimation;
@@ -42,11 +55,15 @@ public class FindImageActivity extends AppCompatActivity {
     private ItemsDTO itemsDTO;
     private TextToSpeech textToSpeech;
     private View view;
+    private int randInt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_image);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         loadAd();
 
@@ -62,7 +79,7 @@ public class FindImageActivity extends AppCompatActivity {
         right = (ImageView) findViewById(R.id.right);
         fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 
-        loadImages();
+        loadImages(false);
 
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -73,8 +90,12 @@ public class FindImageActivity extends AppCompatActivity {
                     textToSpeech.setPitch(0.8f);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         try {
-                            Voice v = textToSpeech.getVoices().iterator().next();
-                            textToSpeech.setVoice(v);
+                            Set<Voice> voices = textToSpeech.getVoices();
+                            for (Voice v : voices) {
+                                if (v.getLocale().equals(Locale.getDefault())) {
+                                    textToSpeech.setVoice(v);
+                                }
+                            }
                         } catch (Exception ex) {
                             Log.e("Voice not found", ex.getMessage());
                         }
@@ -97,7 +118,7 @@ public class FindImageActivity extends AppCompatActivity {
                 right.setVisibility(View.GONE);
                 unbindDrawables(view);
                 System.gc();
-                loadImages();
+                loadImages(true);
             }
 
             @Override
@@ -109,7 +130,14 @@ public class FindImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getTag().toString().equalsIgnoreCase(itemsDTO.getItemName())) {
-                    speak("Well Done!!!");
+                    while (true) {
+                        int temp = RandomNumber.randInt(1, statusValues.size() - 1);
+                        if (temp != randInt) {
+                            randInt = temp;
+                            break;
+                        }
+                    }
+                    speak(statusValues.get(randInt));
                     right.setVisibility(View.VISIBLE);
                     right.startAnimation(fadeInAnimation);
                 } else {
@@ -123,7 +151,14 @@ public class FindImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getTag().toString().equalsIgnoreCase(itemsDTO.getItemName())) {
-                    speak("Well Done!!!");
+                    while (true) {
+                        int temp = RandomNumber.randInt(1, statusValues.size() - 1);
+                        if (temp != randInt) {
+                            randInt = temp;
+                            break;
+                        }
+                    }
+                    speak(statusValues.get(randInt));
                     right.setVisibility(View.VISIBLE);
                     right.startAnimation(fadeInAnimation);
                 } else {
@@ -137,7 +172,14 @@ public class FindImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getTag().toString().equalsIgnoreCase(itemsDTO.getItemName())) {
-                    speak("Well Done!!!");
+                    while (true) {
+                        int temp = RandomNumber.randInt(1, statusValues.size() - 1);
+                        if (temp != randInt) {
+                            randInt = temp;
+                            break;
+                        }
+                    }
+                    speak(statusValues.get(randInt));
                     right.setVisibility(View.VISIBLE);
                     right.startAnimation(fadeInAnimation);
                 } else {
@@ -151,7 +193,14 @@ public class FindImageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getTag().toString().equalsIgnoreCase(itemsDTO.getItemName())) {
-                    speak("Well Done!!!");
+                    while (true) {
+                        int temp = RandomNumber.randInt(1, statusValues.size() - 1);
+                        if (temp != randInt) {
+                            randInt = temp;
+                            break;
+                        }
+                    }
+                    speak(statusValues.get(randInt));
                     right.setVisibility(View.VISIBLE);
                     right.startAnimation(fadeInAnimation);
                 } else {
@@ -162,7 +211,7 @@ public class FindImageActivity extends AppCompatActivity {
         });
     }
 
-    private void loadImages() {
+    private void loadImages(boolean speak) {
         List<ItemsDTO> items = new ArrayList<>();
         items.add(DataStore.getInstance().getAlphabets().get(RandomNumber.randInt(0, DataStore.getInstance()
                 .getAlphabets().size() - 1)));
@@ -175,15 +224,25 @@ public class FindImageActivity extends AppCompatActivity {
 
         Collections.shuffle(items);
         itemsDTO = items.get(RandomNumber.randInt(0, 3));
-        speak("Click " + itemsDTO.getItemName());
 
-        image1.setImageResource(items.get(0).getImageResource());
+        if (speak) {
+            speak("Click " + itemsDTO.getItemName());
+        }
+
+        image1.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), items.get(0).getImageResource(), 200,
+                        200));
         image1.setTag(items.get(0).getItemName());
-        image2.setImageResource(items.get(1).getImageResource());
+        image2.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), items.get(1).getImageResource(),
+                200,
+                200));
         image2.setTag(items.get(1).getItemName());
-        image3.setImageResource(items.get(2).getImageResource());
+        image3.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), items.get(2).getImageResource(),
+                200,
+                200));
         image3.setTag(items.get(2).getItemName());
-        image4.setImageResource(items.get(3).getImageResource());
+        image4.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), items.get(3).getImageResource(),
+                200,
+                200));
         image4.setTag(items.get(3).getItemName());
 
         image11.setVisibility(View.GONE);

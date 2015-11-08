@@ -1,4 +1,4 @@
-package com.ashoksm.atozforkids.utility;
+package com.ashoksm.atozforkids.utils;
 
 import java.util.Random;
 

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
-import com.ashoksm.atozforkids.utility.RandomNumber;
+import com.ashoksm.atozforkids.utils.RandomNumber;
 import com.ashoksm.atozforkids.utils.DataStore;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -32,29 +33,35 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class DragAndDropActivity extends AppCompatActivity {
 
-    private ImageView right;
-    private Animation fadeInAnimation;
-    private TextToSpeech textToSpeech;
     private static List<String> statusValues = new ArrayList<>();
-    private int count = 0;
-    private int currentCount = 0;
-    private int randInt;
 
     static {
         statusValues.add("Well Done!!!");
         statusValues.add("Great Job!!!");
         statusValues.add("Excellent!!!");
+        statusValues.add("Marvellous!!!");
+        statusValues.add("Bravo!!!");
     }
 
+    private ImageView right;
+    private Animation fadeInAnimation;
+    private TextToSpeech textToSpeech;
+    private int count = 0;
+    private int currentCount = 0;
+    private int randInt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drag_and_drop);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         loadAd();
 
@@ -67,8 +74,12 @@ public class DragAndDropActivity extends AppCompatActivity {
                     textToSpeech.setPitch(0.8f);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         try {
-                            Voice v = textToSpeech.getVoices().iterator().next();
-                            textToSpeech.setVoice(v);
+                            Set<Voice> voices = textToSpeech.getVoices();
+                            for (Voice v : voices) {
+                                if (v.getLocale().equals(Locale.getDefault())) {
+                                    textToSpeech.setVoice(v);
+                                }
+                            }
                         } catch (Exception ex) {
                             Log.e("Voice not found", ex.getMessage());
                         }
@@ -94,7 +105,7 @@ public class DragAndDropActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 right.setVisibility(View.GONE);
-                if(count == currentCount) {
+                if (count == currentCount) {
                     count = 0;
                     currentCount = 0;
                     loadContent(content);
@@ -109,26 +120,26 @@ public class DragAndDropActivity extends AppCompatActivity {
 
     private void loadContent(ImageView content) {
         ItemsDTO itemsDTO;
-        while(true) {
+        while (true) {
             List<ItemsDTO> itemsDTOs = null;
             int choice = RandomNumber.randInt(1, 4);
             switch (choice) {
-                case 1 :
+                case 1:
                     itemsDTOs = DataStore.getInstance().getAlphabets();
                     break;
-                case 2 :
+                case 2:
                     itemsDTOs = DataStore.getInstance().getAnimals();
                     break;
-                case 3 :
+                case 3:
                     itemsDTOs = DataStore.getInstance().getFruits();
                     break;
-                case 4 :
+                case 4:
                     itemsDTOs = DataStore.getInstance().getVegetables();
                     break;
             }
             if (itemsDTOs != null) {
                 itemsDTO = itemsDTOs.get(RandomNumber.randInt(0, itemsDTOs.size() - 1));
-                if(itemsDTO.getItemName().length() <= 10) {
+                if (itemsDTO.getItemName().length() <= 5) {
                     break;
                 }
             }
@@ -136,13 +147,13 @@ public class DragAndDropActivity extends AppCompatActivity {
 
         content.setImageResource(itemsDTO.getImageResource());
         List<String> chars = new ArrayList<>();
-        for (char c : itemsDTO.getItemName().toCharArray()){
+        for (char c : itemsDTO.getItemName().toCharArray()) {
             chars.add(String.valueOf(c));
         }
         Collections.shuffle(chars);
         count = itemsDTO.getItemName().length();
 
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 5; i++) {
             int optionId = getResources().getIdentifier("option_" + i, "id", getPackageName());
             int choiceId = getResources().getIdentifier("choice_" + i, "id", getPackageName());
             TextView option = (TextView) findViewById(optionId);
@@ -161,6 +172,47 @@ public class DragAndDropActivity extends AppCompatActivity {
                 choice.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void speak(String s) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
+            } else {
+                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+            }
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void loadAd() {
+        // load ad
+        final LinearLayout adParent = (LinearLayout) this.findViewById(R.id.adLayout);
+        final AdView ad = new AdView(this);
+        ad.setAdUnitId(getString(R.string.admob_banner_id));
+        ad.setAdSize(AdSize.SMART_BANNER);
+
+        final AdListener listener = new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                adParent.setVisibility(View.VISIBLE);
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                adParent.setVisibility(View.GONE);
+                super.onAdFailedToLoad(errorCode);
+            }
+        };
+
+        ad.setAdListener(listener);
+
+        adParent.addView(ad);
+        AdRequest.Builder builder = new AdRequest.Builder();
+        AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        ad.loadAd(adRequest);
     }
 
     /**
@@ -233,8 +285,8 @@ public class DragAndDropActivity extends AppCompatActivity {
                         right.startAnimation(fadeInAnimation);
                         currentCount++;
                         while (true) {
-                            int temp = RandomNumber.randInt(1, 3) - 1;
-                            if(temp != randInt) {
+                            int temp = RandomNumber.randInt(1, statusValues.size() - 1);
+                            if (temp != randInt) {
                                 randInt = temp;
                                 break;
                             }
@@ -253,46 +305,5 @@ public class DragAndDropActivity extends AppCompatActivity {
             }
             return true;
         }
-    }
-
-    private void speak(String s) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
-            } else {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
-            }
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void loadAd() {
-        // load ad
-        final LinearLayout adParent = (LinearLayout) this.findViewById(R.id.adLayout);
-        final AdView ad = new AdView(this);
-        ad.setAdUnitId(getString(R.string.admob_banner_id));
-        ad.setAdSize(AdSize.SMART_BANNER);
-
-        final AdListener listener = new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                adParent.setVisibility(View.VISIBLE);
-                super.onAdLoaded();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adParent.setVisibility(View.GONE);
-                super.onAdFailedToLoad(errorCode);
-            }
-        };
-
-        ad.setAdListener(listener);
-
-        adParent.addView(ad);
-        AdRequest.Builder builder = new AdRequest.Builder();
-        AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        ad.loadAd(adRequest);
     }
 }

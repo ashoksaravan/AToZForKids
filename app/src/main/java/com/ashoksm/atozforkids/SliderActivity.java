@@ -1,6 +1,7 @@
 package com.ashoksm.atozforkids;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -9,6 +10,7 @@ import android.speech.tts.Voice;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -24,17 +26,32 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class SliderActivity extends AppCompatActivity {
 
     private List<ItemsDTO> items = null;
     private TextToSpeech textToSpeech;
+    private int width;
+    private int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slider);
         Intent intent = getIntent();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            width = size.x;
+            height = size.y;
+        } else {
+            Display display = getWindowManager().getDefaultDisplay();
+            width = display.getWidth();
+            height = display.getHeight();
+        }
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -52,8 +69,12 @@ public class SliderActivity extends AppCompatActivity {
                     textToSpeech.setPitch(0.8f);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         try {
-                            Voice v = textToSpeech.getVoices().iterator().next();
-                            textToSpeech.setVoice(v);
+                            Set<Voice> voices = textToSpeech.getVoices();
+                            for (Voice v : voices) {
+                                if (v.getLocale().equals(Locale.getDefault())) {
+                                    textToSpeech.setVoice(v);
+                                }
+                            }
                         } catch (Exception ex) {
                             Log.e("Voice not found", ex.getMessage());
                         }
@@ -93,7 +114,7 @@ public class SliderActivity extends AppCompatActivity {
                 items = DataStore.getInstance().getVegetables();
                 break;
         }
-        final SliderPagerAdapter adapter = new SliderPagerAdapter(items, this, textToSpeech);
+        final SliderPagerAdapter adapter = new SliderPagerAdapter(items, this, textToSpeech, width, height);
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

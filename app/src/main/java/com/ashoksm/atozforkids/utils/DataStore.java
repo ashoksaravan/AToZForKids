@@ -78,12 +78,14 @@ public class DataStore {
     public List<ItemsDTO> getShapes() {
         if (shapes == null) {
             shapes = new ArrayList<>();
+            shapes.add(new ItemsDTO("Heart", R.drawable.heart));
             shapes.add(new ItemsDTO("Circle", R.drawable.circle));
             shapes.add(new ItemsDTO("Triangle", R.drawable.triangle));
             shapes.add(new ItemsDTO("Square", R.drawable.square));
             shapes.add(new ItemsDTO("Rectangle", R.drawable.rectangle));
             shapes.add(new ItemsDTO("Pentagon", R.drawable.pentagon));
             shapes.add(new ItemsDTO("Hexagon", R.drawable.hexagon));
+            shapes.add(new ItemsDTO("Star", R.drawable.star));
         }
         return shapes;
     }

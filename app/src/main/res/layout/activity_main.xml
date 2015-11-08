@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/gridView"
@@ -10,14 +10,15 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/adLayout"
         android:layout_marginTop="3dp"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"/>
 
     <LinearLayout
         android:id="@+id/adLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.ashoksm.atozforkids.adapter;
 
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +10,18 @@ import android.widget.TextView;
 
 import com.ashoksm.atozforkids.R;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
+import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 
 import java.util.List;
 
 public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHolder> {
 
     private List<ItemsDTO> titles;
+    private Resources res;
 
-    public MainGridAdapter(List<ItemsDTO> titlesIn) {
+    public MainGridAdapter(Resources resIn, List<ItemsDTO> titlesIn) {
         this.titles = titlesIn;
+        this.res = resIn;
     }
 
     @Override
@@ -31,7 +35,8 @@ public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.title.setText(titles.get(position).getItemName());
-        holder.titleImg.setImageResource(titles.get(position).getImageResource());
+        holder.titleImg.setImageBitmap(DecodeSampledBitmapFromResource.execute(res, titles.get(position).getImageResource(),
+                        200, 200));
     }
 
     @Override
@@ -39,7 +44,7 @@ public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHo
         return titles.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView title;
         public ImageView titleImg;

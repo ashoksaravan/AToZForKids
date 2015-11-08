@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".PuzzleActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".PuzzleActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -25,91 +25,51 @@
                     android:id="@+id/option_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
+                    android:layout_margin="1dp"
+                    android:background="@drawable/choice"
                     android:gravity="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textSize="30sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/option_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
+                    android:layout_margin="1dp"
+                    android:background="@drawable/choice"
                     android:gravity="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textSize="30sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/option_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
+                    android:layout_margin="1dp"
+                    android:background="@drawable/choice"
                     android:gravity="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textSize="30sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/option_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
+                    android:layout_margin="1dp"
+                    android:background="@drawable/choice"
                     android:gravity="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textSize="30sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/option_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
+                    android:layout_margin="1dp"
+                    android:background="@drawable/choice"
                     android:gravity="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/option_6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:gravity="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/option_7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:gravity="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/option_8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:gravity="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/option_9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:gravity="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/option_10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:gravity="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textSize="30sp"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -122,7 +82,7 @@
                 android:layout_marginBottom="100dp"
                 android:layout_marginTop="100dp"
                 android:contentDescription="@string/content"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"/>
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -142,7 +102,7 @@
                     android:background="@drawable/choice"
                     android:gravity="center"
                     android:textColor="#E5E4E2"
-                    android:textSize="16sp" />
+                    android:textSize="30sp"/>
 
                 <TextView
                     android:id="@+id/choice_2"
@@ -152,7 +112,7 @@
                     android:background="@drawable/choice"
                     android:gravity="center"
                     android:textColor="#E5E4E2"
-                    android:textSize="16sp" />
+                    android:textSize="30sp"/>
 
                 <TextView
                     android:id="@+id/choice_3"
@@ -162,7 +122,7 @@
                     android:background="@drawable/choice"
                     android:gravity="center"
                     android:textColor="#E5E4E2"
-                    android:textSize="16sp" />
+                    android:textSize="30sp"/>
 
                 <TextView
                     android:id="@+id/choice_4"
@@ -172,7 +132,7 @@
                     android:background="@drawable/choice"
                     android:gravity="center"
                     android:textColor="#E5E4E2"
-                    android:textSize="16sp" />
+                    android:textSize="30sp"/>
 
                 <TextView
                     android:id="@+id/choice_5"
@@ -182,57 +142,7 @@
                     android:background="@drawable/choice"
                     android:gravity="center"
                     android:textColor="#E5E4E2"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/choice_6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@drawable/choice"
-                    android:gravity="center"
-                    android:textColor="#E5E4E2"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/choice_7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@drawable/choice"
-                    android:gravity="center"
-                    android:textColor="#E5E4E2"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/choice_8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@drawable/choice"
-                    android:gravity="center"
-                    android:textColor="#E5E4E2"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/choice_9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@drawable/choice"
-                    android:gravity="center"
-                    android:textColor="#E5E4E2"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/choice_10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:background="@drawable/choice"
-                    android:gravity="center"
-                    android:textColor="#E5E4E2"
-                    android:textSize="16sp" />
+                    android:textSize="30sp"/>
 
             </LinearLayout>
         </RelativeLayout>
@@ -250,7 +160,7 @@
                 android:contentDescription="@string/content"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_action_done"
-                android:visibility="gone" />
+                android:visibility="gone"/>
         </RelativeLayout>
 
     </FrameLayout>
@@ -260,6 +170,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 </RelativeLayout>
