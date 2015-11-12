@@ -4,13 +4,26 @@
                 android:layout_height="match_parent"
                 tools:context=".MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/gridView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/adLayout"
-        android:layout_marginTop="3dp"
-        android:scrollbars="vertical"/>
+        android:layout_above="@+id/adLayout">
+
+        <ImageView
+            android:id="@+id/main_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/main_bg"
+            android:scaleType="fitXY"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="3dp"
+            android:scrollbars="vertical"/>
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/adLayout"

@@ -32,8 +32,6 @@ public class SliderActivity extends AppCompatActivity {
 
     private List<ItemsDTO> items = null;
     private TextToSpeech textToSpeech;
-    private int width;
-    private int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +39,8 @@ public class SliderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_slider);
         Intent intent = getIntent();
 
+        int width;
+        int height;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();

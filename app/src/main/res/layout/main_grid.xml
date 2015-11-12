@@ -21,12 +21,14 @@
             android:id="@+id/titleImg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="5dp"
             android:scaleType="fitCenter"
             android:contentDescription="@string/grid"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="bottom">
 
             <TextView
                 android:id="@+id/title"
