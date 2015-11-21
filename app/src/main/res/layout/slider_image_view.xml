@@ -7,21 +7,35 @@
         android:id="@+id/slider_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/content"
-        android:paddingTop="30dp"
-        android:paddingBottom="20dp"
         android:layout_margin="10dp"
+        android:contentDescription="@string/content"
+        android:paddingBottom="20dp"
+        android:paddingTop="30dp"
         android:scaleType="fitCenter"/>
 
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="10dp"
         android:background="#809C27B0"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:textColor="@color/primary_text"
         android:textSize="30sp"
         android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/alphabet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="50dp"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:paddingRight="20dp"
+        android:paddingEnd="20dp"
+        android:textSize="75sp"
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
 </FrameLayout>

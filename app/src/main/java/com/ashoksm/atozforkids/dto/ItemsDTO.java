@@ -8,6 +8,8 @@ public class ItemsDTO {
 
     private int imageResource2;
 
+    private int vibrantColor;
+
     public ItemsDTO(String itemName, int imageResource) {
         this.itemName = itemName;
         this.imageResource = imageResource;
@@ -35,5 +37,13 @@ public class ItemsDTO {
 
     public void setImageResource2(int imageResource2) {
         this.imageResource2 = imageResource2;
+    }
+
+    public int getVibrantColor() {
+        return vibrantColor;
+    }
+
+    public void setVibrantColor(int vibrantColor) {
+        this.vibrantColor = vibrantColor;
     }
 }

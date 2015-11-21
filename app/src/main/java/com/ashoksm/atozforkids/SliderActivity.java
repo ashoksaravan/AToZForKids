@@ -1,6 +1,7 @@
 package com.ashoksm.atozforkids;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 import com.ashoksm.atozforkids.adapter.SliderPagerAdapter;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DataStore;
+import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
+import com.ashoksm.atozforkids.utils.DepthPageTransformer;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -30,8 +34,10 @@ import java.util.Set;
 
 public class SliderActivity extends AppCompatActivity {
 
+    public static int currentItem = 0;
     private List<ItemsDTO> items = null;
     private TextToSpeech textToSpeech;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,7 @@ public class SliderActivity extends AppCompatActivity {
 
         int width;
         int height;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
@@ -114,8 +120,23 @@ public class SliderActivity extends AppCompatActivity {
                 items = DataStore.getInstance().getVegetables();
                 break;
         }
-        final SliderPagerAdapter adapter = new SliderPagerAdapter(items, this, textToSpeech, width, height);
+        final SliderPagerAdapter adapter = new SliderPagerAdapter(items, this, textToSpeech, width, height, itemName);
         viewPager.setAdapter(adapter);
+
+        final LinearLayout actionLayout = (LinearLayout) findViewById(R.id.actionLayout);
+        Bitmap imageBitmap = DecodeSampledBitmapFromResource.execute(getResources(), items.get
+                (0).getImageResource(), width, height);
+        Palette palette = Palette.from(imageBitmap).generate();
+        Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+        if (vibrantSwatch != null) {
+            actionLayout.setBackgroundColor(vibrantSwatch.getRgb());
+        } else {
+            List<Palette.Swatch> swatches = palette.getSwatches();
+            if (swatches.size() > 0) {
+                Palette.Swatch swatch = swatches.get(0);
+                actionLayout.setBackgroundColor(swatch.getRgb());
+            }
+        }
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -124,7 +145,9 @@ public class SliderActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+                actionLayout.setBackgroundColor(items.get(position).getVibrantColor());
                 speak(position, itemName);
+                currentItem = position;
             }
 
             @Override
@@ -132,7 +155,7 @@ public class SliderActivity extends AppCompatActivity {
             }
         });
 
-        //viewPager.setPageTransformer(true, new DepthPageTransformer());
+        viewPager.setPageTransformer(false, new DepthPageTransformer());
 
         final ImageButton replay = (ImageButton) findViewById(R.id.replay);
         final ImageButton next = (ImageButton) findViewById(R.id.next);
@@ -209,5 +232,11 @@ public class SliderActivity extends AppCompatActivity {
         AdRequest.Builder builder = new AdRequest.Builder();
         AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         ad.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        currentItem = 0;
     }
 }

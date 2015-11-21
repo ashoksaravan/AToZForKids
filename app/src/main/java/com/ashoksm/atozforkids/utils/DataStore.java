@@ -93,6 +93,7 @@ public class DataStore {
     public List<ItemsDTO> getNumbers() {
         if(numbers == null) {
             numbers = new ArrayList<>();
+            numbers.add(new ItemsDTO("Zero", R.drawable.zero));
             numbers.add(new ItemsDTO("One", R.drawable.one));
             numbers.add(new ItemsDTO("Two", R.drawable.two));
             numbers.add(new ItemsDTO("Three", R.drawable.three));
