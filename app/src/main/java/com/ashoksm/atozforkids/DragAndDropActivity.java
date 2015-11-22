@@ -92,9 +92,8 @@ public class DragAndDropActivity extends AppCompatActivity {
 
         right = (ImageView) findViewById(R.id.right);
         fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-        final ImageView content = (ImageView) findViewById(R.id.content_image);
 
-        loadContent(content);
+        loadContent();
 
         fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -108,7 +107,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                 if (count == currentCount) {
                     count = 0;
                     currentCount = 0;
-                    loadContent(content);
+                    loadContent();
                 }
             }
 
@@ -118,7 +117,7 @@ public class DragAndDropActivity extends AppCompatActivity {
         });
     }
 
-    private void loadContent(ImageView content) {
+    private void loadContent() {
         ItemsDTO itemsDTO;
         while (true) {
             List<ItemsDTO> itemsDTOs = null;
@@ -145,7 +144,6 @@ public class DragAndDropActivity extends AppCompatActivity {
             }
         }
 
-        content.setImageResource(itemsDTO.getImageResource());
         List<String> chars = new ArrayList<>();
         for (char c : itemsDTO.getItemName().toCharArray()) {
             chars.add(String.valueOf(c));
