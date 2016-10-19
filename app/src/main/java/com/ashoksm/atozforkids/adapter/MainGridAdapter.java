@@ -36,7 +36,7 @@ public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.title.setText(titles.get(position).getItemName());
         holder.titleImg.setImageBitmap(DecodeSampledBitmapFromResource.execute(res, titles.get(position).getImageResource(),
-                        200, 200));
+                        240, 120));
     }
 
     @Override
@@ -44,12 +44,12 @@ public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHo
         return titles.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView title;
-        public ImageView titleImg;
+        TextView title;
+        ImageView titleImg;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             this.title = (TextView) v.findViewById(R.id.title);
             this.titleImg = (ImageView) v.findViewById(R.id.titleImg);

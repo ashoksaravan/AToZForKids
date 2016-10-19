@@ -2,24 +2,17 @@ package com.ashoksm.atozforkids;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Point;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.ashoksm.atozforkids.adapter.MainGridAdapter;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
-import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
-import com.ashoksm.atozforkids.utils.GridSpacingItemDecoration;
 import com.ashoksm.atozforkids.utils.RecyclerItemClickListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -65,22 +58,6 @@ public class MainActivity extends AppCompatActivity {
         mInterstitialAd = newInterstitialAd();
         loadInterstitial();
 
-        int width;
-        int height;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            width = size.x;
-            height = size.y;
-        } else {
-            Display display = getWindowManager().getDefaultDisplay();
-            width = display.getWidth();
-            height = display.getHeight();
-        }
-        ImageView mainBg = (ImageView) findViewById(R.id.main_bg);
-        mainBg.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), R.drawable.bg, width, height));
-
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gridView);
 
         // use this setting to improve performance if you know that changes
@@ -88,10 +65,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 50, true));
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         } else {
-            recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, 50, true));
             recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         }
 
@@ -184,7 +159,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadInterstitial() {
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        AdRequest adRequest =
+                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         mInterstitialAd.loadAd(adRequest);
     }
 
@@ -208,7 +184,8 @@ public class MainActivity extends AppCompatActivity {
                             mTts.setLanguage(Locale.getDefault());
                             mTts.setPitch(0.8f);
                         } else {
-                            Log.i("SliderActivity", "TextToSpeech onInit failed with status::::::::" + status);
+                            Log.i("SliderActivity",
+                                    "TextToSpeech onInit failed with status::::::::" + status);
                         }
                     }
                 });
@@ -219,17 +196,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    private void speak(String s) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mTts.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
-            } else {
-                mTts.speak(s, TextToSpeech.QUEUE_FLUSH, null);
-            }
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
-        }
     }
 }
