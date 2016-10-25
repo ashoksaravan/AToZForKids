@@ -18,11 +18,13 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.ashoksm.atozforkids.adapter.GridPagerAdapter;
 import com.ashoksm.atozforkids.adapter.SliderPagerAdapter;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DataStore;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.DepthPageTransformer;
+import com.ashoksm.atozforkids.utils.RandomNumber;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -87,7 +89,8 @@ public class SliderActivity extends AppCompatActivity {
                     }
                     speak(0, itemName);
                 } else {
-                    Log.i("SliderActivity", "TextToSpeech onInit failed with status::::::::" + status);
+                    Log.i("SliderActivity",
+                            "TextToSpeech onInit failed with status::::::::" + status);
                 }
             }
         });
@@ -120,8 +123,15 @@ public class SliderActivity extends AppCompatActivity {
                 items = DataStore.getInstance().getVegetables();
                 break;
         }
-        final SliderPagerAdapter adapter = new SliderPagerAdapter(items, this, textToSpeech, width, height, itemName);
-        viewPager.setAdapter(adapter);
+
+        if ("Numbers".equalsIgnoreCase(itemName)) {
+            setRandomImage(items);
+            viewPager.setAdapter(new GridPagerAdapter(this, items));
+        } else {
+            final SliderPagerAdapter adapter =
+                    new SliderPagerAdapter(items, this, textToSpeech, width, height, itemName);
+            viewPager.setAdapter(adapter);
+        }
 
         final LinearLayout actionLayout = (LinearLayout) findViewById(R.id.actionLayout);
         Bitmap imageBitmap = DecodeSampledBitmapFromResource.execute(getResources(), items.get
@@ -140,7 +150,8 @@ public class SliderActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
             }
 
             @Override
@@ -186,11 +197,41 @@ public class SliderActivity extends AppCompatActivity {
 
     }
 
+    private void setRandomImage(List<ItemsDTO> items) {
+        for (ItemsDTO item :
+                items) {
+            int i = RandomNumber.randInt(0, 3);
+            switch (i) {
+                case 0:
+                    item.setImageResource(DataStore.getInstance().getAlphabets().get(RandomNumber
+                            .randInt(0, DataStore.getInstance().getAlphabets().size() - 1))
+                            .getImageResource());
+                    break;
+                case 1:
+                    item.setImageResource(DataStore.getInstance().getFruits().get(RandomNumber
+                            .randInt(0, DataStore.getInstance().getFruits().size() - 1))
+                            .getImageResource());
+                    break;
+                case 2:
+                    item.setImageResource(DataStore.getInstance().getAnimals().get(RandomNumber
+                            .randInt(0, DataStore.getInstance().getAnimals().size() - 1))
+                            .getImageResource());
+                    break;
+                case 3:
+                    item.setImageResource(DataStore.getInstance().getVegetables().get(RandomNumber
+                            .randInt(0, DataStore.getInstance().getVegetables().size() - 1))
+                            .getImageResource());
+                    break;
+            }
+        }
+    }
+
     private void speak(int position, String itemName) {
         try {
             String s;
             if (itemName.equalsIgnoreCase("Alphabets")) {
-                s = items.get(position).getItemName().substring(0, 1) + " For " + items.get(position).getItemName();
+                s = items.get(position).getItemName().substring(0, 1) + " For " +
+                        items.get(position).getItemName();
             } else {
                 s = items.get(position).getItemName();
             }

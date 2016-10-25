@@ -93,16 +93,16 @@ public class DataStore {
     public List<ItemsDTO> getNumbers() {
         if(numbers == null) {
             numbers = new ArrayList<>();
-            numbers.add(new ItemsDTO("Zero", R.drawable.zero));
-            numbers.add(new ItemsDTO("One", R.drawable.one));
-            numbers.add(new ItemsDTO("Two", R.drawable.two));
-            numbers.add(new ItemsDTO("Three", R.drawable.three));
-            numbers.add(new ItemsDTO("Four", R.drawable.four));
-            numbers.add(new ItemsDTO("Five", R.drawable.five));
-            numbers.add(new ItemsDTO("Six", R.drawable.six));
-            numbers.add(new ItemsDTO("Seven", R.drawable.seven));
-            numbers.add(new ItemsDTO("Eight", R.drawable.eight));
-            numbers.add(new ItemsDTO("Nine", R.drawable.nine));
+            numbers.add(new ItemsDTO("One"));
+            numbers.add(new ItemsDTO("Two"));
+            numbers.add(new ItemsDTO("Three"));
+            numbers.add(new ItemsDTO("Four"));
+            numbers.add(new ItemsDTO("Five"));
+            numbers.add(new ItemsDTO("Six"));
+            numbers.add(new ItemsDTO("Seven"));
+            numbers.add(new ItemsDTO("Eight"));
+            numbers.add(new ItemsDTO("Nine"));
+            numbers.add(new ItemsDTO("Ten"));
         }
         return numbers;
     }
@@ -204,7 +204,7 @@ public class DataStore {
             fruits.add(new ItemsDTO("Litchi", R.drawable.lychee));
             fruits.add(new ItemsDTO("Mango", R.drawable.mango));
             fruits.add(new ItemsDTO("Mangosteen", R.drawable.mangosteen));
-            fruits.add(new ItemsDTO("melon", R.drawable.melon));
+            fruits.add(new ItemsDTO("Melon", R.drawable.melon));
             fruits.add(new ItemsDTO("Orange", R.drawable.orange));
             fruits.add(new ItemsDTO("Papaya", R.drawable.papaya));
             fruits.add(new ItemsDTO("Passion fruit", R.drawable.passionfruit));

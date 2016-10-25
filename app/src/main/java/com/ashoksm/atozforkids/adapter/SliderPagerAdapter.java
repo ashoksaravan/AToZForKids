@@ -25,20 +25,22 @@ import java.util.List;
 
 public class SliderPagerAdapter extends PagerAdapter {
 
-    List<ItemsDTO> items;
-    LayoutInflater mLayoutInflater;
-    Context context;
-    Animation shake;
-    TextToSpeech textToSpeech;
+    private List<ItemsDTO> items;
+    private LayoutInflater mLayoutInflater;
+    private Context context;
+    private Animation shake;
+    private TextToSpeech textToSpeech;
     private int width;
     private int height;
     private String itemName;
 
-    public SliderPagerAdapter(List<ItemsDTO> itemsIn, Context contextIn, TextToSpeech textToSpeech, int widthIn,
+    public SliderPagerAdapter(List<ItemsDTO> itemsIn, Context contextIn, TextToSpeech textToSpeech,
+                              int widthIn,
                               int heightIn, String itemNameIn) {
         this.items = itemsIn;
         this.context = contextIn;
-        mLayoutInflater = (LayoutInflater) contextIn.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mLayoutInflater =
+                (LayoutInflater) contextIn.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         shake = AnimationUtils.loadAnimation(contextIn, R.anim.shake);
         this.textToSpeech = textToSpeech;
         this.width = widthIn;
@@ -62,8 +64,9 @@ public class SliderPagerAdapter extends PagerAdapter {
 
         final TextView name = (TextView) itemView.findViewById(R.id.name);
         name.setText(items.get(position).getItemName());
-        Bitmap imageBitmap = DecodeSampledBitmapFromResource.execute(context.getResources(), items.get
-                (position).getImageResource(), width, height);
+        Bitmap imageBitmap =
+                DecodeSampledBitmapFromResource.execute(context.getResources(), items.get
+                        (position).getImageResource(), width, height);
 
         Palette palette = Palette.from(imageBitmap).generate();
         if ("Alphabets".equals(itemName)) {
@@ -105,10 +108,12 @@ public class SliderPagerAdapter extends PagerAdapter {
                 v.startAnimation(shake);
                 v.invalidate();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    textToSpeech.speak(items.get(SliderActivity.currentItem).getItemName(), TextToSpeech.QUEUE_FLUSH,
+                    textToSpeech.speak(items.get(SliderActivity.currentItem).getItemName(),
+                            TextToSpeech.QUEUE_FLUSH,
                             null, items.get(SliderActivity.currentItem).getItemName());
                 } else {
-                    textToSpeech.speak(items.get(SliderActivity.currentItem).getItemName(), TextToSpeech.QUEUE_FLUSH,
+                    textToSpeech.speak(items.get(SliderActivity.currentItem).getItemName(),
+                            TextToSpeech.QUEUE_FLUSH,
                             null);
                 }
             }

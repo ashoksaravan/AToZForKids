@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/slider_image"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/gridView"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:contentDescription="@string/content"
-        android:paddingBottom="20dp"
-        android:paddingTop="30dp"
-        android:scaleType="fitCenter"/>
+        android:layout_height="wrap_content"
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
+        android:scrollbars="vertical"/>
 
     <TextView
         android:id="@+id/name"
@@ -27,7 +27,7 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/alphabet"
+        android:id="@+id/number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingEnd="20dp"
@@ -36,7 +36,19 @@
         android:paddingStart="20dp"
         android:paddingTop="50dp"
         android:textSize="75sp"
-        android:textStyle="bold"
-        android:visibility="gone"/>
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/number_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingStart="20dp"
+        android:paddingBottom="50dp"
+        android:layout_gravity="bottom|end"
+        android:textSize="75sp"
+        android:textStyle="bold"/>
 
 </FrameLayout>

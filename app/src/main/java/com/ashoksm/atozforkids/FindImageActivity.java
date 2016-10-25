@@ -102,7 +102,8 @@ public class FindImageActivity extends AppCompatActivity {
                     }
                     speak("Click " + itemsDTO.getItemName());
                 } else {
-                    Log.i("SliderActivity", "TextToSpeech onInit failed with status::::::::" + status);
+                    Log.i("SliderActivity",
+                            "TextToSpeech onInit failed with status::::::::" + status);
                 }
             }
         });
@@ -213,14 +214,14 @@ public class FindImageActivity extends AppCompatActivity {
 
     private void loadImages(boolean speak) {
         List<ItemsDTO> items = new ArrayList<>();
-        items.add(DataStore.getInstance().getAlphabets().get(RandomNumber.randInt(0, DataStore.getInstance()
-                .getAlphabets().size() - 1)));
-        items.add(DataStore.getInstance().getAnimals().get(RandomNumber.randInt(0, DataStore.getInstance()
-                .getAnimals().size() - 1)));
-        items.add(DataStore.getInstance().getFruits().get(RandomNumber.randInt(0, DataStore.getInstance()
-                .getFruits().size() - 1)));
-        items.add(DataStore.getInstance().getVegetables().get(RandomNumber.randInt(0, DataStore.getInstance()
-                .getVegetables().size() - 1)));
+        items.add(DataStore.getInstance().getAlphabets().get(RandomNumber.randInt(0,
+                DataStore.getInstance().getAlphabets().size() - 1)));
+        items.add(DataStore.getInstance().getAnimals().get(RandomNumber.randInt(0,
+                DataStore.getInstance().getAnimals().size() - 1)));
+        items.add(DataStore.getInstance().getFruits().get(RandomNumber.randInt(0,
+                DataStore.getInstance().getFruits().size() - 1)));
+        items.add(DataStore.getInstance().getVegetables().get(RandomNumber.randInt(0,
+                DataStore.getInstance().getVegetables().size() - 1)));
 
         Collections.shuffle(items);
         itemsDTO = items.get(RandomNumber.randInt(0, 3));
@@ -229,20 +230,17 @@ public class FindImageActivity extends AppCompatActivity {
             speak("Click " + itemsDTO.getItemName());
         }
 
-        image1.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), items.get(0).getImageResource(), 200,
-                        200));
+        image1.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
+                items.get(0).getImageResource(), 200, 200));
         image1.setTag(items.get(0).getItemName());
-        image2.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), items.get(1).getImageResource(),
-                200,
-                200));
+        image2.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
+                items.get(1).getImageResource(), 200, 200));
         image2.setTag(items.get(1).getItemName());
-        image3.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), items.get(2).getImageResource(),
-                200,
-                200));
+        image3.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
+                items.get(2).getImageResource(), 200, 200));
         image3.setTag(items.get(2).getItemName());
-        image4.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), items.get(3).getImageResource(),
-                200,
-                200));
+        image4.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
+                items.get(3).getImageResource(), 200, 200));
         image4.setTag(items.get(3).getItemName());
 
         image11.setVisibility(View.GONE);

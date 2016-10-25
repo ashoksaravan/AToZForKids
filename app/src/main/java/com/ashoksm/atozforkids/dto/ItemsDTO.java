@@ -10,6 +10,10 @@ public class ItemsDTO {
 
     private int vibrantColor;
 
+    public ItemsDTO(String itemName) {
+        this.itemName = itemName;
+    }
+
     public ItemsDTO(String itemName, int imageResource) {
         this.itemName = itemName;
         this.imageResource = imageResource;

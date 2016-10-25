@@ -27,7 +27,8 @@ public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_grid, parent, false);
+        View v =
+                LayoutInflater.from(parent.getContext()).inflate(R.layout.main_grid, parent, false);
         // set the view's size, margins, padding's and layout parameters
         return new ViewHolder(v);
     }
@@ -35,7 +36,8 @@ public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.title.setText(titles.get(position).getItemName());
-        holder.titleImg.setImageBitmap(DecodeSampledBitmapFromResource.execute(res, titles.get(position).getImageResource(),
+        holder.titleImg.setImageBitmap(DecodeSampledBitmapFromResource
+                .execute(res, titles.get(position).getImageResource(),
                         240, 120));
     }
 
