@@ -15,6 +15,7 @@ public class DataStore {
     private List<ItemsDTO> animals = null;
     private List<ItemsDTO> fruits = null;
     private List<ItemsDTO> vegetables = null;
+    private List<ItemsDTO> vehicles = null;
 
     public static DataStore getInstance() {
         return ourInstance;
@@ -268,5 +269,27 @@ public class DataStore {
             vegetables.add(new ItemsDTO("Zucchini", R.drawable.zucchini));
         }
         return vegetables;
+    }
+
+    public List<ItemsDTO> getVehicles() {
+        if (vehicles == null) {
+            vehicles = new ArrayList<>();
+            vehicles.add(new ItemsDTO("Aeroplane", R.drawable.aeroplane));
+            vehicles.add(new ItemsDTO("Ambulance", R.drawable.ambulance));
+            vehicles.add(new ItemsDTO("Bicycle", R.drawable.bicycle));
+            vehicles.add(new ItemsDTO("Boat", R.drawable.boat));
+            vehicles.add(new ItemsDTO("Bulldozer", R.drawable.bulldozer));
+            vehicles.add(new ItemsDTO("Bus", R.drawable.bus));
+            vehicles.add(new ItemsDTO("Car", R.drawable.car));
+            vehicles.add(new ItemsDTO("Helicopter", R.drawable.helicopter));
+            vehicles.add(new ItemsDTO("Motorcycle", R.drawable.motorcycle));
+            vehicles.add(new ItemsDTO("Scooter", R.drawable.scooter));
+            vehicles.add(new ItemsDTO("Ship", R.drawable.ship));
+            vehicles.add(new ItemsDTO("Tractor", R.drawable.tractor));
+            vehicles.add(new ItemsDTO("Train", R.drawable.train));
+            vehicles.add(new ItemsDTO("Truck", R.drawable.truck));
+            vehicles.add(new ItemsDTO("Van", R.drawable.van));
+        }
+        return vehicles;
     }
 }

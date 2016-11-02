@@ -35,8 +35,7 @@ public class SliderPagerAdapter extends PagerAdapter {
     private String itemName;
 
     public SliderPagerAdapter(List<ItemsDTO> itemsIn, Context contextIn, TextToSpeech textToSpeech,
-                              int widthIn,
-                              int heightIn, String itemNameIn) {
+                              int widthIn, int heightIn, String itemNameIn) {
         this.items = itemsIn;
         this.context = contextIn;
         mLayoutInflater =
