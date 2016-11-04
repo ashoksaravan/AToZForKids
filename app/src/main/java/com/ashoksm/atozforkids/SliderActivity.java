@@ -125,6 +125,9 @@ public class SliderActivity extends AppCompatActivity {
             case "Vehicles":
                 items = DataStore.getInstance().getVehicles();
                 break;
+            case "Body Parts":
+                items = DataStore.getInstance().getBodyParts();
+                break;
         }
 
         if ("Numbers".equalsIgnoreCase(itemName)) {

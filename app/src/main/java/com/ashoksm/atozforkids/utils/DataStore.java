@@ -16,6 +16,7 @@ public class DataStore {
     private List<ItemsDTO> fruits = null;
     private List<ItemsDTO> vegetables = null;
     private List<ItemsDTO> vehicles = null;
+    private List<ItemsDTO> bodyParts = null;
 
     public static DataStore getInstance() {
         return ourInstance;
@@ -291,5 +292,15 @@ public class DataStore {
             vehicles.add(new ItemsDTO("Van", R.drawable.van));
         }
         return vehicles;
+    }
+
+    public List<ItemsDTO> getBodyParts() {
+        if (bodyParts == null) {
+            bodyParts = new ArrayList<>();
+            bodyParts.add(new ItemsDTO("Head", R.drawable.head));
+            bodyParts.add(new ItemsDTO("Eye", R.drawable.eye));
+            bodyParts.add(new ItemsDTO("Ear", R.drawable.ear));
+        }
+        return bodyParts;
     }
 }

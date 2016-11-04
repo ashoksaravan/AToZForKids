@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         titles.add(new ItemsDTO("Fruits", R.drawable.fruits));
         titles.add(new ItemsDTO("Vegetables", R.drawable.vegetables));
         titles.add(new ItemsDTO("Vehicles", R.drawable.vehicles));
+        titles.add(new ItemsDTO("Body Parts", R.drawable.body_parts));
         titles.add(new ItemsDTO("Puzzles", R.drawable.puzzles));
     }
 
