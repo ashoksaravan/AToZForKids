@@ -2,7 +2,6 @@ package com.ashoksm.atozforkids.adapter;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -10,6 +9,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +28,14 @@ public class GridPagerAdapter extends PagerAdapter {
     private LayoutInflater mLayoutInflater;
     private Context context;
     private List<ItemsDTO> items;
+    private SparseArray<Bitmap> bitmapCache;
 
     public GridPagerAdapter(Context contextIn, List<ItemsDTO> itemsIn) {
         this.context = contextIn;
         this.items = itemsIn;
         mLayoutInflater =
                 (LayoutInflater) contextIn.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        bitmapCache = new SparseArray<>();
     }
 
     @Override
@@ -54,9 +56,31 @@ public class GridPagerAdapter extends PagerAdapter {
         //set name
         final TextView name = (TextView) itemView.findViewById(R.id.name);
         name.setText(items.get(position).getItemName());
-        Bitmap imageBitmap =
-                DecodeSampledBitmapFromResource.execute(context.getResources(), items.get
-                        (position).getImageResource(), 100, 100);
+
+        int size;
+        if (context.getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_PORTRAIT && !isLargeScreen()) {
+            size = 2000;
+            if (number == 1) {
+                size = 700;
+            } else if (number == 2) {
+                size = 1400;
+            }
+        } else {
+            size = 1000;
+            if (number == 1) {
+                size = 300;
+            } else if (number == 2) {
+                size = 600;
+            }
+        }
+        Bitmap imageBitmap = bitmapCache.get(number);
+        if (imageBitmap == null) {
+            imageBitmap = DecodeSampledBitmapFromResource
+                    .execute(context.getResources(), items.get(number - 1)
+                            .getImageResource(), size / number, size / number);
+            bitmapCache.put(number, imageBitmap);
+        }
 
         Palette palette = Palette.from(imageBitmap).generate();
         TextView numTextView = (TextView) itemView.findViewById(R.id.number);
@@ -90,7 +114,7 @@ public class GridPagerAdapter extends PagerAdapter {
         gridView.setHasFixedSize(true);
         final GridLayoutManager manager = getGridLayoutManager(number);
         gridView.setLayoutManager(manager);
-        gridView.setAdapter(new GridAdapter(context.getResources(), number));
+        gridView.setAdapter(new GridAdapter(number, size));
 
 
         container.addView(itemView);
@@ -119,11 +143,11 @@ public class GridPagerAdapter extends PagerAdapter {
     class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
         private int count;
-        private Resources res;
+        private int size;
 
-        GridAdapter(Resources resIn, int countIn) {
+        GridAdapter(int countIn, int sizeIn) {
             this.count = countIn;
-            this.res = resIn;
+            this.size = sizeIn;
         }
 
         @Override
@@ -138,28 +162,9 @@ public class GridPagerAdapter extends PagerAdapter {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            int i;
-            if (context.getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_PORTRAIT && !isLargeScreen()) {
-                i = 2000;
-                if (count == 1) {
-                    i = 700;
-                } else if (count == 2) {
-                    i = 1400;
-                }
-            } else {
-                i = 1000;
-                if (count == 1) {
-                    i = 300;
-                } else if (count == 2) {
-                    i = 600;
-                }
-            }
-            holder.titleImg.setImageBitmap(DecodeSampledBitmapFromResource
-                    .execute(res, items.get(count - 1).getImageResource(),
-                            i / count, i / count));
-            holder.titleImg.getLayoutParams().height = i / count;
-            holder.titleImg.getLayoutParams().width = i / count;
+            holder.titleImg.setImageBitmap(bitmapCache.get(count));
+            holder.titleImg.getLayoutParams().height = size / count;
+            holder.titleImg.getLayoutParams().width = size / count;
             holder.titleImg.setScaleType(ImageView.ScaleType.FIT_XY);
         }
 

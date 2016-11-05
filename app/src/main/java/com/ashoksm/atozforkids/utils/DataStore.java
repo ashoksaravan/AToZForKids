@@ -36,7 +36,7 @@ public class DataStore {
             alphabets.add(new ItemsDTO("Fish", R.drawable.fish));
             alphabets.add(new ItemsDTO("Goat", R.drawable.goat));
             alphabets.add(new ItemsDTO("Horse", R.drawable.horse));
-            alphabets.add(new ItemsDTO("Igloo", R.drawable.igloo));
+            alphabets.add(new ItemsDTO("Ice Cream", R.drawable.ice_cream));
             alphabets.add(new ItemsDTO("Juice", R.drawable.juice));
             alphabets.add(new ItemsDTO("Kite", R.drawable.kite));
             alphabets.add(new ItemsDTO("Lion", R.drawable.lion));
@@ -44,7 +44,7 @@ public class DataStore {
             alphabets.add(new ItemsDTO("Nest", R.drawable.nest));
             alphabets.add(new ItemsDTO("Owl", R.drawable.owl));
             alphabets.add(new ItemsDTO("Pig", R.drawable.pig));
-            alphabets.add(new ItemsDTO("Queen", R.drawable.queen));
+            alphabets.add(new ItemsDTO("Quail", R.drawable.quail));
             alphabets.add(new ItemsDTO("Rabbit", R.drawable.rabbit));
             alphabets.add(new ItemsDTO("Swan", R.drawable.swan));
             alphabets.add(new ItemsDTO("Truck", R.drawable.truck));
@@ -130,8 +130,8 @@ public class DataStore {
             animals.add(new ItemsDTO("Donkey", R.drawable.donkey));
             animals.add(new ItemsDTO("Duck", R.drawable.duck));
             animals.add(new ItemsDTO("Eagle", R.drawable.eagle));
-            animals.add(new ItemsDTO("Flamingo", R.drawable.flamingo));
             animals.add(new ItemsDTO("Elephant", R.drawable.elephant));
+            animals.add(new ItemsDTO("Flamingo", R.drawable.flamingo));
             animals.add(new ItemsDTO("Fish", R.drawable.fish));
             animals.add(new ItemsDTO("Fox", R.drawable.fox));
             animals.add(new ItemsDTO("Frog", R.drawable.frog));
@@ -300,6 +300,14 @@ public class DataStore {
             bodyParts.add(new ItemsDTO("Head", R.drawable.head));
             bodyParts.add(new ItemsDTO("Eye", R.drawable.eye));
             bodyParts.add(new ItemsDTO("Ear", R.drawable.ear));
+            bodyParts.add(new ItemsDTO("Nose", R.drawable.nose));
+            bodyParts.add(new ItemsDTO("Mouth", R.drawable.mouth));
+            bodyParts.add(new ItemsDTO("Tongue", R.drawable.tongue));
+            bodyParts.add(new ItemsDTO("Arm", R.drawable.arm));
+            bodyParts.add(new ItemsDTO("Stomach", R.drawable.stomach));
+            bodyParts.add(new ItemsDTO("Leg", R.drawable.leg));
+            bodyParts.add(new ItemsDTO("Knee", R.drawable.knee));
+            bodyParts.add(new ItemsDTO("Foot", R.drawable.foot));
         }
         return bodyParts;
     }
