@@ -153,9 +153,8 @@ public class GridPagerAdapter extends PagerAdapter {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
-            View v =
-                    LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.grid_image, parent, false);
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.grid_image, parent, false);
             // set the view's size, margins, padding's and layout parameters
             return new ViewHolder(v);
         }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.ashoksm.atozforkids.PuzzleActivity">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ashoksm.atozforkids.PuzzleActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,8 +21,7 @@
             android:id="@+id/drag_and_drop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@drawable/button_selector_red"
+            android:layout_margin="10dp"
             android:text="@string/spell_it"
             android:textColor="@color/icons"/>
 
@@ -29,9 +29,16 @@
             android:id="@+id/find_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@drawable/button_selector_green"
+            android:layout_margin="10dp"
             android:text="@string/find_image"
+            android:textColor="@color/icons"/>
+
+        <Button
+            android:id="@+id/lets_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/lets_count"
             android:textColor="@color/icons"/>
 
     </LinearLayout>

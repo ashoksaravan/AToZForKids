@@ -22,8 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
-import com.ashoksm.atozforkids.utils.RandomNumber;
 import com.ashoksm.atozforkids.utils.DataStore;
+import com.ashoksm.atozforkids.utils.RandomNumber;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -85,7 +85,8 @@ public class DragAndDropActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    Log.i("SliderActivity", "TextToSpeech onInit failed with status::::::::" + status);
+                    Log.i("SliderActivity",
+                            "TextToSpeech onInit failed with status::::::::" + status);
                 }
             }
         });

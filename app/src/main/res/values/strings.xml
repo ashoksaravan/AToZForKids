@@ -22,4 +22,7 @@
     <string name="admob_banner_id">ca-app-pub-1841174173430884/1192379059</string>
     <string name="admob_interstitial_id">ca-app-pub-1841174173430884/5622578655</string>
     <string name="main_bg">Main Bg</string>
+    <string name="lets_count">Let\'s Count</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

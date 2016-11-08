@@ -93,7 +93,7 @@ public class DataStore {
     }
 
     public List<ItemsDTO> getNumbers() {
-        if(numbers == null) {
+        if (numbers == null) {
             numbers = new ArrayList<>();
             numbers.add(new ItemsDTO("One"));
             numbers.add(new ItemsDTO("Two"));
@@ -110,7 +110,7 @@ public class DataStore {
     }
 
     public List<ItemsDTO> getAnimals() {
-        if(animals == null) {
+        if (animals == null) {
             animals = new ArrayList<>();
             animals.add(new ItemsDTO("Bear", R.drawable.bear));
             animals.add(new ItemsDTO("Bee", R.drawable.bee));
