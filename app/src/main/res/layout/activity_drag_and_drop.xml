@@ -9,6 +9,17 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/adLayout">
 
+        <ImageView
+            android:id="@+id/main_bg"
+            android:layout_margin="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha=".2"
+            android:contentDescription="@string/content"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_action_done"/>
+
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
@@ -145,22 +156,15 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <ImageView
-                android:id="@+id/right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/content"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_action_done"
-                android:visibility="gone"/>
-        </RelativeLayout>
-
+        <ImageView
+            android:id="@+id/right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_action_done"
+            android:visibility="gone"/>
     </FrameLayout>
 
     <LinearLayout

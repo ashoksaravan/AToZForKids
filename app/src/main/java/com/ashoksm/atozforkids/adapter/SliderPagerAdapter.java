@@ -18,15 +18,14 @@ import android.widget.TextView;
 
 import com.ashoksm.atozforkids.R;
 import com.ashoksm.atozforkids.SliderActivity;
-import com.ashoksm.atozforkids.vo.ItemsVO;
+import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
-import com.ashoksm.atozforkids.utils.UnBindDrawables;
 
 import java.util.List;
 
 public class SliderPagerAdapter extends PagerAdapter {
 
-    private List<ItemsVO> items;
+    private List<ItemsDTO> items;
     private LayoutInflater mLayoutInflater;
     private Context context;
     private Animation shake;
@@ -35,7 +34,7 @@ public class SliderPagerAdapter extends PagerAdapter {
     private int height;
     private String itemName;
 
-    public SliderPagerAdapter(List<ItemsVO> itemsIn, Context contextIn, TextToSpeech textToSpeech,
+    public SliderPagerAdapter(List<ItemsDTO> itemsIn, Context contextIn, TextToSpeech textToSpeech,
                               int widthIn, int heightIn, String itemNameIn) {
         this.items = itemsIn;
         this.context = contextIn;
@@ -126,7 +125,19 @@ public class SliderPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((FrameLayout) object);
-        UnBindDrawables.execute((View) object);
+        unbindDrawables((View) object);
         System.gc();
+    }
+
+    private void unbindDrawables(View view) {
+        if (view.getBackground() != null) {
+            view.getBackground().setCallback(null);
+        }
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                unbindDrawables(((ViewGroup) view).getChildAt(i));
+            }
+            ((ViewGroup) view).removeAllViews();
+        }
     }
 }

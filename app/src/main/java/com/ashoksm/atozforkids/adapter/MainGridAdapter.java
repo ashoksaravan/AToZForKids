@@ -9,17 +9,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ashoksm.atozforkids.R;
-import com.ashoksm.atozforkids.vo.ItemsVO;
+import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 
 import java.util.List;
 
 public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHolder> {
 
-    private List<ItemsVO> titles;
+    private List<ItemsDTO> titles;
     private Resources res;
 
-    public MainGridAdapter(Resources resIn, List<ItemsVO> titlesIn) {
+    public MainGridAdapter(Resources resIn, List<ItemsDTO> titlesIn) {
         this.titles = titlesIn;
         this.res = resIn;
     }

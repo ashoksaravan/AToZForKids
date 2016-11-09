@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DataStore;
+import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.RandomNumber;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -54,6 +55,8 @@ public class DragAndDropActivity extends AppCompatActivity {
     private int count = 0;
     private int currentCount = 0;
     private int randInt;
+    private ItemsDTO itemsDTO;
+    private ImageView mainBG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,7 @@ public class DragAndDropActivity extends AppCompatActivity {
             }
         });
 
+        mainBG = (ImageView) findViewById(R.id.main_bg);
         right = (ImageView) findViewById(R.id.right);
         fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 
@@ -106,8 +110,18 @@ public class DragAndDropActivity extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 right.setVisibility(View.GONE);
                 if (count == currentCount) {
+                    speak(itemsDTO.getItemName());
                     count = 0;
                     currentCount = 0;
+                    while (true) {
+                        int temp = RandomNumber.randInt(1, statusValues.size() - 1);
+                        if (temp != randInt) {
+                            randInt = temp;
+                            break;
+                        }
+                    }
+                    String s = statusValues.get(randInt);
+                    speak(s);
                     loadContent();
                 }
             }
@@ -119,7 +133,6 @@ public class DragAndDropActivity extends AppCompatActivity {
     }
 
     private void loadContent() {
-        ItemsDTO itemsDTO;
         while (true) {
             List<ItemsDTO> itemsDTOs = null;
             int choice = RandomNumber.randInt(1, 4);
@@ -144,6 +157,9 @@ public class DragAndDropActivity extends AppCompatActivity {
                 }
             }
         }
+
+        mainBG.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), itemsDTO
+                .getImageResource(), 500, 500));
 
         List<String> chars = new ArrayList<>();
         for (char c : itemsDTO.getItemName().toCharArray()) {
@@ -247,13 +263,10 @@ public class DragAndDropActivity extends AppCompatActivity {
         public boolean onDrag(View v, DragEvent event) {
             switch (event.getAction()) {
                 case DragEvent.ACTION_DRAG_STARTED:
-                    //no action necessary
                     break;
                 case DragEvent.ACTION_DRAG_ENTERED:
-                    //no action necessary
                     break;
                 case DragEvent.ACTION_DRAG_EXITED:
-                    //no action necessary
                     break;
                 case DragEvent.ACTION_DROP:
                     //handle the dragged view being dropped over a drop view
@@ -283,21 +296,13 @@ public class DragAndDropActivity extends AppCompatActivity {
                         dropTarget.setTag(dropped.getId());
                         right.startAnimation(fadeInAnimation);
                         currentCount++;
-                        while (true) {
-                            int temp = RandomNumber.randInt(1, statusValues.size() - 1);
-                            if (temp != randInt) {
-                                randInt = temp;
-                                break;
-                            }
-                        }
-                        String s = statusValues.get(randInt);
-                        speak(s);
+
+                        speak(dropped.getText().toString());
                     } else {
                         speak("Try Again");
                     }
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:
-                    //no action necessary
                     break;
                 default:
                     break;
