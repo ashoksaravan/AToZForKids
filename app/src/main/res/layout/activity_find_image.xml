@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.ashoksm.atozforkids.FindImageActivity">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ashoksm.atozforkids.FindImageActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -22,16 +23,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.0"
+                android:layout_height="0dp"
+                android:layout_weight=".5"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
                 <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:layout_weight="1.0">
+                    android:layout_weight=".5">
 
                     <ImageView
                         android:id="@+id/image1"
@@ -52,10 +53,10 @@
                 </FrameLayout>
 
                 <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:layout_weight="1.0">
+                    android:layout_weight=".5">
 
                     <ImageView
                         android:id="@+id/image2"
@@ -80,16 +81,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.0"
+                android:layout_height="0dp"
+                android:layout_weight=".5"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
                 <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:layout_weight="1.0">
+                    android:layout_weight=".5">
 
                     <ImageView
                         android:id="@+id/image3"
@@ -111,10 +112,10 @@
                 </FrameLayout>
 
                 <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:layout_weight="1.0">
+                    android:layout_weight=".5">
 
                     <ImageView
                         android:id="@+id/image4"

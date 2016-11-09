@@ -2,7 +2,6 @@ package com.ashoksm.atozforkids;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class FindImageActivity extends AppCompatActivity {
+public class FindImageActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static List<String> statusValues = new ArrayList<>();
 
@@ -61,9 +60,6 @@ public class FindImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_image);
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
 
         loadAd();
 
@@ -127,89 +123,15 @@ public class FindImageActivity extends AppCompatActivity {
             }
         });
 
-        image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getTag().toString().equalsIgnoreCase(itemsDTO.getItemName())) {
-                    while (true) {
-                        int temp = RandomNumber.randInt(1, statusValues.size() - 1);
-                        if (temp != randInt) {
-                            randInt = temp;
-                            break;
-                        }
-                    }
-                    speak(statusValues.get(randInt));
-                    right.setVisibility(View.VISIBLE);
-                    right.startAnimation(fadeInAnimation);
-                } else {
-                    speak("Try Again");
-                    image11.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        image1.setOnClickListener(this);
+        image2.setOnClickListener(this);
+        image3.setOnClickListener(this);
+        image4.setOnClickListener(this);
 
-        image2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getTag().toString().equalsIgnoreCase(itemsDTO.getItemName())) {
-                    while (true) {
-                        int temp = RandomNumber.randInt(1, statusValues.size() - 1);
-                        if (temp != randInt) {
-                            randInt = temp;
-                            break;
-                        }
-                    }
-                    speak(statusValues.get(randInt));
-                    right.setVisibility(View.VISIBLE);
-                    right.startAnimation(fadeInAnimation);
-                } else {
-                    speak("Try Again");
-                    image21.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        image3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getTag().toString().equalsIgnoreCase(itemsDTO.getItemName())) {
-                    while (true) {
-                        int temp = RandomNumber.randInt(1, statusValues.size() - 1);
-                        if (temp != randInt) {
-                            randInt = temp;
-                            break;
-                        }
-                    }
-                    speak(statusValues.get(randInt));
-                    right.setVisibility(View.VISIBLE);
-                    right.startAnimation(fadeInAnimation);
-                } else {
-                    speak("Try Again");
-                    image31.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        image4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v.getTag().toString().equalsIgnoreCase(itemsDTO.getItemName())) {
-                    while (true) {
-                        int temp = RandomNumber.randInt(1, statusValues.size() - 1);
-                        if (temp != randInt) {
-                            randInt = temp;
-                            break;
-                        }
-                    }
-                    speak(statusValues.get(randInt));
-                    right.setVisibility(View.VISIBLE);
-                    right.startAnimation(fadeInAnimation);
-                } else {
-                    speak("Try Again");
-                    image41.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        image1.setTag(image11);
+        image2.setTag(image21);
+        image3.setTag(image31);
+        image4.setTag(image41);
     }
 
     private void loadImages(boolean speak) {
@@ -232,21 +154,26 @@ public class FindImageActivity extends AppCompatActivity {
 
         image1.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
                 items.get(0).getImageResource(), 200, 200));
-        image1.setTag(items.get(0).getItemName());
+        image11.setTag(items.get(0).getItemName());
         image2.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
                 items.get(1).getImageResource(), 200, 200));
-        image2.setTag(items.get(1).getItemName());
+        image21.setTag(items.get(1).getItemName());
         image3.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
                 items.get(2).getImageResource(), 200, 200));
-        image3.setTag(items.get(2).getItemName());
+        image31.setTag(items.get(2).getItemName());
         image4.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
                 items.get(3).getImageResource(), 200, 200));
-        image4.setTag(items.get(3).getItemName());
+        image41.setTag(items.get(3).getItemName());
 
         image11.setVisibility(View.GONE);
         image21.setVisibility(View.GONE);
         image31.setVisibility(View.GONE);
         image41.setVisibility(View.GONE);
+
+        image1.setEnabled(true);
+        image2.setEnabled(true);
+        image3.setEnabled(true);
+        image4.setEnabled(true);
     }
 
     private void speak(String s) {
@@ -299,5 +226,25 @@ public class FindImageActivity extends AppCompatActivity {
         AdRequest.Builder builder = new AdRequest.Builder();
         AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         ad.loadAd(adRequest);
+    }
+
+    @Override
+    public void onClick(View view) {
+        view.setEnabled(false);
+        if (((ImageView) view.getTag()).getTag().equals(itemsDTO.getItemName())) {
+            while (true) {
+                int temp = RandomNumber.randInt(1, statusValues.size() - 1);
+                if (temp != randInt) {
+                    randInt = temp;
+                    break;
+                }
+            }
+            speak(statusValues.get(randInt));
+            right.setVisibility(View.VISIBLE);
+            right.startAnimation(fadeInAnimation);
+        } else {
+            speak("Try Again");
+            ((ImageView) view.getTag()).setVisibility(View.VISIBLE);
+        }
     }
 }
