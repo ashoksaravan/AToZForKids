@@ -110,18 +110,8 @@ public class DragAndDropActivity extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 right.setVisibility(View.GONE);
                 if (count == currentCount) {
-                    speak(itemsDTO.getItemName());
                     count = 0;
                     currentCount = 0;
-                    while (true) {
-                        int temp = RandomNumber.randInt(1, statusValues.size() - 1);
-                        if (temp != randInt) {
-                            randInt = temp;
-                            break;
-                        }
-                    }
-                    String s = statusValues.get(randInt);
-                    speak(s);
                     loadContent();
                 }
             }
@@ -192,9 +182,9 @@ public class DragAndDropActivity extends AppCompatActivity {
     private void speak(String s) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
+                textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null, s);
             } else {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+                textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null);
             }
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
@@ -298,6 +288,17 @@ public class DragAndDropActivity extends AppCompatActivity {
                         currentCount++;
 
                         speak(dropped.getText().toString());
+                        if (count == currentCount) {
+                            speak(itemsDTO.getItemName());
+                            while (true) {
+                                int temp = RandomNumber.randInt(1, statusValues.size() - 1);
+                                if (temp != randInt) {
+                                    randInt = temp;
+                                    break;
+                                }
+                            }
+                            speak(statusValues.get(randInt));
+                        }
                     } else {
                         speak("Try Again");
                     }

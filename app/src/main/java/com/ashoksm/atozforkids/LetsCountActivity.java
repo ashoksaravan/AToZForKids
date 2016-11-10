@@ -84,6 +84,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     private int imgResource;
 
     private Bitmap star;
+    private Bitmap heart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +127,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         populateGrid();
 
         star = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable.star, 10, 10);
+        heart = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable.heart, 2, 2);
     }
 
     private void initComponents() {
@@ -240,6 +242,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         count++;
         textView.setVisibility(View.VISIBLE);
         textView.setText(String.valueOf(count));
+        new ParticleSystem(LetsCountActivity.this, 20, heart, 200)
+                .setSpeedRange(0.1f, 0.2f).oneShot(view, 20);
         speak(null);
         if (count == position) {
             count = 0;
@@ -359,9 +363,9 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         }
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
+                textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null, s);
             } else {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+                textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null);
             }
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
