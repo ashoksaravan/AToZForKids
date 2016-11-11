@@ -83,8 +83,11 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     private TextToSpeech textToSpeech;
     private int imgResource;
 
-    private Bitmap star;
-    private Bitmap heart;
+    private Bitmap balloonBlue;
+    private Bitmap balloonRed;
+    private Bitmap balloonGreen;
+    private Bitmap balloonPurple;
+    private Bitmap balloonYellow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +106,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 Log.i(getClass().getName(), "TextToSpeech onInit status::::::::" + status);
                 if (status == TextToSpeech.SUCCESS) {
                     textToSpeech.setLanguage(Locale.getDefault());
-                    textToSpeech.setPitch(0.8f);
+                    textToSpeech.setPitch(1.0f);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         try {
                             Set<Voice> voices = textToSpeech.getVoices();
@@ -126,8 +129,16 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         setRandomImage();
         populateGrid();
 
-        star = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable.star, 10, 10);
-        heart = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable.heart, 2, 2);
+        balloonBlue = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_action_balloon_blue, 25, 25);
+        balloonGreen = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_action_balloon_green, 25, 25);
+        balloonPurple = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_action_balloon_purple, 25, 25);
+        balloonRed = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_action_balloon_red, 25, 25);
+        balloonYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_action_balloon_yellow, 25, 25);
     }
 
     private void initComponents() {
@@ -242,15 +253,21 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         count++;
         textView.setVisibility(View.VISIBLE);
         textView.setText(String.valueOf(count));
-        new ParticleSystem(LetsCountActivity.this, 20, heart, 200)
-                .setSpeedRange(0.1f, 0.2f).oneShot(view, 20);
         speak(null);
         if (count == position) {
             count = 0;
             position++;
             if (position > 10) {
-                new ParticleSystem(LetsCountActivity.this, 200, star, 2000)
-                        .setSpeedRange(0.1f, 0.2f).oneShot(row4, 200);
+                new ParticleSystem(LetsCountActivity.this, 20, balloonBlue, 3000)
+                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 20);
+                new ParticleSystem(LetsCountActivity.this, 20, balloonGreen, 3000)
+                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 20);
+                new ParticleSystem(LetsCountActivity.this, 20, balloonPurple, 3000)
+                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 20);
+                new ParticleSystem(LetsCountActivity.this, 20, balloonRed, 3000)
+                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 20);
+                new ParticleSystem(LetsCountActivity.this, 20, balloonYellow, 3000)
+                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 20);
             }
             new Handler().postDelayed(new Runnable() {
                 @Override

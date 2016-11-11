@@ -3,20 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/my_custom_background"
     android:layout_margin="5dp"
-    android:padding="10dp"
+    android:background="@drawable/my_custom_background"
     android:elevation="5dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/titleImg"
         android:layout_width="@dimen/main_grid_width"
         android:layout_height="@dimen/main_grid_height"
-        android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:padding="10dp"
-        android:contentDescription="@string/grid"/>
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/grid"
+        android:padding="10dp"/>
 
     <TextView
         android:id="@+id/title"

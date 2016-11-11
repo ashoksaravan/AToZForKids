@@ -74,7 +74,7 @@ public class SliderActivity extends AppCompatActivity {
                 Log.i("SliderActivity", "TextToSpeech onInit status::::::::" + status);
                 if (status == TextToSpeech.SUCCESS) {
                     textToSpeech.setLanguage(Locale.getDefault());
-                    textToSpeech.setPitch(0.8f);
+                    textToSpeech.setPitch(1.0f);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         try {
                             Set<Voice> voices = textToSpeech.getVoices();

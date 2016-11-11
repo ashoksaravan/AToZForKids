@@ -2,6 +2,7 @@ package com.ashoksm.atozforkids;
 
 import android.annotation.TargetApi;
 import android.content.ClipData;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -29,6 +30,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +59,12 @@ public class DragAndDropActivity extends AppCompatActivity {
     private int randInt;
     private ItemsDTO itemsDTO;
     private ImageView mainBG;
+    private Bitmap balloonBlue;
+    private Bitmap balloonRed;
+    private Bitmap balloonGreen;
+    private Bitmap balloonPurple;
+    private Bitmap balloonYellow;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +128,18 @@ public class DragAndDropActivity extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {
             }
         });
+
+        balloonBlue = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_action_balloon_blue, 25, 25);
+        balloonGreen = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_action_balloon_green, 25, 25);
+        balloonPurple = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_action_balloon_purple, 25, 25);
+        balloonRed = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_action_balloon_red, 25, 25);
+        balloonYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_action_balloon_yellow, 25, 25);
+
     }
 
     private void loadContent() {
@@ -234,7 +254,11 @@ public class DragAndDropActivity extends AppCompatActivity {
                 ClipData data = ClipData.newPlainText("", "");
                 View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
                 //start dragging the item touched
-                view.startDrag(data, shadowBuilder, view, 0);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    view.startDragAndDrop(data, shadowBuilder, view, 0);
+                } else {
+                    view.startDrag(data, shadowBuilder, view, 0);
+                }
                 return true;
             } else {
                 return false;
@@ -298,6 +322,17 @@ public class DragAndDropActivity extends AppCompatActivity {
                                 }
                             }
                             speak(statusValues.get(randInt));
+
+                            new ParticleSystem(DragAndDropActivity.this, 20, balloonBlue, 5000)
+                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
+                            new ParticleSystem(DragAndDropActivity.this, 20, balloonGreen, 5000)
+                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
+                            new ParticleSystem(DragAndDropActivity.this, 20, balloonPurple, 5000)
+                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
+                            new ParticleSystem(DragAndDropActivity.this, 20, balloonRed, 5000)
+                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
+                            new ParticleSystem(DragAndDropActivity.this, 20, balloonYellow, 5000)
+                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
                         }
                     } else {
                         speak("Try Again");
