@@ -41,14 +41,15 @@ import java.util.Set;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class DragAndDropActivity extends AppCompatActivity {
 
-    private static List<String> statusValues = new ArrayList<>();
+    private static final List<String> STATUS_VALUES = new ArrayList<>();
+    private static final String LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     static {
-        statusValues.add("Well Done!!!");
-        statusValues.add("Great Job!!!");
-        statusValues.add("Excellent!!!");
-        statusValues.add("Marvellous!!!");
-        statusValues.add("Bravo!!!");
+        STATUS_VALUES.add("Well Done!!!");
+        STATUS_VALUES.add("Great Job!!!");
+        STATUS_VALUES.add("Excellent!!!");
+        STATUS_VALUES.add("Marvellous!!!");
+        STATUS_VALUES.add("Bravo!!!");
     }
 
     private ImageView right;
@@ -144,27 +145,31 @@ public class DragAndDropActivity extends AppCompatActivity {
 
     private void loadContent() {
         while (true) {
-            List<ItemsDTO> itemsDTOs = null;
-            int choice = RandomNumber.randInt(1, 4);
+            int choice = RandomNumber.randInt(1, 5);
             switch (choice) {
                 case 1:
-                    itemsDTOs = DataStore.getInstance().getAlphabets();
+                    itemsDTO = DataStore.getInstance().getAlphabets().get(RandomNumber
+                            .randInt(0, DataStore.getInstance().getAlphabets().size() - 1));
                     break;
                 case 2:
-                    itemsDTOs = DataStore.getInstance().getAnimals();
+                    itemsDTO = DataStore.getInstance().getAnimals().get(RandomNumber.randInt(0,
+                            DataStore.getInstance().getAnimals().size() - 1));
                     break;
                 case 3:
-                    itemsDTOs = DataStore.getInstance().getFruits();
+                    itemsDTO = DataStore.getInstance().getFruits().get(RandomNumber.randInt(0,
+                            DataStore.getInstance().getFruits().size() - 1));
                     break;
                 case 4:
-                    itemsDTOs = DataStore.getInstance().getVegetables();
+                    itemsDTO = DataStore.getInstance().getVegetables().get(RandomNumber.randInt(0,
+                            DataStore.getInstance().getVegetables().size() - 1));
+                    break;
+                case 5:
+                    itemsDTO = DataStore.getInstance().getVehicles().get(RandomNumber.randInt(0,
+                            DataStore.getInstance().getVehicles().size() - 1));
                     break;
             }
-            if (itemsDTOs != null) {
-                itemsDTO = itemsDTOs.get(RandomNumber.randInt(0, itemsDTOs.size() - 1));
-                if (itemsDTO.getItemName().length() <= 5) {
-                    break;
-                }
+            if (itemsDTO.getItemName().length() <= 16) {
+                break;
             }
         }
 
@@ -175,25 +180,30 @@ public class DragAndDropActivity extends AppCompatActivity {
         for (char c : itemsDTO.getItemName().toCharArray()) {
             chars.add(String.valueOf(c));
         }
+
+        if (chars.size() < 16) {
+            for (int i = chars.size() + 1; i <= 16; i++) {
+                chars.add(String.valueOf(LETTERS.charAt(RandomNumber.randInt(0, 25))));
+            }
+        }
         Collections.shuffle(chars);
         count = itemsDTO.getItemName().length();
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 16; i++) {
             int optionId = getResources().getIdentifier("option_" + i, "id", getPackageName());
             int choiceId = getResources().getIdentifier("choice_" + i, "id", getPackageName());
             TextView option = (TextView) findViewById(optionId);
             TextView choice = (TextView) findViewById(choiceId);
+            option.setVisibility(View.VISIBLE);
+            option.setOnTouchListener(new ChoiceTouchListener());
+            option.setText(chars.get(i - 1).toUpperCase());
             if (itemsDTO.getItemName().length() >= i) {
-                option.setVisibility(View.VISIBLE);
                 choice.setVisibility(View.VISIBLE);
-                option.setOnTouchListener(new ChoiceTouchListener());
                 choice.setOnDragListener(new ChoiceDragListener());
-                option.setText(chars.get(i - 1).toUpperCase());
                 choice.setText(String.valueOf(itemsDTO.getItemName().charAt(i - 1)).toUpperCase());
                 choice.setTextColor(Color.parseColor("#E5E4E2"));
                 choice.setTag(null);
             } else {
-                option.setVisibility(View.GONE);
                 choice.setVisibility(View.GONE);
             }
         }
@@ -315,13 +325,13 @@ public class DragAndDropActivity extends AppCompatActivity {
                         if (count == currentCount) {
                             speak(itemsDTO.getItemName());
                             while (true) {
-                                int temp = RandomNumber.randInt(1, statusValues.size() - 1);
+                                int temp = RandomNumber.randInt(1, STATUS_VALUES.size() - 1);
                                 if (temp != randInt) {
                                     randInt = temp;
                                     break;
                                 }
                             }
-                            speak(statusValues.get(randInt));
+                            speak(STATUS_VALUES.get(randInt));
 
                             new ParticleSystem(DragAndDropActivity.this, 20, balloonBlue, 5000)
                                     .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);

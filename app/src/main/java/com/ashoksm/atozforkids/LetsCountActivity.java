@@ -837,7 +837,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         image1.getLayoutParams().width = size;
         image2.getLayoutParams().height = size;
         image2.getLayoutParams().width = size;
-        image3.getLayoutParams().height = 350;
+        image3.getLayoutParams().height = size;
         image3.getLayoutParams().width = size;
         image5.getLayoutParams().height = size;
         image5.getLayoutParams().width = size;
@@ -897,8 +897,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
 
     private boolean isLargeScreen() {
         return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration
-                        .SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE ||
+                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE ||
                 getApplicationContext().getResources().getConfiguration().orientation ==
                         Configuration.ORIENTATION_LANDSCAPE;
     }
