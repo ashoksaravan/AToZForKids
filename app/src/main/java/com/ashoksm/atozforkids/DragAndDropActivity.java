@@ -2,6 +2,7 @@ package com.ashoksm.atozforkids;
 
 import android.annotation.TargetApi;
 import android.content.ClipData;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -65,7 +66,7 @@ public class DragAndDropActivity extends AppCompatActivity {
     private Bitmap balloonGreen;
     private Bitmap balloonPurple;
     private Bitmap balloonYellow;
-
+    private int itemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,32 @@ public class DragAndDropActivity extends AppCompatActivity {
         mainBG = (ImageView) findViewById(R.id.main_bg);
         right = (ImageView) findViewById(R.id.right);
         fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+
+        if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE &&
+                (getApplicationContext().getResources().getConfiguration().screenLayout &
+                        Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                        Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            itemCount = 24;
+        } else if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_PORTRAIT &&
+                (getApplicationContext().getResources().getConfiguration().screenLayout &
+                        Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                        Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            itemCount = 20;
+        } else if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE &&
+                (getApplicationContext().getResources().getConfiguration().screenLayout &
+                        Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                        Configuration.SCREENLAYOUT_SIZE_LARGE) {
+            itemCount = 21;
+        } else if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE) {
+            itemCount = 12;
+        } else if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_PORTRAIT) {
+            itemCount = 16;
+        }
 
         loadContent();
 
@@ -168,7 +195,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                             DataStore.getInstance().getVehicles().size() - 1));
                     break;
             }
-            if (itemsDTO.getItemName().length() <= 16) {
+            if (itemsDTO.getItemName().length() <= itemCount) {
                 break;
             }
         }
@@ -181,15 +208,15 @@ public class DragAndDropActivity extends AppCompatActivity {
             chars.add(String.valueOf(c));
         }
 
-        if (chars.size() < 16) {
-            for (int i = chars.size() + 1; i <= 16; i++) {
+        if (chars.size() < itemCount) {
+            for (int i = chars.size() + 1; i <= itemCount; i++) {
                 chars.add(String.valueOf(LETTERS.charAt(RandomNumber.randInt(0, 25))));
             }
         }
         Collections.shuffle(chars);
         count = itemsDTO.getItemName().length();
 
-        for (int i = 1; i <= 16; i++) {
+        for (int i = 1; i <= itemCount; i++) {
             int optionId = getResources().getIdentifier("option_" + i, "id", getPackageName());
             int choiceId = getResources().getIdentifier("choice_" + i, "id", getPackageName());
             TextView option = (TextView) findViewById(optionId);
@@ -345,7 +372,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                                     .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
                         }
                     } else {
-                        speak("Try Again");
+                        speak("Wrong choice, Try Again");
                     }
                     break;
                 case DragEvent.ACTION_DRAG_ENDED:

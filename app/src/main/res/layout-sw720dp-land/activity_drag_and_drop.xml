@@ -37,12 +37,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/option_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_blue"
                         android:gravity="center"
                         android:textColor="@color/icons"
@@ -53,6 +55,7 @@
                         android:id="@+id/option_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_green"
                         android:gravity="center"
                         android:textColor="@color/icons"
@@ -64,6 +67,7 @@
                         android:id="@+id/option_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_red"
                         android:gravity="center"
                         android:textColor="@color/icons"
@@ -74,22 +78,18 @@
                         android:id="@+id/option_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_green"
                         android:gravity="center"
                         android:textColor="@color/icons"
                         android:textSize="30sp"
                         android:textStyle="bold"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/option_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_red"
                         android:gravity="center"
                         android:textColor="@color/icons"
@@ -101,16 +101,26 @@
                         android:id="@+id/option_6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_purple"
                         android:gravity="center"
                         android:textColor="@color/icons"
                         android:textSize="30sp"
                         android:textStyle="bold"/>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp">
+
                     <TextView
                         android:id="@+id/option_7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_yellow"
                         android:gravity="center"
                         android:textColor="@color/icons"
@@ -121,23 +131,18 @@
                         android:id="@+id/option_8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_blue"
                         android:gravity="center"
                         android:textColor="@color/icons"
                         android:textSize="30sp"
                         android:textStyle="bold"/>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
                     <TextView
                         android:id="@+id/option_9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_green"
                         android:gravity="center"
                         android:textColor="@color/icons"
@@ -148,6 +153,7 @@
                         android:id="@+id/option_10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_blue"
                         android:gravity="center"
                         android:textColor="@color/icons"
@@ -158,7 +164,8 @@
                         android:id="@+id/option_11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_action_balloon_red"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_purple"
                         android:gravity="center"
                         android:textColor="@color/icons"
                         android:textSize="30sp"
@@ -169,23 +176,27 @@
                         android:id="@+id/option_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_yellow"
                         android:gravity="center"
                         android:textColor="@color/icons"
                         android:textSize="30sp"
                         android:textStyle="bold"/>
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/option_13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_action_balloon_yellow"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_blue"
                         android:gravity="center"
                         android:textColor="@color/icons"
                         android:textSize="30sp"
@@ -195,6 +206,7 @@
                         android:id="@+id/option_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
                         android:background="@drawable/ic_action_balloon_green"
                         android:gravity="center"
                         android:textColor="@color/icons"
@@ -206,7 +218,8 @@
                         android:id="@+id/option_15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_action_balloon_purple"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_red"
                         android:gravity="center"
                         android:textColor="@color/icons"
                         android:textSize="30sp"
@@ -216,7 +229,31 @@
                         android:id="@+id/option_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_action_balloon_blue"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_green"
+                        android:gravity="center"
+                        android:textColor="@color/icons"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/option_17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_red"
+                        android:gravity="center"
+                        android:textColor="@color/icons"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+
+
+                    <TextView
+                        android:id="@+id/option_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_purple"
                         android:gravity="center"
                         android:textColor="@color/icons"
                         android:textSize="30sp"
@@ -224,6 +261,80 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/option_19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_action_balloon_yellow"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:textColor="@color/icons"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/option_20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_blue"
+                        android:gravity="center"
+                        android:textColor="@color/icons"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/option_21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_green"
+                        android:gravity="center"
+                        android:textColor="@color/icons"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/option_22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_blue"
+                        android:gravity="center"
+                        android:textColor="@color/icons"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/option_23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_purple"
+                        android:gravity="center"
+                        android:textColor="@color/icons"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+
+
+                    <TextView
+                        android:id="@+id/option_24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/ic_action_balloon_yellow"
+                        android:gravity="center"
+                        android:textColor="@color/icons"
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
             </LinearLayout>
 
             <HorizontalScrollView
@@ -244,7 +355,7 @@
                         android:id="@+id/choice_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -254,7 +365,7 @@
                         android:id="@+id/choice_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -264,7 +375,7 @@
                         android:id="@+id/choice_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -274,7 +385,7 @@
                         android:id="@+id/choice_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -284,7 +395,7 @@
                         android:id="@+id/choice_5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -294,7 +405,7 @@
                         android:id="@+id/choice_6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -304,7 +415,7 @@
                         android:id="@+id/choice_7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -314,7 +425,7 @@
                         android:id="@+id/choice_8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -324,7 +435,7 @@
                         android:id="@+id/choice_9"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -334,7 +445,7 @@
                         android:id="@+id/choice_10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -344,7 +455,7 @@
                         android:id="@+id/choice_11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -354,7 +465,7 @@
                         android:id="@+id/choice_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -364,7 +475,7 @@
                         android:id="@+id/choice_13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -374,7 +485,7 @@
                         android:id="@+id/choice_14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -384,7 +495,7 @@
                         android:id="@+id/choice_15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
@@ -394,7 +505,87 @@
                         android:id="@+id/choice_16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/choice"
+                        android:gravity="center"
+                        android:textColor="#E5E4E2"
+                        android:textSize="30sp"/>
+
+                    <TextView
+                        android:id="@+id/choice_17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/choice"
+                        android:gravity="center"
+                        android:textColor="#E5E4E2"
+                        android:textSize="30sp"/>
+
+                    <TextView
+                        android:id="@+id/choice_18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/choice"
+                        android:gravity="center"
+                        android:textColor="#E5E4E2"
+                        android:textSize="30sp"/>
+
+                    <TextView
+                        android:id="@+id/choice_19"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/choice"
+                        android:gravity="center"
+                        android:textColor="#E5E4E2"
+                        android:textSize="30sp"/>
+
+                    <TextView
+                        android:id="@+id/choice_20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/choice"
+                        android:gravity="center"
+                        android:textColor="#E5E4E2"
+                        android:textSize="30sp"/>
+
+                    <TextView
+                        android:id="@+id/choice_21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/choice"
+                        android:gravity="center"
+                        android:textColor="#E5E4E2"
+                        android:textSize="30sp"/>
+
+                    <TextView
+                        android:id="@+id/choice_22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/choice"
+                        android:gravity="center"
+                        android:textColor="#E5E4E2"
+                        android:textSize="30sp"/>
+
+                    <TextView
+                        android:id="@+id/choice_23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/choice"
+                        android:gravity="center"
+                        android:textColor="#E5E4E2"
+                        android:textSize="30sp"/>
+
+                    <TextView
+                        android:id="@+id/choice_24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
                         android:background="@drawable/choice"
                         android:gravity="center"
                         android:textColor="#E5E4E2"
