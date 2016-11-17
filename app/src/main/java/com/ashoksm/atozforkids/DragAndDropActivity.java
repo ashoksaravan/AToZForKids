@@ -126,11 +126,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                         Configuration.SCREENLAYOUT_SIZE_MASK) >=
                         Configuration.SCREENLAYOUT_SIZE_LARGE) {
             itemCount = 21;
-        } else if (getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_LANDSCAPE) {
-            itemCount = 12;
-        } else if (getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_PORTRAIT) {
+        } else {
             itemCount = 16;
         }
 
