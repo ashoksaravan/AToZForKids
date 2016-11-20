@@ -41,6 +41,14 @@
             android:text="@string/lets_count"
             android:textColor="@color/icons"/>
 
+        <Button
+            android:id="@+id/find_pair"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/find_a_pair"
+            android:textColor="@color/icons"/>
+
     </LinearLayout>
 
     <LinearLayout

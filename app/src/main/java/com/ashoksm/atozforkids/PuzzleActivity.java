@@ -24,6 +24,7 @@ public class PuzzleActivity extends AppCompatActivity {
         Button dragAndDrop = (Button) findViewById(R.id.drag_and_drop);
         Button findImage = (Button) findViewById(R.id.find_image);
         Button letsCount = (Button) findViewById(R.id.lets_count);
+        Button findPair = (Button) findViewById(R.id.find_pair);
 
         dragAndDrop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +44,13 @@ public class PuzzleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(LetsCountActivity.class);
+            }
+        });
+
+        findPair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(FindPairActivity.class);
             }
         });
     }

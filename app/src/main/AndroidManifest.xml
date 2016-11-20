@@ -45,7 +45,7 @@
             android:label="Spell It">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".PuzzleActivity"/>
         </activity>
         <activity
             android:name=".FindImageActivity"
@@ -53,7 +53,7 @@
             android:label="Find Image">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".PuzzleActivity"/>
         </activity>
         <activity
             android:name=".PuzzleActivity"
@@ -75,7 +75,15 @@
             android:label="Let's Count">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value=".PuzzleActivity"/>
+        </activity>
+
+        <activity
+            android:name=".FindPairActivity"
+            android:label="Find A Pair">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PuzzleActivity"/>
         </activity>
     </application>
 

@@ -1,14 +1,12 @@
 package com.ashoksm.atozforkids.dto;
 
-public class ItemsDTO {
+public class ItemsDTO implements Cloneable {
 
     private String itemName;
-
     private int imageResource;
-
     private int imageResource2;
-
     private int vibrantColor;
+    private boolean showBack;
 
     public ItemsDTO(String itemName) {
         this.itemName = itemName;
@@ -49,5 +47,18 @@ public class ItemsDTO {
 
     public void setVibrantColor(int vibrantColor) {
         this.vibrantColor = vibrantColor;
+    }
+
+    public boolean isShowBack() {
+        return showBack;
+    }
+
+    public void setShowBack(boolean showBack) {
+        this.showBack = showBack;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
