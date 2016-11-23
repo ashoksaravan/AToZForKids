@@ -4,8 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
@@ -15,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DataStore;
@@ -24,6 +28,8 @@ import com.ashoksm.atozforkids.utils.RandomNumber;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public class FindPairActivity extends AppCompatActivity
         implements OnClickListener, AnimationListener {
@@ -39,6 +45,16 @@ public class FindPairActivity extends AppCompatActivity
     private List<ImageView> imageViews = null;
     private SparseArray<Bitmap> bitmapCache;
     private boolean showPopUp;
+    private TextToSpeech textToSpeech;
+    private static final List<String> STATUS_VALUES = new ArrayList<>();
+
+    static {
+        STATUS_VALUES.add("Well Done!!!");
+        STATUS_VALUES.add("Great Job!!!");
+        STATUS_VALUES.add("Excellent!!!");
+        STATUS_VALUES.add("Marvellous!!!");
+        STATUS_VALUES.add("Bravo!!!");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +66,32 @@ public class FindPairActivity extends AppCompatActivity
         animation1.setAnimationListener(this);
         animation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);
         animation2.setAnimationListener(this);
+
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                Log.i(getClass().getName(), "TextToSpeech onInit status::::::::" + status);
+                if (status == TextToSpeech.SUCCESS) {
+                    textToSpeech.setLanguage(Locale.getDefault());
+                    textToSpeech.setPitch(1.0f);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        try {
+                            Set<Voice> voices = textToSpeech.getVoices();
+                            for (Voice v : voices) {
+                                if (v.getLocale().equals(Locale.getDefault())) {
+                                    textToSpeech.setVoice(v);
+                                }
+                            }
+                        } catch (Exception ex) {
+                            Log.e("Voice not found", ex.getMessage());
+                        }
+                    }
+                } else {
+                    Log.i(getClass().getName(),
+                            "TextToSpeech onInit failed with status::::::::" + status);
+                }
+            }
+        });
 
         viewCount = 0;
         totalCount = 4;
@@ -117,7 +159,11 @@ public class FindPairActivity extends AppCompatActivity
                 }
             }
         } else if (totalCount == 8) {
-            size = 300;
+            if (isLargeScreenAndPortrait()) {
+                size = 250;
+            } else {
+                size = 300;
+            }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
                     (getResources(), R.drawable.question_mark, size, size));
@@ -152,6 +198,9 @@ public class FindPairActivity extends AppCompatActivity
                 findViewById(R.id.row_3).setVisibility(View.VISIBLE);
                 count = 12;
                 size = 200;
+            } else if (isLargeScreenAndPortrait()) {
+                count = 16;
+                size = 200;
             } else {
                 count = 16;
                 size = 250;
@@ -172,7 +221,11 @@ public class FindPairActivity extends AppCompatActivity
                 }
             }
         } else if (totalCount == 16) {
-            size = 200;
+            if (isLargeScreenAndPortrait()) {
+                size = 175;
+            } else {
+                size = 200;
+            }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
                     (getResources(), R.drawable.question_mark, size, size));
@@ -232,6 +285,9 @@ public class FindPairActivity extends AppCompatActivity
                             DataStore.getInstance().getVehicles().size() - 1));
                     break;
             }
+            if (itemsDTOs.contains(itemsDTO)) {
+                continue;
+            }
             if (itemsDTO != null) {
                 itemsDTO.setShowBack(true);
                 itemsDTOs.add(itemsDTO);
@@ -248,92 +304,114 @@ public class FindPairActivity extends AppCompatActivity
 
     @Override
     public void onClick(final View v) {
-        v.setEnabled(false);
-        clickListener(v);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                views.add(v);
-                if (views.size() == 2) {
-                    ItemsDTO itemsDTO = (ItemsDTO) views.get(0).getTag();
-                    ItemsDTO itemsDTO1 = (ItemsDTO) views.get(1).getTag();
-                    if (!itemsDTO.getItemName().equalsIgnoreCase(itemsDTO1.getItemName())) {
-                        v.clearAnimation();
-                        v.setAnimation(animation1);
-                        v.startAnimation(animation1);
-                        v.setEnabled(true);
-                        views.get(0).setEnabled(true);
-                    } else {
-                        views.clear();
-                        currentCount++;
-                        if (totalCount / 2 == currentCount) {
-                            showPopUp = false;
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    currentCount = 0;
-                                    viewCount = 0;
-                                    switch (totalCount) {
-                                        case 4:
-                                            totalCount = 6;
-                                            break;
-                                        case 6:
-                                            totalCount = 8;
-                                            break;
-                                        case 8:
-                                            totalCount = 12;
-                                            break;
-                                        case 12:
-                                            totalCount = 16;
-                                            if (getResources().getConfiguration().orientation ==
-                                                    Configuration.ORIENTATION_LANDSCAPE) {
+        if (views.size() != 2) {
+            v.setEnabled(false);
+            clickListener(v);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    views.add(v);
+                    if (views.size() == 2) {
+                        ItemsDTO itemsDTO = (ItemsDTO) views.get(0).getTag();
+                        ItemsDTO itemsDTO1 = (ItemsDTO) views.get(1).getTag();
+                        if (!itemsDTO.getItemName().equalsIgnoreCase(itemsDTO1.getItemName())) {
+                            v.clearAnimation();
+                            v.setAnimation(animation1);
+                            v.startAnimation(animation1);
+                            v.setEnabled(true);
+                            views.get(0).setEnabled(true);
+                            speak("Try Again!!!");
+                        } else {
+                            speak(STATUS_VALUES
+                                    .get(RandomNumber.randInt(0, STATUS_VALUES.size() - 1)));
+                            views.clear();
+                            currentCount++;
+                            if (totalCount / 2 == currentCount) {
+                                showPopUp = false;
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        currentCount = 0;
+                                        viewCount = 0;
+                                        switch (totalCount) {
+                                            case 4:
+                                                totalCount = 6;
+                                                break;
+                                            case 6:
+                                                totalCount = 8;
+                                                break;
+                                            case 8:
+                                                totalCount = 12;
+                                                break;
+                                            case 12:
+                                                totalCount = 16;
+                                                if (getResources().getConfiguration().orientation ==
+                                                        Configuration.ORIENTATION_LANDSCAPE) {
+                                                    showPopUp = true;
+                                                }
+                                                break;
+                                            default:
                                                 showPopUp = true;
-                                            }
-                                            break;
-                                        default:
-                                            showPopUp = true;
+                                        }
+                                        if (!showPopUp) {
+                                            populateImage();
+                                            renderView();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    imageViews.get(0).setEnabled(true);
+                                                    clickListener(imageViews.get(0));
+                                                }
+                                            }, 3000);
+                                        } else {
+                                            speak("Do you want to play again?");
+                                            new AlertDialog.Builder(FindPairActivity.this)
+                                                    .setTitle("Well Done!!!")
+                                                    .setMessage("Do you want to play again?")
+                                                    .setPositiveButton(R.string.yes,
+                                                            new DialogInterface.OnClickListener() {
+                                                                public void onClick(
+                                                                        DialogInterface dialog,
+                                                                        int which) {
+                                                                    dialog.dismiss();
+                                                                    totalCount = 4;
+                                                                    populateImage();
+                                                                    renderView();
+                                                                    new Handler().postDelayed(
+                                                                            new Runnable() {
+                                                                                @Override
+                                                                                public void run() {
+                                                                                    imageViews
+                                                                                            .get(0)
+                                                                                            .setEnabled(
+                                                                                                    true);
+                                                                                    clickListener(
+                                                                                            imageViews
+                                                                                                    .get(0));
+                                                                                }
+                                                                            }, 3000);
+                                                                }
+                                                            })
+                                                    .setNegativeButton(R.string.no,
+                                                            new DialogInterface.OnClickListener() {
+                                                                public void onClick(
+                                                                        DialogInterface dialog,
+                                                                        int which) {
+                                                                    dialog.dismiss();
+                                                                    onBackPressed();
+                                                                }
+                                                            })
+                                                    .setIcon(R.drawable.ic_action_done)
+                                                    .show();
+                                        }
                                     }
-                                    if (!showPopUp) {
-                                        populateImage();
-                                        renderView();
-                                        imageViews.get(0).setEnabled(true);
-                                        clickListener(imageViews.get(0));
-                                    } else {
-                                        new AlertDialog.Builder(FindPairActivity.this)
-                                                .setTitle("Well Done!!!")
-                                                .setMessage("Do you want to play again?")
-                                                .setPositiveButton(R.string.yes,
-                                                        new DialogInterface.OnClickListener() {
-                                                            public void onClick(
-                                                                    DialogInterface dialog,
-                                                                    int which) {
-                                                                dialog.dismiss();
-                                                                totalCount = 4;
-                                                                populateImage();
-                                                                renderView();
-                                                                imageViews.get(0).setEnabled(true);
-                                                                clickListener(imageViews.get(0));
-                                                            }
-                                                        })
-                                                .setNegativeButton(R.string.no,
-                                                        new DialogInterface.OnClickListener() {
-                                                            public void onClick(
-                                                                    DialogInterface dialog,
-                                                                    int which) {
-                                                                dialog.dismiss();
-                                                                onBackPressed();
-                                                            }
-                                                        })
-                                                .setIcon(R.drawable.ic_action_done)
-                                                .show();
-                                    }
-                                }
-                            }, 3000);
+                                }, 3000);
+                            }
                         }
                     }
                 }
-            }
-        }, 1000);
+            }, 1000);
+        }
     }
 
     private void clickListener(View v) {
@@ -377,4 +455,22 @@ public class FindPairActivity extends AppCompatActivity
     public void onAnimationStart(Animation animation) {
     }
 
+    private boolean isLargeScreenAndPortrait() {
+        return (getApplicationContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE ||
+                getApplicationContext().getResources().getConfiguration().orientation ==
+                        Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    private void speak(String s) {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null, s);
+            } else {
+                textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null);
+            }
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
+        }
+    }
 }

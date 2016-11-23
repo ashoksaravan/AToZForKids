@@ -324,7 +324,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         text12.setVisibility(View.GONE);
 
         int size;
-        if (getApplicationContext().getResources().getConfiguration().orientation == Configuration
+        if (getResources().getConfiguration().orientation == Configuration
                 .ORIENTATION_PORTRAIT && !isLargeScreen()) {
             size = 2000;
             if (position == 1) {

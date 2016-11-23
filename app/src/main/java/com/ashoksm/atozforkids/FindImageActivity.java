@@ -31,14 +31,14 @@ import java.util.Set;
 
 public class FindImageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static List<String> statusValues = new ArrayList<>();
+    private static final List<String> STATUS_VALUES = new ArrayList<>();
 
     static {
-        statusValues.add("Well Done!!!");
-        statusValues.add("Great Job!!!");
-        statusValues.add("Excellent!!!");
-        statusValues.add("Marvellous!!!");
-        statusValues.add("Bravo!!!");
+        STATUS_VALUES.add("Well Done!!!");
+        STATUS_VALUES.add("Great Job!!!");
+        STATUS_VALUES.add("Excellent!!!");
+        STATUS_VALUES.add("Marvellous!!!");
+        STATUS_VALUES.add("Bravo!!!");
     }
 
     private ImageView right;
@@ -233,13 +233,17 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         view.setEnabled(false);
         if (((ImageView) view.getTag()).getTag().equals(itemsDTO.getItemName())) {
             while (true) {
-                int temp = RandomNumber.randInt(1, statusValues.size() - 1);
+                int temp = RandomNumber.randInt(0, STATUS_VALUES.size() - 1);
                 if (temp != randInt) {
                     randInt = temp;
                     break;
                 }
             }
-            speak(statusValues.get(randInt));
+            speak(STATUS_VALUES.get(randInt));
+            image1.setEnabled(false);
+            image2.setEnabled(false);
+            image3.setEnabled(false);
+            image4.setEnabled(false);
             right.setVisibility(View.VISIBLE);
             right.startAnimation(fadeInAnimation);
         } else {
