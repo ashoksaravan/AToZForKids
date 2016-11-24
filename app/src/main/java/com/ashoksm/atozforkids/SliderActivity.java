@@ -2,6 +2,7 @@ package com.ashoksm.atozforkids;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.Display;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.adapter.GridPagerAdapter;
@@ -39,7 +41,8 @@ public class SliderActivity extends AppCompatActivity {
     public static int currentItem = 0;
     private List<ItemsDTO> items = null;
     private TextToSpeech textToSpeech;
-
+    public static final String EXTRA_ITEM_NAME = "EXTRA_ITEM_NAME";
+    public static final String EXTRA_ITEM_IMAGE_RESOURCE = "EXTRA_ITEM_IMAGE_RESOURCE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +50,11 @@ public class SliderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_slider);
         Intent intent = getIntent();
 
-        int width;
-        int height;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            width = size.x;
-            height = size.y;
-        } else {
-            Display display = getWindowManager().getDefaultDisplay();
-            width = display.getWidth();
-            height = display.getHeight();
-        }
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -130,14 +125,18 @@ public class SliderActivity extends AppCompatActivity {
                 break;
         }
 
+        final TextView spell = (TextView) findViewById(R.id.spell);
+
         if ("Numbers".equalsIgnoreCase(itemName)) {
             setRandomImage(items);
             viewPager.setAdapter(new GridPagerAdapter(this, items));
+            spell.setVisibility(View.GONE);
         } else {
             final SliderPagerAdapter adapter =
                     new SliderPagerAdapter(items, this, textToSpeech, width, height, itemName);
             viewPager.setAdapter(adapter);
         }
+
 
         final LinearLayout actionLayout = (LinearLayout) findViewById(R.id.actionLayout);
         Bitmap imageBitmap = DecodeSampledBitmapFromResource.execute(getResources(), items.get
@@ -154,6 +153,12 @@ public class SliderActivity extends AppCompatActivity {
             }
         }
 
+        int vibrantColor = palette.getVibrantColor(0x000000);
+        if (vibrantColor == 0x000000) {
+            vibrantColor = palette.getMutedColor(Color.parseColor("#212121"));
+        }
+        spell.setTextColor(vibrantColor);
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
@@ -163,6 +168,7 @@ public class SliderActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 actionLayout.setBackgroundColor(items.get(position).getVibrantColor());
+                spell.setTextColor(items.get(position).getVibrantColor());
                 speak(position, itemName);
                 currentItem = position;
             }
@@ -198,6 +204,21 @@ public class SliderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+            }
+        });
+
+
+        spell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ItemsDTO itemsDTO = items.get(currentItem);
+                Intent intent = new Intent(getApplicationContext(), DragAndDropActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(SliderActivity.EXTRA_ITEM_NAME, itemsDTO.getItemName());
+                intent.putExtra(SliderActivity.EXTRA_ITEM_IMAGE_RESOURCE,
+                        itemsDTO.getImageResource());
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_out_left, 0);
             }
         });
 

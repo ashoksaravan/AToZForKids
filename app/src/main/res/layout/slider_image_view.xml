@@ -8,9 +8,9 @@
         android:id="@+id/slider_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:layout_margin="10dp"
         android:contentDescription="@string/content"
-        android:layout_gravity="center"
         android:paddingBottom="20dp"
         android:paddingTop="30dp"
         android:scaleType="fitCenter"/>

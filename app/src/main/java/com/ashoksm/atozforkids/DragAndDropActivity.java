@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.Menu;
@@ -71,6 +73,8 @@ public class DragAndDropActivity extends AppCompatActivity {
     private Bitmap balloonPurple;
     private Bitmap balloonYellow;
     private int itemCount;
+    int width;
+    int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +85,12 @@ public class DragAndDropActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         loadAd();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
 
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -158,50 +168,56 @@ public class DragAndDropActivity extends AppCompatActivity {
         });
 
         balloonBlue = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_blue, 25, 25);
+                .ic_action_balloon_blue, 30, 30);
         balloonGreen = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_green, 25, 25);
+                .ic_action_balloon_green, 30, 30);
         balloonPurple = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_purple, 25, 25);
+                .ic_action_balloon_purple, 30, 30);
         balloonRed = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_red, 25, 25);
+                .ic_action_balloon_red, 30, 30);
         balloonYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_yellow, 25, 25);
+                .ic_action_balloon_yellow, 30, 30);
 
     }
 
     private void loadContent() {
-        while (true) {
-            int choice = RandomNumber.randInt(1, 5);
-            switch (choice) {
-                case 1:
-                    itemsDTO = DataStore.getInstance().getAlphabets().get(RandomNumber
-                            .randInt(0, DataStore.getInstance().getAlphabets().size() - 1));
+        String itemName = getIntent().getStringExtra(SliderActivity.EXTRA_ITEM_NAME);
+        if (itemName != null && itemName.trim().length() > 0) {
+            itemsDTO = new ItemsDTO(itemName, getIntent().getIntExtra(SliderActivity
+                    .EXTRA_ITEM_IMAGE_RESOURCE, 0));
+        } else {
+            while (true) {
+                int choice = RandomNumber.randInt(1, 5);
+                switch (choice) {
+                    case 1:
+                        itemsDTO = DataStore.getInstance().getAlphabets().get(RandomNumber
+                                .randInt(0, DataStore.getInstance().getAlphabets().size() - 1));
+                        break;
+                    case 2:
+                        itemsDTO = DataStore.getInstance().getAnimals().get(RandomNumber.randInt(0,
+                                DataStore.getInstance().getAnimals().size() - 1));
+                        break;
+                    case 3:
+                        itemsDTO = DataStore.getInstance().getFruits().get(RandomNumber.randInt(0,
+                                DataStore.getInstance().getFruits().size() - 1));
+                        break;
+                    case 4:
+                        itemsDTO =
+                                DataStore.getInstance().getVegetables().get(RandomNumber.randInt(0,
+                                        DataStore.getInstance().getVegetables().size() - 1));
+                        break;
+                    case 5:
+                        itemsDTO = DataStore.getInstance().getVehicles().get(RandomNumber.randInt(0,
+                                DataStore.getInstance().getVehicles().size() - 1));
+                        break;
+                }
+                if (itemsDTO.getItemName().length() <= itemCount) {
                     break;
-                case 2:
-                    itemsDTO = DataStore.getInstance().getAnimals().get(RandomNumber.randInt(0,
-                            DataStore.getInstance().getAnimals().size() - 1));
-                    break;
-                case 3:
-                    itemsDTO = DataStore.getInstance().getFruits().get(RandomNumber.randInt(0,
-                            DataStore.getInstance().getFruits().size() - 1));
-                    break;
-                case 4:
-                    itemsDTO = DataStore.getInstance().getVegetables().get(RandomNumber.randInt(0,
-                            DataStore.getInstance().getVegetables().size() - 1));
-                    break;
-                case 5:
-                    itemsDTO = DataStore.getInstance().getVehicles().get(RandomNumber.randInt(0,
-                            DataStore.getInstance().getVehicles().size() - 1));
-                    break;
-            }
-            if (itemsDTO.getItemName().length() <= itemCount) {
-                break;
+                }
             }
         }
-
         mainBG.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), itemsDTO
-                .getImageResource(), 500, 500));
+                .getImageResource(), width, width));
 
         List<String> chars = new ArrayList<>();
         for (char c : itemsDTO.getItemName().toCharArray()) {

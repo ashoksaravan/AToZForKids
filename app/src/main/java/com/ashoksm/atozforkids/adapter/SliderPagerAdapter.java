@@ -1,5 +1,6 @@
 package com.ashoksm.atozforkids.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -27,20 +28,20 @@ public class SliderPagerAdapter extends PagerAdapter {
 
     private List<ItemsDTO> items;
     private LayoutInflater mLayoutInflater;
-    private Context context;
+    private Activity activity;
     private Animation shake;
     private TextToSpeech textToSpeech;
     private int width;
     private int height;
     private String itemName;
 
-    public SliderPagerAdapter(List<ItemsDTO> itemsIn, Context contextIn, TextToSpeech textToSpeech,
-                              int widthIn, int heightIn, String itemNameIn) {
+    public SliderPagerAdapter(List<ItemsDTO> itemsIn, Activity activityIn, TextToSpeech
+            textToSpeech, int widthIn, int heightIn, String itemNameIn) {
         this.items = itemsIn;
-        this.context = contextIn;
+        this.activity = activityIn;
         mLayoutInflater =
-                (LayoutInflater) contextIn.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        shake = AnimationUtils.loadAnimation(contextIn, R.anim.shake);
+                (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        shake = AnimationUtils.loadAnimation(activity, R.anim.shake);
         this.textToSpeech = textToSpeech;
         this.width = widthIn;
         this.height = heightIn;
@@ -64,20 +65,21 @@ public class SliderPagerAdapter extends PagerAdapter {
         final TextView name = (TextView) itemView.findViewById(R.id.name);
         name.setText(items.get(position).getItemName());
         Bitmap imageBitmap =
-                DecodeSampledBitmapFromResource.execute(context.getResources(), items.get
+                DecodeSampledBitmapFromResource.execute(activity.getResources(), items.get
                         (position).getImageResource(), width, height);
 
         Palette palette = Palette.from(imageBitmap).generate();
+        int vibrantColor = palette.getVibrantColor(0x000000);
+        if (vibrantColor == 0x000000) {
+            vibrantColor = palette.getMutedColor(Color.parseColor("#212121"));
+        }
+
         if ("Alphabets".equals(itemName)) {
             TextView alphabet = (TextView) itemView.findViewById(R.id.alphabet);
             alphabet.setVisibility(View.VISIBLE);
             String alp = String.valueOf(items.get(position).getItemName().charAt(0)).toUpperCase()
                     + String.valueOf(items.get(position).getItemName().charAt(0)).toLowerCase();
             alphabet.setText(alp);
-            int vibrantColor = palette.getVibrantColor(0x000000);
-            if (vibrantColor == 0x000000) {
-                vibrantColor = palette.getMutedColor(Color.parseColor("#212121"));
-            }
             alphabet.setTextColor(vibrantColor);
         }
 
