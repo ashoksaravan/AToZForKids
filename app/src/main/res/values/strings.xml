@@ -26,4 +26,6 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="find_a_pair">Find a Pair</string>
+    <string name="refresh">Refresh</string>
+    <string name="play">Play</string>
 </resources>

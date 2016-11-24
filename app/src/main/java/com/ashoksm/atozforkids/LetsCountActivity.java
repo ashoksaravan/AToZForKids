@@ -11,6 +11,8 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -900,5 +902,39 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE ||
                 getApplicationContext().getResources().getConfiguration().orientation ==
                         Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, 0);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_refresh, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                position = 1;
+                row1.setVisibility(View.GONE);
+                row2.setVisibility(View.GONE);
+                row3.setVisibility(View.GONE);
+                row4.setVisibility(View.GONE);
+                row5.setVisibility(View.GONE);
+                row6.setVisibility(View.GONE);
+                setRandomImage();
+                populateGrid();
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -14,8 +14,12 @@ import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.DragEvent;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -322,7 +326,8 @@ public class DragAndDropActivity extends AppCompatActivity {
                     TextView dropTarget = (TextView) v;
                     //view being dragged and dropped
                     TextView dropped = (TextView) view;
-                    if (dropTarget.getText().equals(dropped.getText())) {
+                    if (dropTarget.getText().equals(dropped.getText()) && dropTarget.getTag() ==
+                            null) {
                         //stop displaying the view where it was before it was dragged
                         view.setVisibility(View.INVISIBLE);
                         //update the text in the target view to reflect the data being dropped
@@ -355,17 +360,32 @@ public class DragAndDropActivity extends AppCompatActivity {
                                 }
                             }
                             speak(STATUS_VALUES.get(randInt));
-
+                            View contentLayout = findViewById(R.id.content_layout);
                             new ParticleSystem(DragAndDropActivity.this, 20, balloonBlue, 5000)
-                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
+                                    .setAcceleration(0.00013f, 90)
+                                    .setSpeedByComponentsRange(0f, 0f, 0.05f, 0.1f)
+                                    .setFadeOut(200, new AccelerateInterpolator())
+                                    .emitWithGravity(contentLayout, Gravity.TOP, 30);
                             new ParticleSystem(DragAndDropActivity.this, 20, balloonGreen, 5000)
-                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
+                                    .setAcceleration(0.00013f, 90)
+                                    .setSpeedByComponentsRange(0f, 0f, 0.05f, 0.1f)
+                                    .setFadeOut(200, new AccelerateInterpolator())
+                                    .emitWithGravity(contentLayout, Gravity.TOP, 30);
                             new ParticleSystem(DragAndDropActivity.this, 20, balloonPurple, 5000)
-                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
+                                    .setAcceleration(0.00013f, 90)
+                                    .setSpeedByComponentsRange(0f, 0f, 0.05f, 0.1f)
+                                    .setFadeOut(200, new AccelerateInterpolator())
+                                    .emitWithGravity(contentLayout, Gravity.TOP, 30);
                             new ParticleSystem(DragAndDropActivity.this, 20, balloonRed, 5000)
-                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
+                                    .setAcceleration(0.00013f, 90)
+                                    .setSpeedByComponentsRange(0f, 0f, 0.05f, 0.1f)
+                                    .setFadeOut(200, new AccelerateInterpolator())
+                                    .emitWithGravity(contentLayout, Gravity.TOP, 30);
                             new ParticleSystem(DragAndDropActivity.this, 20, balloonYellow, 5000)
-                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 20);
+                                    .setAcceleration(0.00013f, 90)
+                                    .setSpeedByComponentsRange(0f, 0f, 0.05f, 0.1f)
+                                    .setFadeOut(200, new AccelerateInterpolator())
+                                    .emitWithGravity(contentLayout, Gravity.TOP, 30);
                         }
                     } else {
                         speak("Wrong choice, Try Again");
@@ -378,5 +398,33 @@ public class DragAndDropActivity extends AppCompatActivity {
             }
             return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, 0);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_refresh, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                count = 0;
+                currentCount = 0;
+                loadContent();
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
