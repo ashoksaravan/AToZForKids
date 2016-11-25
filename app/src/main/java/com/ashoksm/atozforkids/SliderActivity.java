@@ -1,6 +1,8 @@
 package com.ashoksm.atozforkids;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -9,13 +11,16 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.Display;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,8 +65,12 @@ public class SliderActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         loadAd();
-        final String itemName = intent.getStringExtra(MainActivity.EXTRA_ITEM_NAME);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.slider);
+        final TextView spell = (TextView) findViewById(R.id.spell);
+        final BottomNavigationView bottomNavView =
+                (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
+        final String itemName = intent.getStringExtra(MainActivity.EXTRA_ITEM_NAME);
 
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -89,11 +98,6 @@ public class SliderActivity extends AppCompatActivity {
                 }
             }
         });
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(itemName);
-        }
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.slider);
 
         switch (itemName) {
             case "Alphabets":
@@ -125,8 +129,6 @@ public class SliderActivity extends AppCompatActivity {
                 break;
         }
 
-        final TextView spell = (TextView) findViewById(R.id.spell);
-
         if ("Numbers".equalsIgnoreCase(itemName)) {
             setRandomImage(items);
             viewPager.setAdapter(new GridPagerAdapter(this, items));
@@ -138,18 +140,26 @@ public class SliderActivity extends AppCompatActivity {
         }
 
 
-        final LinearLayout actionLayout = (LinearLayout) findViewById(R.id.actionLayout);
+        bottomNavView.setItemBackgroundResource(R.drawable.transparent);
         Bitmap imageBitmap = DecodeSampledBitmapFromResource.execute(getResources(), items.get
                 (0).getImageResource(), width, height);
         Palette palette = Palette.from(imageBitmap).generate();
         Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
         if (vibrantSwatch != null) {
-            actionLayout.setBackgroundColor(vibrantSwatch.getRgb());
+            bottomNavView.setBackgroundColor(vibrantSwatch.getRgb());
+            ColorStateList colorStateList =
+                    ColorStateList.valueOf(vibrantSwatch.getTitleTextColor());
+            bottomNavView.setItemIconTintList(colorStateList);
+            bottomNavView.setItemTextColor(colorStateList);
         } else {
             List<Palette.Swatch> swatches = palette.getSwatches();
             if (swatches.size() > 0) {
                 Palette.Swatch swatch = swatches.get(0);
-                actionLayout.setBackgroundColor(swatch.getRgb());
+                bottomNavView.setBackgroundColor(swatch.getRgb());
+                ColorStateList colorStateList =
+                        ColorStateList.valueOf(swatch.getTitleTextColor());
+                bottomNavView.setItemIconTintList(colorStateList);
+                bottomNavView.setItemTextColor(colorStateList);
             }
         }
 
@@ -167,8 +177,19 @@ public class SliderActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                actionLayout.setBackgroundColor(items.get(position).getVibrantColor());
-                spell.setTextColor(items.get(position).getVibrantColor());
+                if (items.get(position).getColorStateList() != null) {
+                    bottomNavView.setBackgroundColor(items.get(position).getVibrantColor());
+                    bottomNavView.setItemIconTintList(items.get(position).getColorStateList());
+                    bottomNavView.setItemTextColor(items.get(position).getColorStateList());
+                    spell.setTextColor(items.get(position).getVibrantColor());
+                } else {
+                    bottomNavView
+                            .setBackgroundColor(getColor(getApplicationContext(), R.color.primary));
+                    bottomNavView.setItemIconTintList(ColorStateList.valueOf(getColor
+                            (getApplicationContext(), R.color.icons)));
+                    bottomNavView.setItemTextColor(ColorStateList.valueOf(getColor
+                            (getApplicationContext(), R.color.icons)));
+                }
                 speak(position, itemName);
                 currentItem = position;
             }
@@ -180,33 +201,24 @@ public class SliderActivity extends AppCompatActivity {
 
         viewPager.setPageTransformer(false, new DepthPageTransformer());
 
-        final ImageButton replay = (ImageButton) findViewById(R.id.replay);
-        final ImageButton next = (ImageButton) findViewById(R.id.next);
-        final ImageButton previous = (ImageButton) findViewById(R.id.previous);
-        replay.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(0);
-            }
-        });
-
-        next.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-            }
-        });
-
-        previous.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-            }
-        });
-
+        bottomNavView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_previous:
+                                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+                                break;
+                            case R.id.action_next:
+                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                                break;
+                            case R.id.action_replay:
+                                viewPager.setCurrentItem(0);
+                                break;
+                        }
+                        return false;
+                    }
+                });
 
         spell.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -306,5 +318,14 @@ public class SliderActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         currentItem = 0;
+    }
+
+    private static int getColor(Context context, int id) {
+        final int version = Build.VERSION.SDK_INT;
+        if (version >= Build.VERSION_CODES.M) {
+            return ContextCompat.getColor(context, id);
+        } else {
+            return context.getResources().getColor(id);
+        }
     }
 }

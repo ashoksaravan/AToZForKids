@@ -19,7 +19,7 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#809C27B0"
+        android:background="@color/primary"
         android:gravity="center"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"

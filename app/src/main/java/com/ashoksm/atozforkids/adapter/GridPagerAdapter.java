@@ -1,6 +1,7 @@
 package com.ashoksm.atozforkids.adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -99,6 +100,8 @@ public class GridPagerAdapter extends PagerAdapter {
             name.setBackgroundColor(vibrantSwatch.getRgb());
             name.setTextColor(vibrantSwatch.getTitleTextColor());
             items.get(position).setVibrantColor(vibrantSwatch.getRgb());
+            items.get(position)
+                    .setColorStateList(ColorStateList.valueOf(vibrantSwatch.getTitleTextColor()));
         } else {
             List<Palette.Swatch> swatches = palette.getSwatches();
             if (swatches.size() > 0) {
@@ -106,6 +109,8 @@ public class GridPagerAdapter extends PagerAdapter {
                 name.setBackgroundColor(swatch.getRgb());
                 name.setTextColor(swatch.getTitleTextColor());
                 items.get(position).setVibrantColor(swatch.getRgb());
+                items.get(position)
+                        .setColorStateList(ColorStateList.valueOf(swatch.getTitleTextColor()));
             }
         }
 

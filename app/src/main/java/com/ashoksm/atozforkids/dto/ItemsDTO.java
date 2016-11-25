@@ -1,5 +1,7 @@
 package com.ashoksm.atozforkids.dto;
 
+import android.content.res.ColorStateList;
+
 public class ItemsDTO implements Cloneable {
 
     private String itemName;
@@ -7,6 +9,7 @@ public class ItemsDTO implements Cloneable {
     private int imageResource2;
     private int vibrantColor;
     private boolean showBack;
+    private ColorStateList colorStateList;
 
     public ItemsDTO(String itemName) {
         this.itemName = itemName;
@@ -55,6 +58,14 @@ public class ItemsDTO implements Cloneable {
 
     public void setShowBack(boolean showBack) {
         this.showBack = showBack;
+    }
+
+    public ColorStateList getColorStateList() {
+        return colorStateList;
+    }
+
+    public void setColorStateList(ColorStateList colorStateList) {
+        this.colorStateList = colorStateList;
     }
 
     @Override
