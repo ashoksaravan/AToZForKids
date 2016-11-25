@@ -85,11 +85,10 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     private TextToSpeech textToSpeech;
     private int imgResource;
 
-    private Bitmap balloonBlue;
-    private Bitmap balloonRed;
-    private Bitmap balloonGreen;
-    private Bitmap balloonPurple;
-    private Bitmap balloonYellow;
+    private Bitmap starBlue;
+    private Bitmap starRed;
+    private Bitmap starGreen;
+    private Bitmap starYellow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,16 +130,14 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         setRandomImage();
         populateGrid();
 
-        balloonBlue = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_blue, 25, 25);
-        balloonGreen = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_green, 25, 25);
-        balloonPurple = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_purple, 25, 25);
-        balloonRed = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_red, 25, 25);
-        balloonYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_yellow, 25, 25);
+        starBlue = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_star_blue, 10, 10);
+        starGreen = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_star_green, 10, 10);
+        starRed = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_star_red, 10, 10);
+        starYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .star, 10, 10);
     }
 
     private void initComponents() {
@@ -260,16 +257,14 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
             count = 0;
             position++;
             if (position > 10) {
-                new ParticleSystem(LetsCountActivity.this, 20, balloonBlue, 3000)
-                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 20);
-                new ParticleSystem(LetsCountActivity.this, 20, balloonGreen, 3000)
-                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 20);
-                new ParticleSystem(LetsCountActivity.this, 20, balloonPurple, 3000)
-                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 20);
-                new ParticleSystem(LetsCountActivity.this, 20, balloonRed, 3000)
-                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 20);
-                new ParticleSystem(LetsCountActivity.this, 20, balloonYellow, 3000)
-                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 20);
+                new ParticleSystem(LetsCountActivity.this, 100, starBlue, 3000)
+                        .setSpeedRange(0.1f, 0.5f).oneShot(row3, 100);
+                new ParticleSystem(LetsCountActivity.this, 100, starGreen, 3000)
+                        .setSpeedRange(0.1f, 0.4f).oneShot(row3, 100);
+                new ParticleSystem(LetsCountActivity.this, 100, starRed, 3000)
+                        .setSpeedRange(0.1f, 0.3f).oneShot(row3, 100);
+                new ParticleSystem(LetsCountActivity.this, 100, starYellow, 3000)
+                        .setSpeedRange(0.1f, 0.2f).oneShot(row3, 100);
             }
             new Handler().postDelayed(new Runnable() {
                 @Override

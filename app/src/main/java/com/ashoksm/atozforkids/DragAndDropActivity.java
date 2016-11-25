@@ -67,11 +67,10 @@ public class DragAndDropActivity extends AppCompatActivity {
     private int randInt;
     private ItemsDTO itemsDTO;
     private ImageView mainBG;
-    private Bitmap balloonBlue;
-    private Bitmap balloonRed;
-    private Bitmap balloonGreen;
-    private Bitmap balloonPurple;
-    private Bitmap balloonYellow;
+    private Bitmap starBlue;
+    private Bitmap starRed;
+    private Bitmap starGreen;
+    private Bitmap starYellow;
     private int itemCount;
     int width;
     int height;
@@ -167,16 +166,14 @@ public class DragAndDropActivity extends AppCompatActivity {
             }
         });
 
-        balloonBlue = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_blue, 30, 30);
-        balloonGreen = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_green, 30, 30);
-        balloonPurple = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_purple, 30, 30);
-        balloonRed = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_red, 30, 30);
-        balloonYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_action_balloon_yellow, 30, 30);
+        starBlue = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_star_blue, 10, 10);
+        starGreen = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_star_green, 10, 10);
+        starRed = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_star_red, 10, 10);
+        starYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .star, 10, 10);
 
     }
 
@@ -217,7 +214,7 @@ public class DragAndDropActivity extends AppCompatActivity {
             }
         }
         mainBG.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), itemsDTO
-                .getImageResource(), width, width));
+                .getImageResource(), width, height));
 
         List<String> chars = new ArrayList<>();
         for (char c : itemsDTO.getItemName().toCharArray()) {
@@ -376,32 +373,15 @@ public class DragAndDropActivity extends AppCompatActivity {
                                 }
                             }
                             speak(STATUS_VALUES.get(randInt));
-                            View contentLayout = findViewById(R.id.content_layout);
-                            new ParticleSystem(DragAndDropActivity.this, 20, balloonBlue, 5000)
-                                    .setAcceleration(0.00013f, 90)
-                                    .setSpeedByComponentsRange(0f, 0f, 0.05f, 0.1f)
-                                    .setFadeOut(200, new AccelerateInterpolator())
-                                    .emitWithGravity(contentLayout, Gravity.TOP, 30);
-                            new ParticleSystem(DragAndDropActivity.this, 20, balloonGreen, 5000)
-                                    .setAcceleration(0.00013f, 90)
-                                    .setSpeedByComponentsRange(0f, 0f, 0.05f, 0.1f)
-                                    .setFadeOut(200, new AccelerateInterpolator())
-                                    .emitWithGravity(contentLayout, Gravity.TOP, 30);
-                            new ParticleSystem(DragAndDropActivity.this, 20, balloonPurple, 5000)
-                                    .setAcceleration(0.00013f, 90)
-                                    .setSpeedByComponentsRange(0f, 0f, 0.05f, 0.1f)
-                                    .setFadeOut(200, new AccelerateInterpolator())
-                                    .emitWithGravity(contentLayout, Gravity.TOP, 30);
-                            new ParticleSystem(DragAndDropActivity.this, 20, balloonRed, 5000)
-                                    .setAcceleration(0.00013f, 90)
-                                    .setSpeedByComponentsRange(0f, 0f, 0.05f, 0.1f)
-                                    .setFadeOut(200, new AccelerateInterpolator())
-                                    .emitWithGravity(contentLayout, Gravity.TOP, 30);
-                            new ParticleSystem(DragAndDropActivity.this, 20, balloonYellow, 5000)
-                                    .setAcceleration(0.00013f, 90)
-                                    .setSpeedByComponentsRange(0f, 0f, 0.05f, 0.1f)
-                                    .setFadeOut(200, new AccelerateInterpolator())
-                                    .emitWithGravity(contentLayout, Gravity.TOP, 30);
+
+                            new ParticleSystem(DragAndDropActivity.this, 100, starBlue, 3000)
+                                    .setSpeedRange(0.1f, 0.5f).oneShot(mainBG, 100);
+                            new ParticleSystem(DragAndDropActivity.this, 100, starGreen, 3000)
+                                    .setSpeedRange(0.1f, 0.4f).oneShot(mainBG, 100);
+                            new ParticleSystem(DragAndDropActivity.this, 100, starRed, 3000)
+                                    .setSpeedRange(0.1f, 0.3f).oneShot(mainBG, 100);
+                            new ParticleSystem(DragAndDropActivity.this, 100, starYellow, 3000)
+                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 100);
                         }
                     } else {
                         speak("Wrong choice, Try Again");
