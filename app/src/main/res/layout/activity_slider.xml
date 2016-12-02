@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:itemBackground="@color/primary"
+            android:measureAllChildren="true"
             app:itemIconTint="@color/icons"
             app:itemTextColor="@color/icons"
             app:menu="@menu/bottom_navigation_main" />

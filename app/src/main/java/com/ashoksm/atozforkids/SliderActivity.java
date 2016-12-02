@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -43,7 +44,7 @@ import java.util.Set;
 
 public class SliderActivity extends AppCompatActivity {
 
-    public static int currentItem = 0;
+    public static int currentItem;
     private List<ItemsDTO> items = null;
     private TextToSpeech textToSpeech;
     public static final String EXTRA_ITEM_NAME = "EXTRA_ITEM_NAME";
@@ -60,6 +61,7 @@ public class SliderActivity extends AppCompatActivity {
         display.getSize(size);
         int width = size.x;
         int height = size.y;
+        currentItem = 0;
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -192,6 +194,7 @@ public class SliderActivity extends AppCompatActivity {
                 }
                 speak(position, itemName);
                 currentItem = position;
+                playAudio();
             }
 
             @Override
@@ -212,8 +215,9 @@ public class SliderActivity extends AppCompatActivity {
                             case R.id.action_next:
                                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                                 break;
-                            case R.id.action_replay:
-                                viewPager.setCurrentItem(0);
+                            case R.id.action_speaker:
+                                speak(currentItem, itemName);
+                                playAudio();
                                 break;
                         }
                         return false;
@@ -314,18 +318,20 @@ public class SliderActivity extends AppCompatActivity {
         ad.loadAd(adRequest);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        currentItem = 0;
-    }
-
-    private static int getColor(Context context, int id) {
+    private int getColor(Context context, int id) {
         final int version = Build.VERSION.SDK_INT;
         if (version >= Build.VERSION_CODES.M) {
             return ContextCompat.getColor(context, id);
         } else {
             return context.getResources().getColor(id);
+        }
+    }
+
+    private void playAudio() {
+        if (items.get(currentItem).getAudioResource() != 0) {
+            MediaPlayer mediaPlayer = MediaPlayer
+                    .create(getApplicationContext(), items.get(currentItem).getAudioResource());
+            mediaPlayer.start();
         }
     }
 }

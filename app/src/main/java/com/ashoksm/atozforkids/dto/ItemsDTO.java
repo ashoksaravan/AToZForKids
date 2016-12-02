@@ -10,6 +10,7 @@ public class ItemsDTO implements Cloneable {
     private int vibrantColor;
     private boolean showBack;
     private ColorStateList colorStateList;
+    private int audioResource;
 
     public ItemsDTO(String itemName) {
         this.itemName = itemName;
@@ -18,6 +19,12 @@ public class ItemsDTO implements Cloneable {
     public ItemsDTO(String itemName, int imageResource) {
         this.itemName = itemName;
         this.imageResource = imageResource;
+    }
+
+    public ItemsDTO(String itemName, int imageResource, int audioResource) {
+        this.itemName = itemName;
+        this.imageResource = imageResource;
+        this.audioResource = audioResource;
     }
 
     public String getItemName() {
@@ -66,6 +73,14 @@ public class ItemsDTO implements Cloneable {
 
     public void setColorStateList(ColorStateList colorStateList) {
         this.colorStateList = colorStateList;
+    }
+
+    public int getAudioResource() {
+        return audioResource;
+    }
+
+    public void setAudioResource(int audioResource) {
+        this.audioResource = audioResource;
     }
 
     @Override

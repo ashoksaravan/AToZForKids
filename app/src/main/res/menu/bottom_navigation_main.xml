@@ -8,10 +8,10 @@
         android:title="@string/previous"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_replay"
+        android:id="@+id/action_speaker"
         android:enabled="true"
-        android:icon="@drawable/ic_av_replay"
-        android:title="@string/reply"
+        android:icon="@drawable/ic_action_speaker"
+        android:title="@string/speak"
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/action_next"

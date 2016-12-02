@@ -115,12 +115,11 @@ public class SliderPagerAdapter extends PagerAdapter {
                 v.invalidate();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     textToSpeech.speak(items.get(SliderActivity.currentItem).getItemName(),
-                            TextToSpeech.QUEUE_FLUSH,
-                            null, items.get(SliderActivity.currentItem).getItemName());
+                            TextToSpeech.QUEUE_FLUSH, null,
+                            items.get(SliderActivity.currentItem).getItemName());
                 } else {
                     textToSpeech.speak(items.get(SliderActivity.currentItem).getItemName(),
-                            TextToSpeech.QUEUE_FLUSH,
-                            null);
+                            TextToSpeech.QUEUE_FLUSH, null);
                 }
             }
         });
