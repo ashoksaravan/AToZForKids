@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.view.PagerAdapter;
@@ -19,11 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ashoksm.atozforkids.R;
-import com.ashoksm.atozforkids.SliderActivity;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 
 import java.util.List;
+
+import static com.ashoksm.atozforkids.SliderActivity.currentItem;
 
 public class SliderPagerAdapter extends PagerAdapter {
 
@@ -35,9 +37,10 @@ public class SliderPagerAdapter extends PagerAdapter {
     private int width;
     private int height;
     private String itemName;
+    private MediaPlayer mediaPlayer;
 
     public SliderPagerAdapter(List<ItemsDTO> itemsIn, Activity activityIn, TextToSpeech
-            textToSpeech, int widthIn, int heightIn, String itemNameIn) {
+            textToSpeech, int widthIn, int heightIn, String itemNameIn, MediaPlayer mediaPlayerIn) {
         this.items = itemsIn;
         this.activity = activityIn;
         mLayoutInflater =
@@ -47,6 +50,7 @@ public class SliderPagerAdapter extends PagerAdapter {
         this.width = widthIn;
         this.height = heightIn;
         this.itemName = itemNameIn;
+        this.mediaPlayer = mediaPlayerIn;
     }
 
     @Override
@@ -114,13 +118,14 @@ public class SliderPagerAdapter extends PagerAdapter {
                 v.startAnimation(shake);
                 v.invalidate();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    textToSpeech.speak(items.get(SliderActivity.currentItem).getItemName(),
+                    textToSpeech.speak(items.get(currentItem).getItemName(),
                             TextToSpeech.QUEUE_FLUSH, null,
-                            items.get(SliderActivity.currentItem).getItemName());
+                            items.get(currentItem).getItemName());
                 } else {
-                    textToSpeech.speak(items.get(SliderActivity.currentItem).getItemName(),
+                    textToSpeech.speak(items.get(currentItem).getItemName(),
                             TextToSpeech.QUEUE_FLUSH, null);
                 }
+                playAudio();
             }
         });
         container.addView(itemView);
@@ -144,6 +149,18 @@ public class SliderPagerAdapter extends PagerAdapter {
                 unbindDrawables(((ViewGroup) view).getChildAt(i));
             }
             ((ViewGroup) view).removeAllViews();
+        }
+    }
+
+    private void playAudio() {
+        if (items.get(currentItem).getAudioResource() != 0) {
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+            mediaPlayer = MediaPlayer.create(activity, items.get(currentItem).getAudioResource());
+            mediaPlayer.start();
         }
     }
 }

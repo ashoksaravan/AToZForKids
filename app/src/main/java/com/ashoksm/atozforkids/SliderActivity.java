@@ -49,6 +49,7 @@ public class SliderActivity extends AppCompatActivity {
     private TextToSpeech textToSpeech;
     public static final String EXTRA_ITEM_NAME = "EXTRA_ITEM_NAME";
     public static final String EXTRA_ITEM_IMAGE_RESOURCE = "EXTRA_ITEM_IMAGE_RESOURCE";
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +138,8 @@ public class SliderActivity extends AppCompatActivity {
             spell.setVisibility(View.GONE);
         } else {
             final SliderPagerAdapter adapter =
-                    new SliderPagerAdapter(items, this, textToSpeech, width, height, itemName);
+                    new SliderPagerAdapter(items, this, textToSpeech, width, height, itemName,
+                            mediaPlayer);
             viewPager.setAdapter(adapter);
         }
 
@@ -329,7 +331,12 @@ public class SliderActivity extends AppCompatActivity {
 
     private void playAudio() {
         if (items.get(currentItem).getAudioResource() != 0) {
-            MediaPlayer mediaPlayer = MediaPlayer
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
+            mediaPlayer = MediaPlayer
                     .create(getApplicationContext(), items.get(currentItem).getAudioResource());
             mediaPlayer.start();
         }
