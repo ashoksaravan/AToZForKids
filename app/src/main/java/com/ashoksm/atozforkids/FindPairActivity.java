@@ -113,7 +113,13 @@ public class FindPairActivity extends AppCompatActivity
         imageViews = new ArrayList<>();
         int size;
         if (totalCount == 4) {
-            size = 300;
+            if (isLargeScreenAndPortrait()) {
+                size = 375;
+            } else if (isLargeScreenAndLandscape()) {
+                size = 275;
+            } else {
+                size = 400;
+            }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
                     (getResources(), R.drawable.question_mark, size, size));
@@ -133,7 +139,13 @@ public class FindPairActivity extends AppCompatActivity
                 }
             }
         } else if (totalCount == 6) {
-            size = 300;
+            if (isLargeScreenAndPortrait()) {
+                size = 325;
+            } else if (isLargeScreenAndLandscape()) {
+                size = 275;
+            } else {
+                size = 350;
+            }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
                     (getResources(), R.drawable.question_mark, size, size));
@@ -163,6 +175,8 @@ public class FindPairActivity extends AppCompatActivity
         } else if (totalCount == 8) {
             if (isLargeScreenAndPortrait()) {
                 size = 250;
+            } else if (isLargeScreenAndLandscape()) {
+                size = 225;
             } else {
                 size = 300;
             }
@@ -195,13 +209,17 @@ public class FindPairActivity extends AppCompatActivity
             bitmapCache = new SparseArray<>();
 
             int count;
-            if (getResources().getConfiguration().orientation ==
+            if (isLargeScreenAndPortrait()) {
+                count = 16;
+                size = 200;
+            } else if (isLargeScreenAndLandscape()) {
+                findViewById(R.id.row_3).setVisibility(View.VISIBLE);
+                count = 12;
+                size = 175;
+            } else if (getResources().getConfiguration().orientation ==
                     Configuration.ORIENTATION_LANDSCAPE) {
                 findViewById(R.id.row_3).setVisibility(View.VISIBLE);
                 count = 12;
-                size = 200;
-            } else if (isLargeScreenAndPortrait()) {
-                count = 16;
                 size = 200;
             } else {
                 count = 16;
@@ -459,9 +477,16 @@ public class FindPairActivity extends AppCompatActivity
 
     private boolean isLargeScreenAndPortrait() {
         return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE ||
+                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE &&
                 getApplicationContext().getResources().getConfiguration().orientation ==
                         Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    private boolean isLargeScreenAndLandscape() {
+        return (getApplicationContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE &&
+                getApplicationContext().getResources().getConfiguration().orientation ==
+                        Configuration.ORIENTATION_LANDSCAPE;
     }
 
     private void speak(String s) {

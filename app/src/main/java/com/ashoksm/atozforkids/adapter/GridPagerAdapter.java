@@ -69,6 +69,9 @@ public class GridPagerAdapter extends PagerAdapter {
             }
         } else {
             size = 1000;
+            if (isLargeScreen()) {
+                size = 750;
+            }
             if (number == 1) {
                 size = 300;
             } else if (number == 2) {

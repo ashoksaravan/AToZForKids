@@ -331,6 +331,9 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
             }
         } else {
             size = 1000;
+            if (isLargeScreen()) {
+                size = 750;
+            }
             if (position == 1) {
                 size = 300;
             } else if (position == 2) {

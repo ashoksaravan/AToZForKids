@@ -44,12 +44,12 @@ import java.util.Set;
 
 public class SliderActivity extends AppCompatActivity {
 
-    public static int currentItem;
+    public static int CURRENT_ITEM;
     private List<ItemsDTO> items = null;
     private TextToSpeech textToSpeech;
     public static final String EXTRA_ITEM_NAME = "EXTRA_ITEM_NAME";
     public static final String EXTRA_ITEM_IMAGE_RESOURCE = "EXTRA_ITEM_IMAGE_RESOURCE";
-    private MediaPlayer mediaPlayer;
+    public static MediaPlayer MEDIA_PLAYER;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class SliderActivity extends AppCompatActivity {
         display.getSize(size);
         int width = size.x;
         int height = size.y;
-        currentItem = 0;
+        CURRENT_ITEM = 0;
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -102,35 +102,7 @@ public class SliderActivity extends AppCompatActivity {
             }
         });
 
-        switch (itemName) {
-            case "Alphabets":
-                items = DataStore.getInstance().getAlphabets();
-                break;
-            case "Colors":
-                items = DataStore.getInstance().getColors();
-                break;
-            case "Shapes":
-                items = DataStore.getInstance().getShapes();
-                break;
-            case "Numbers":
-                items = DataStore.getInstance().getNumbers();
-                break;
-            case "Animals":
-                items = DataStore.getInstance().getAnimals();
-                break;
-            case "Fruits":
-                items = DataStore.getInstance().getFruits();
-                break;
-            case "Vegetables":
-                items = DataStore.getInstance().getVegetables();
-                break;
-            case "Vehicles":
-                items = DataStore.getInstance().getVehicles();
-                break;
-            case "Body Parts":
-                items = DataStore.getInstance().getBodyParts();
-                break;
-        }
+        loadItems(itemName);
 
         if ("Numbers".equalsIgnoreCase(itemName)) {
             setRandomImage(items);
@@ -138,8 +110,7 @@ public class SliderActivity extends AppCompatActivity {
             spell.setVisibility(View.GONE);
         } else {
             final SliderPagerAdapter adapter =
-                    new SliderPagerAdapter(items, this, textToSpeech, width, height, itemName,
-                            mediaPlayer);
+                    new SliderPagerAdapter(items, this, textToSpeech, width, height, itemName);
             viewPager.setAdapter(adapter);
         }
 
@@ -175,8 +146,7 @@ public class SliderActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset,
-                                       int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset, int posOffsetPixels) {
             }
 
             @Override
@@ -195,7 +165,16 @@ public class SliderActivity extends AppCompatActivity {
                             (getApplicationContext(), R.color.icons)));
                 }
                 speak(position, itemName);
-                currentItem = position;
+                CURRENT_ITEM = position;
+                if (MEDIA_PLAYER != null) {
+                    MEDIA_PLAYER.stop();
+                    MEDIA_PLAYER.release();
+                    MEDIA_PLAYER = null;
+                }
+                if (items.get(CURRENT_ITEM).getAudioResource() != 0) {
+                    MEDIA_PLAYER = MediaPlayer.create(SliderActivity.this, items.get(CURRENT_ITEM)
+                            .getAudioResource());
+                }
                 playAudio();
             }
 
@@ -218,7 +197,7 @@ public class SliderActivity extends AppCompatActivity {
                                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                                 break;
                             case R.id.action_speaker:
-                                speak(currentItem, itemName);
+                                speak(CURRENT_ITEM, itemName);
                                 playAudio();
                                 break;
                         }
@@ -229,7 +208,7 @@ public class SliderActivity extends AppCompatActivity {
         spell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ItemsDTO itemsDTO = items.get(currentItem);
+                ItemsDTO itemsDTO = items.get(CURRENT_ITEM);
                 Intent intent = new Intent(getApplicationContext(), DragAndDropActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(SliderActivity.EXTRA_ITEM_NAME, itemsDTO.getItemName());
@@ -240,6 +219,42 @@ public class SliderActivity extends AppCompatActivity {
             }
         });
 
+        if (items.get(CURRENT_ITEM).getAudioResource() != 0) {
+            MEDIA_PLAYER = MediaPlayer.create(this, items.get(CURRENT_ITEM).getAudioResource());
+            playAudio();
+        }
+    }
+
+    private void loadItems(String itemName) {
+        switch (itemName) {
+            case "Alphabets":
+                items = DataStore.getInstance().getAlphabets();
+                break;
+            case "Colors":
+                items = DataStore.getInstance().getColors();
+                break;
+            case "Shapes":
+                items = DataStore.getInstance().getShapes();
+                break;
+            case "Numbers":
+                items = DataStore.getInstance().getNumbers();
+                break;
+            case "Animals":
+                items = DataStore.getInstance().getAnimals();
+                break;
+            case "Fruits":
+                items = DataStore.getInstance().getFruits();
+                break;
+            case "Vegetables":
+                items = DataStore.getInstance().getVegetables();
+                break;
+            case "Vehicles":
+                items = DataStore.getInstance().getVehicles();
+                break;
+            case "Body Parts":
+                items = DataStore.getInstance().getBodyParts();
+                break;
+        }
     }
 
     private void setRandomImage(List<ItemsDTO> items) {
@@ -330,15 +345,18 @@ public class SliderActivity extends AppCompatActivity {
     }
 
     private void playAudio() {
-        if (items.get(currentItem).getAudioResource() != 0) {
-            if (mediaPlayer != null) {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = null;
-            }
-            mediaPlayer = MediaPlayer
-                    .create(getApplicationContext(), items.get(currentItem).getAudioResource());
-            mediaPlayer.start();
+        if (MEDIA_PLAYER != null && items.get(CURRENT_ITEM).getAudioResource() != 0) {
+            MEDIA_PLAYER.start();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (MEDIA_PLAYER != null) {
+            MEDIA_PLAYER.stop();
+            MEDIA_PLAYER.release();
+            MEDIA_PLAYER = null;
         }
     }
 }

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.view.PagerAdapter;
@@ -25,7 +24,8 @@ import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 
 import java.util.List;
 
-import static com.ashoksm.atozforkids.SliderActivity.currentItem;
+import static com.ashoksm.atozforkids.SliderActivity.CURRENT_ITEM;
+import static com.ashoksm.atozforkids.SliderActivity.MEDIA_PLAYER;
 
 public class SliderPagerAdapter extends PagerAdapter {
 
@@ -37,10 +37,9 @@ public class SliderPagerAdapter extends PagerAdapter {
     private int width;
     private int height;
     private String itemName;
-    private MediaPlayer mediaPlayer;
 
     public SliderPagerAdapter(List<ItemsDTO> itemsIn, Activity activityIn, TextToSpeech
-            textToSpeech, int widthIn, int heightIn, String itemNameIn, MediaPlayer mediaPlayerIn) {
+            textToSpeech, int widthIn, int heightIn, String itemNameIn) {
         this.items = itemsIn;
         this.activity = activityIn;
         mLayoutInflater =
@@ -50,7 +49,6 @@ public class SliderPagerAdapter extends PagerAdapter {
         this.width = widthIn;
         this.height = heightIn;
         this.itemName = itemNameIn;
-        this.mediaPlayer = mediaPlayerIn;
     }
 
     @Override
@@ -118,11 +116,11 @@ public class SliderPagerAdapter extends PagerAdapter {
                 v.startAnimation(shake);
                 v.invalidate();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    textToSpeech.speak(items.get(currentItem).getItemName(),
+                    textToSpeech.speak(items.get(CURRENT_ITEM).getItemName(),
                             TextToSpeech.QUEUE_FLUSH, null,
-                            items.get(currentItem).getItemName());
+                            items.get(CURRENT_ITEM).getItemName());
                 } else {
-                    textToSpeech.speak(items.get(currentItem).getItemName(),
+                    textToSpeech.speak(items.get(CURRENT_ITEM).getItemName(),
                             TextToSpeech.QUEUE_FLUSH, null);
                 }
                 playAudio();
@@ -153,14 +151,8 @@ public class SliderPagerAdapter extends PagerAdapter {
     }
 
     private void playAudio() {
-        if (items.get(currentItem).getAudioResource() != 0) {
-            if (mediaPlayer != null) {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = null;
-            }
-            mediaPlayer = MediaPlayer.create(activity, items.get(currentItem).getAudioResource());
-            mediaPlayer.start();
+        if (MEDIA_PLAYER != null && items.get(CURRENT_ITEM).getAudioResource() != 0) {
+            MEDIA_PLAYER.start();
         }
     }
 }
