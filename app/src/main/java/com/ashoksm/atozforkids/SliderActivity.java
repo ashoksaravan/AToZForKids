@@ -9,6 +9,7 @@ import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
@@ -50,6 +51,7 @@ public class SliderActivity extends AppCompatActivity {
     public static final String EXTRA_ITEM_NAME = "EXTRA_ITEM_NAME";
     public static final String EXTRA_ITEM_IMAGE_RESOURCE = "EXTRA_ITEM_IMAGE_RESOURCE";
     public static MediaPlayer MEDIA_PLAYER;
+    private boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -357,6 +359,30 @@ public class SliderActivity extends AppCompatActivity {
             MEDIA_PLAYER.stop();
             MEDIA_PLAYER.release();
             MEDIA_PLAYER = null;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (MEDIA_PLAYER != null) {
+            MEDIA_PLAYER.pause();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!doubleBackToExitPressedOnce) {
+            doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click back again to exit.", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        } else {
+            super.onBackPressed();
         }
     }
 }

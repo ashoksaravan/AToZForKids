@@ -1,7 +1,9 @@
 package com.ashoksm.atozforkids;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -16,12 +18,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.DragEvent;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -157,7 +157,31 @@ public class DragAndDropActivity extends AppCompatActivity {
                 if (count == currentCount) {
                     count = 0;
                     currentCount = 0;
-                    loadContent();
+                    String itemName = getIntent().getStringExtra(SliderActivity.EXTRA_ITEM_NAME);
+                    if (itemName != null && itemName.trim().length() > 0) {
+                        speak("Well Done!!! Do you want to play again?");
+                        new AlertDialog.Builder(DragAndDropActivity.this)
+                                .setTitle("Well Done!!!")
+                                .setMessage("Do you want to play again?")
+                                .setPositiveButton(R.string.yes,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                loadContent();
+                                            }
+                                        })
+                                .setNegativeButton(R.string.no,
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                onBackPressed();
+                                            }
+                                        })
+                                .setIcon(R.drawable.ic_action_done)
+                                .show();
+                    } else {
+                        loadContent();
+                    }
                 }
             }
 
@@ -215,6 +239,7 @@ public class DragAndDropActivity extends AppCompatActivity {
         }
         mainBG.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), itemsDTO
                 .getImageResource(), width, height));
+        speak(itemsDTO.getItemName());
 
         List<String> chars = new ArrayList<>();
         for (char c : itemsDTO.getItemName().toCharArray()) {
@@ -242,6 +267,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                 choice.setOnDragListener(new ChoiceDragListener());
                 choice.setText(String.valueOf(itemsDTO.getItemName().charAt(i - 1)).toUpperCase());
                 choice.setTextColor(Color.parseColor("#E5E4E2"));
+                choice.setTypeface(Typeface.DEFAULT);
                 choice.setTag(null);
             } else {
                 choice.setVisibility(View.GONE);

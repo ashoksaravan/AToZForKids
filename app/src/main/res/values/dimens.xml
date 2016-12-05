@@ -7,4 +7,5 @@
     <dimen name="main_grid_height">120dp</dimen>
     <dimen name="main_card_height">145dp</dimen>
     <dimen name="puzzle_button_margin">16dp</dimen>
+    <dimen name="image_margin">25dp</dimen>
 </resources>
