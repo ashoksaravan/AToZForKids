@@ -112,6 +112,8 @@ public class DataStore {
     public List<ItemsDTO> getAnimals() {
         if (animals == null) {
             animals = new ArrayList<>();
+            animals.add(new ItemsDTO("Ant", R.drawable.ant));
+            animals.add(new ItemsDTO("Bat", R.drawable.bat, R.raw.bat));
             animals.add(new ItemsDTO("Bear", R.drawable.bear, R.raw.bear));
             animals.add(new ItemsDTO("Bee", R.drawable.bee, R.raw.bee));
             animals.add(new ItemsDTO("Bison", R.drawable.bison, R.raw.bison));
@@ -119,14 +121,16 @@ public class DataStore {
             animals.add(new ItemsDTO("Butterfly", R.drawable.butterfly));
             animals.add(new ItemsDTO("Camel", R.drawable.camel, R.raw.camel));
             animals.add(new ItemsDTO("Cat", R.drawable.cat, R.raw.cat));
+            animals.add(new ItemsDTO("Chameleon", R.drawable.chameleon));
             animals.add(new ItemsDTO("Cheetah", R.drawable.cheetah, R.raw.cheetah));
             animals.add(new ItemsDTO("Chimpanzee", R.drawable.chimpanzee, R.raw.chimpanzee));
             animals.add(new ItemsDTO("Cow", R.drawable.cow, R.raw.cow));
+            animals.add(new ItemsDTO("Crab", R.drawable.crab));
             animals.add(new ItemsDTO("Crocodile", R.drawable.crocodile, R.raw.crocodile));
             animals.add(new ItemsDTO("Crow", R.drawable.crow, R.raw.crow));
             animals.add(new ItemsDTO("Deer", R.drawable.deer, R.raw.deer));
             animals.add(new ItemsDTO("Dog", R.drawable.dog, R.raw.dog));
-            animals.add(new ItemsDTO("Dolphin", R.drawable.dolphin));
+            animals.add(new ItemsDTO("Dolphin", R.drawable.dolphin, R.raw.dolphin));
             animals.add(new ItemsDTO("Donkey", R.drawable.donkey, R.raw.donkey));
             animals.add(new ItemsDTO("Duck", R.drawable.duck, R.raw.duck));
             animals.add(new ItemsDTO("Eagle", R.drawable.eagle, R.raw.eagle));
@@ -144,6 +148,7 @@ public class DataStore {
             animals.add(new ItemsDTO("Horn Bill", R.drawable.horn_bill, R.raw.horn_bill));
             animals.add(new ItemsDTO("Horse", R.drawable.horse, R.raw.horse));
             animals.add(new ItemsDTO("Humming Bird", R.drawable.humming_bird));
+            animals.add(new ItemsDTO("Hyena", R.drawable.hyena));
             animals.add(new ItemsDTO("Jaguar", R.drawable.jaguar, R.raw.jaguar));
             animals.add(new ItemsDTO("Kangaroo", R.drawable.kangaroo));
             animals.add(new ItemsDTO("Kingfisher", R.drawable.king_fisher, R.raw.kingfisher));
@@ -151,8 +156,10 @@ public class DataStore {
             animals.add(new ItemsDTO("Lady Bird", R.drawable.ladybug));
             animals.add(new ItemsDTO("Leopard", R.drawable.leopard, R.raw.leopard));
             animals.add(new ItemsDTO("Lion", R.drawable.lion, R.raw.lion));
+            animals.add(new ItemsDTO("Lobster", R.drawable.lobster));
             animals.add(new ItemsDTO("Macaw", R.drawable.macaw, R.raw.macaw));
             animals.add(new ItemsDTO("Monkey", R.drawable.monkey, R.raw.monkey));
+            animals.add(new ItemsDTO("Octopus", R.drawable.octopus));
             animals.add(new ItemsDTO("Ostrich", R.drawable.ostrich));
             animals.add(new ItemsDTO("Owl", R.drawable.owl, R.raw.owl));
             animals.add(new ItemsDTO("Panda", R.drawable.panda));
@@ -163,6 +170,7 @@ public class DataStore {
             animals.add(new ItemsDTO("Pig", R.drawable.pig, R.raw.pig));
             animals.add(new ItemsDTO("Polar Bear", R.drawable.polar_bear, R.raw.polarbear));
             animals.add(new ItemsDTO("Porcupine", R.drawable.porcupine));
+            animals.add(new ItemsDTO("Prawn", R.drawable.prawn));
             animals.add(new ItemsDTO("Quail", R.drawable.quail));
             animals.add(new ItemsDTO("Rat", R.drawable.rat, R.raw.rat));
             animals.add(new ItemsDTO("Rabbit", R.drawable.rabbit));
@@ -173,8 +181,9 @@ public class DataStore {
             animals.add(new ItemsDTO("Seal", R.drawable.seal, R.raw.seal));
             animals.add(new ItemsDTO("Shark", R.drawable.shark));
             animals.add(new ItemsDTO("Sheep", R.drawable.sheep, R.raw.sheep));
-            animals.add(new ItemsDTO("Sparrow", R.drawable.sparrow, R.raw.sparrow));
+            animals.add(new ItemsDTO("Snail", R.drawable.snail));
             animals.add(new ItemsDTO("Snake", R.drawable.snake, R.raw.snake));
+            animals.add(new ItemsDTO("Sparrow", R.drawable.sparrow, R.raw.sparrow));
             animals.add(new ItemsDTO("Spider", R.drawable.spider));
             animals.add(new ItemsDTO("Squirrel", R.drawable.squirrel, R.raw.squirrel));
             animals.add(new ItemsDTO("Stork", R.drawable.stork, R.raw.stork));
