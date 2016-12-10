@@ -1,55 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/icons"
     tools:context="com.ashoksm.atozforkids.PuzzleActivity">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/adLayout"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/puzzle_button_margin"
-        android:paddingRight="@dimen/puzzle_button_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
-
-        <Button
-            android:id="@+id/drag_and_drop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/spell_it"
-            android:textColor="@color/icons"/>
-
-        <Button
-            android:id="@+id/find_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/find_image"
-            android:textColor="@color/icons"/>
-
-        <Button
-            android:id="@+id/lets_count"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/lets_count"
-            android:textColor="@color/icons"/>
-
-        <Button
-            android:id="@+id/find_pair"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/find_a_pair"
-            android:textColor="@color/icons"/>
-
-    </LinearLayout>
+        android:layout_margin="5dp"
+        android:drawSelectorOnTop="true"
+        android:scrollbarThumbVertical="@drawable/scroll_bar"
+        android:scrollbars="vertical" />
 
     <LinearLayout
         android:id="@+id/adLayout"
@@ -57,5 +22,5 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </RelativeLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">A-Z Flash Cards and Sounds</string>
+    <string name="app_name">A-Z for Kids</string>
     <string name="action_settings">Settings</string>
     <string name="grid">Grid</string>
     <string name="title_activity_slider">SliderActivity</string>
@@ -19,6 +19,6 @@
     <string name="find_a_pair">Find a Pair</string>
     <string name="refresh">Refresh</string>
     <string name="play">Play</string>
-    <string name="spell">SPELL</string>
+    <string name="spell">Spell</string>
     <string name="speak">Speak</string>
 </resources>

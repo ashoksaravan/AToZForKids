@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -90,6 +91,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     private Bitmap starGreen;
     private Bitmap starYellow;
 
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +141,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 .ic_star_red, 10, 10);
         starYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
                 .star, 10, 10);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.applause);
     }
 
     private void initComponents() {
@@ -266,6 +271,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 new ParticleSystem(LetsCountActivity.this, 100, starYellow, 3000)
                         .setSpeedRange(0.1f, 0.2f).oneShot(row3, 100);
             }
+            mediaPlayer.start();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -934,5 +940,15 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

@@ -17,6 +17,7 @@ public class DataStore {
     private List<ItemsDTO> vegetables = null;
     private List<ItemsDTO> vehicles = null;
     private List<ItemsDTO> bodyParts = null;
+    private List<String> statusValues = null;
 
     public static DataStore getInstance() {
         return ourInstance;
@@ -328,5 +329,17 @@ public class DataStore {
             bodyParts.add(new ItemsDTO("Foot", R.drawable.foot));
         }
         return bodyParts;
+    }
+
+    public List<String> getStatusValues() {
+        if(statusValues == null) {
+            statusValues = new ArrayList<>();
+            statusValues.add("Well Done!!!");
+            statusValues.add("Great Job!!!");
+            statusValues.add("Excellent!!!");
+            statusValues.add("Marvellous!!!");
+            statusValues.add("Bravo!!!");
+        }
+        return statusValues;
     }
 }

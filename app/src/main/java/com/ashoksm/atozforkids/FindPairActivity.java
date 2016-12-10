@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,15 +49,7 @@ public class FindPairActivity extends AppCompatActivity
     private SparseArray<Bitmap> bitmapCache;
     private boolean showPopUp;
     private TextToSpeech textToSpeech;
-    private static final List<String> STATUS_VALUES = new ArrayList<>();
-
-    static {
-        STATUS_VALUES.add("Well Done!!!");
-        STATUS_VALUES.add("Great Job!!!");
-        STATUS_VALUES.add("Excellent!!!");
-        STATUS_VALUES.add("Marvellous!!!");
-        STATUS_VALUES.add("Bravo!!!");
-    }
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +100,8 @@ public class FindPairActivity extends AppCompatActivity
                 clickListener(imageViews.get(0));
             }
         }, 3000);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.applause);
     }
 
     private void renderView() {
@@ -342,12 +337,13 @@ public class FindPairActivity extends AppCompatActivity
                             views.get(0).setEnabled(true);
                             speak("Try Again!!!");
                         } else {
-                            speak(STATUS_VALUES
-                                    .get(RandomNumber.randInt(0, STATUS_VALUES.size() - 1)));
+                            speak(DataStore.getInstance().getStatusValues().get(RandomNumber
+                                    .randInt(0, DataStore.getInstance().getStatusValues().size() - 1)));
                             views.clear();
                             currentCount++;
                             if (totalCount / 2 == currentCount) {
                                 showPopUp = false;
+                                mediaPlayer.start();
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
@@ -536,5 +532,15 @@ public class FindPairActivity extends AppCompatActivity
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

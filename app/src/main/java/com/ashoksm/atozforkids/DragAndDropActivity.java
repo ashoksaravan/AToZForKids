@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -48,15 +49,11 @@ import java.util.Set;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class DragAndDropActivity extends AppCompatActivity {
 
-    private static final List<String> STATUS_VALUES = new ArrayList<>();
+
     private static final String LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     static {
-        STATUS_VALUES.add("Well Done!!!");
-        STATUS_VALUES.add("Great Job!!!");
-        STATUS_VALUES.add("Excellent!!!");
-        STATUS_VALUES.add("Marvellous!!!");
-        STATUS_VALUES.add("Bravo!!!");
+
     }
 
     private ImageView right;
@@ -72,8 +69,9 @@ public class DragAndDropActivity extends AppCompatActivity {
     private Bitmap starGreen;
     private Bitmap starYellow;
     private int itemCount;
-    int width;
-    int height;
+    private int width;
+    private int height;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,6 +197,7 @@ public class DragAndDropActivity extends AppCompatActivity {
         starYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
                 .star, 10, 10);
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.applause);
     }
 
     private void loadContent() {
@@ -223,9 +222,8 @@ public class DragAndDropActivity extends AppCompatActivity {
                                 DataStore.getInstance().getFruits().size() - 1));
                         break;
                     case 4:
-                        itemsDTO =
-                                DataStore.getInstance().getVegetables().get(RandomNumber.randInt(0,
-                                        DataStore.getInstance().getVegetables().size() - 1));
+                        itemsDTO = DataStore.getInstance().getVegetables().get(RandomNumber.randInt(0,
+                                DataStore.getInstance().getVegetables().size() - 1));
                         break;
                     case 5:
                         itemsDTO = DataStore.getInstance().getVehicles().get(RandomNumber.randInt(0,
@@ -392,14 +390,15 @@ public class DragAndDropActivity extends AppCompatActivity {
                         if (count == currentCount) {
                             speak(itemsDTO.getItemName());
                             while (true) {
-                                int temp = RandomNumber.randInt(1, STATUS_VALUES.size() - 1);
+                                int temp = RandomNumber.randInt(1, DataStore.getInstance()
+                                        .getStatusValues().size() - 1);
                                 if (temp != randInt) {
                                     randInt = temp;
                                     break;
                                 }
                             }
-                            speak(STATUS_VALUES.get(randInt));
-
+                            mediaPlayer.start();
+                            speak(DataStore.getInstance().getStatusValues().get(randInt));
                             new ParticleSystem(DragAndDropActivity.this, 100, starBlue, 3000)
                                     .setSpeedRange(0.1f, 0.5f).oneShot(mainBG, 100);
                             new ParticleSystem(DragAndDropActivity.this, 100, starGreen, 3000)
@@ -448,5 +447,15 @@ public class DragAndDropActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

@@ -1,18 +1,35 @@
 package com.ashoksm.atozforkids;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.ashoksm.atozforkids.adapter.MainGridAdapter;
+import com.ashoksm.atozforkids.dto.ItemsDTO;
+import com.ashoksm.atozforkids.utils.RecyclerItemClickListener;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PuzzleActivity extends AppCompatActivity {
+
+    private static final List<ItemsDTO> TITLES = new ArrayList<>();
+
+    static {
+        TITLES.add(new ItemsDTO("Spell It", R.drawable.puzzles));
+        TITLES.add(new ItemsDTO("Find Image", R.drawable.puzzles));
+        TITLES.add(new ItemsDTO("Let's Count", R.drawable.puzzles));
+        TITLES.add(new ItemsDTO("Find Pair", R.drawable.puzzles));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,38 +38,43 @@ public class PuzzleActivity extends AppCompatActivity {
 
         loadAd();
 
-        Button dragAndDrop = (Button) findViewById(R.id.drag_and_drop);
-        Button findImage = (Button) findViewById(R.id.find_image);
-        Button letsCount = (Button) findViewById(R.id.lets_count);
-        Button findPair = (Button) findViewById(R.id.find_pair);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gridView);
 
-        dragAndDrop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(DragAndDropActivity.class);
-            }
-        });
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true);
 
-        findImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(FindImageActivity.class);
-            }
-        });
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        }
 
-        letsCount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(LetsCountActivity.class);
-            }
-        });
+        MainGridAdapter adapter = new MainGridAdapter(getResources(), TITLES);
+        recyclerView.setAdapter(adapter);
 
-        findPair.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(FindPairActivity.class);
-            }
-        });
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getApplicationContext(),
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                switch (position) {
+                                    case 0:
+                                        startActivity(DragAndDropActivity.class);
+                                        break;
+                                    case 1:
+                                        startActivity(FindImageActivity.class);
+                                        break;
+                                    case 2:
+                                        startActivity(LetsCountActivity.class);
+                                        break;
+                                    case 3:
+                                        startActivity(FindPairActivity.class);
+                                        break;
+                                }
+                            }
+                        })
+        );
     }
 
     private void startActivity(Class clazz) {

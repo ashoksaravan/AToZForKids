@@ -1,5 +1,6 @@
 package com.ashoksm.atozforkids;
 
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -33,16 +34,6 @@ import java.util.Set;
 
 public class FindImageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final List<String> STATUS_VALUES = new ArrayList<>();
-
-    static {
-        STATUS_VALUES.add("Well Done!!!");
-        STATUS_VALUES.add("Great Job!!!");
-        STATUS_VALUES.add("Excellent!!!");
-        STATUS_VALUES.add("Marvellous!!!");
-        STATUS_VALUES.add("Bravo!!!");
-    }
-
     private ImageView right;
     private Animation fadeInAnimation;
     private ImageView image1;
@@ -57,6 +48,7 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
     private TextToSpeech textToSpeech;
     private View view;
     private int randInt;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +126,8 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         image2.setTag(image21);
         image3.setTag(image31);
         image4.setTag(image41);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.applause);
     }
 
     private void loadImages(boolean speak) {
@@ -235,19 +229,21 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         view.setEnabled(false);
         if (((ImageView) view.getTag()).getTag().equals(itemsDTO.getItemName())) {
             while (true) {
-                int temp = RandomNumber.randInt(0, STATUS_VALUES.size() - 1);
+                int temp = RandomNumber.randInt(0, DataStore.getInstance()
+                        .getStatusValues().size() - 1);
                 if (temp != randInt) {
                     randInt = temp;
                     break;
                 }
             }
-            speak(STATUS_VALUES.get(randInt));
+            speak(DataStore.getInstance().getStatusValues().get(randInt));
             image1.setEnabled(false);
             image2.setEnabled(false);
             image3.setEnabled(false);
             image4.setEnabled(false);
             right.setVisibility(View.VISIBLE);
             right.startAnimation(fadeInAnimation);
+            mediaPlayer.start();
         } else {
             speak("Try Again");
             ((ImageView) view.getTag()).setVisibility(View.VISIBLE);
@@ -278,5 +274,15 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

@@ -8,10 +8,9 @@ android {
         applicationId "com.ashoksm.atozforkids"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 27
-        versionName "2.9.13"
+        versionCode 30
+        versionName "2.9.16"
     }
-
     signingConfigs {
         release {
             storeFile file("../keystore/atozforkids.jks")
