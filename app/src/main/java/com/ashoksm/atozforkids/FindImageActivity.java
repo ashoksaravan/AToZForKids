@@ -25,6 +25,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +50,8 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
     private View view;
     private int randInt;
     private MediaPlayer mediaPlayer;
+    private InterstitialAd mInterstitialAd;
+    private int adCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,9 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_find_image);
 
         loadAd();
+        mInterstitialAd = newInterstitialAd();
+        loadInterstitial();
+        adCount = 1;
 
         view = findViewById(R.id.find_image_main_view);
         image1 = (ImageView) findViewById(R.id.image1);
@@ -109,6 +115,12 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
                 right.setVisibility(View.GONE);
                 unbindDrawables(view);
                 System.gc();
+                adCount++;
+                if (adCount % 5 == 0) {
+                    if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+                        mInterstitialAd.show();
+                    }
+                }
                 loadImages(true);
             }
 
@@ -279,10 +291,45 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mediaPlayer != null) {
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
+    }
+
+    private InterstitialAd newInterstitialAd() {
+        InterstitialAd interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.admob_interstitial_id));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+            }
+
+            @Override
+            public void onAdClosed() {
+                mInterstitialAd = newInterstitialAd();
+                loadInterstitial();
+            }
+        });
+        return interstitialAd;
+    }
+
+    private void loadInterstitial() {
+        AdRequest adRequest =
+                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        mInterstitialAd.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.slide_in_left, 0);
+        mInterstitialAd = newInterstitialAd();
+        loadInterstitial();
     }
 }

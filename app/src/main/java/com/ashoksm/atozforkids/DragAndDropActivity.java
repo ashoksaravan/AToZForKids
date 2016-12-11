@@ -12,7 +12,6 @@ import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +37,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
@@ -72,15 +72,15 @@ public class DragAndDropActivity extends AppCompatActivity {
     private int width;
     private int height;
     private MediaPlayer mediaPlayer;
+    private InterstitialAd mInterstitialAd;
+    private int adCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drag_and_drop);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
+        adCount = 1;
         loadAd();
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -201,6 +201,14 @@ public class DragAndDropActivity extends AppCompatActivity {
     }
 
     private void loadContent() {
+        adCount++;
+
+        if (adCount % 5 == 0) {
+            if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+                mInterstitialAd.show();
+            }
+        }
+
         String itemName = getIntent().getStringExtra(SliderActivity.EXTRA_ITEM_NAME);
         if (itemName != null && itemName.trim().length() > 0) {
             itemsDTO = new ItemsDTO(itemName, getIntent().getIntExtra(SliderActivity
@@ -452,10 +460,45 @@ public class DragAndDropActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mediaPlayer != null) {
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
+    }
+
+    private InterstitialAd newInterstitialAd() {
+        InterstitialAd interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.admob_interstitial_id));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+            }
+
+            @Override
+            public void onAdClosed() {
+                mInterstitialAd = newInterstitialAd();
+                loadInterstitial();
+            }
+        });
+        return interstitialAd;
+    }
+
+    private void loadInterstitial() {
+        AdRequest adRequest =
+                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        mInterstitialAd.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.slide_in_left, 0);
+        mInterstitialAd = newInterstitialAd();
+        loadInterstitial();
     }
 }

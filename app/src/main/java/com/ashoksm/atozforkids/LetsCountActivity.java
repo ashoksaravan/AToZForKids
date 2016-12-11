@@ -28,6 +28,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.Locale;
@@ -93,6 +94,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
 
     private MediaPlayer mediaPlayer;
 
+    private InterstitialAd mInterstitialAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +103,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
 
         //load Ad
         loadAd();
+        mInterstitialAd = newInterstitialAd();
+        loadInterstitial();
 
         initComponents();
         position = 1;
@@ -360,6 +365,9 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 four(size / position);
                 break;
             case 5:
+                if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                }
                 five(size / position);
                 break;
             case 6:
@@ -375,6 +383,9 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 nine(size / position);
                 break;
             case 10:
+                if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                }
                 ten(size / position);
                 break;
         }
@@ -950,5 +961,40 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
             mediaPlayer.release();
             mediaPlayer = null;
         }
+    }
+
+    private InterstitialAd newInterstitialAd() {
+        InterstitialAd interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.admob_interstitial_id));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+            }
+
+            @Override
+            public void onAdClosed() {
+                mInterstitialAd = newInterstitialAd();
+                loadInterstitial();
+            }
+        });
+        return interstitialAd;
+    }
+
+    private void loadInterstitial() {
+        AdRequest adRequest =
+                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        mInterstitialAd.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.slide_in_left, 0);
+        mInterstitialAd = newInterstitialAd();
+        loadInterstitial();
     }
 }
