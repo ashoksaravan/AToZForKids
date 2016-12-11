@@ -262,6 +262,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
             count = 0;
             position++;
             if (position > 10) {
+                mediaPlayer.start();
                 new ParticleSystem(LetsCountActivity.this, 100, starBlue, 3000)
                         .setSpeedRange(0.1f, 0.5f).oneShot(row3, 100);
                 new ParticleSystem(LetsCountActivity.this, 100, starGreen, 3000)
@@ -271,7 +272,6 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 new ParticleSystem(LetsCountActivity.this, 100, starYellow, 3000)
                         .setSpeedRange(0.1f, 0.2f).oneShot(row3, 100);
             }
-            mediaPlayer.start();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
