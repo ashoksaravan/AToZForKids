@@ -21,4 +21,13 @@
     <string name="play">Play</string>
     <string name="spell">Spell</string>
     <string name="speak">Speak</string>
+    <string name="alphabets">Alphabets</string>
+    <string name="numbers">Numbers</string>
+    <string name="colors">Colors</string>
+    <string name="shapes">Shapes</string>
+    <string name="animals">Animals</string>
+    <string name="fruits">Fruits</string>
+    <string name="vegetables">Vegetables</string>
+    <string name="vehicles">Vehicles</string>
+    <string name="body_parts">Body Parts</string>
 </resources>
