@@ -2,6 +2,7 @@ package com.ashoksm.atozforkids;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -39,9 +40,13 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SliderActivity extends AppCompatActivity {
 
@@ -51,13 +56,18 @@ public class SliderActivity extends AppCompatActivity {
     public static final String EXTRA_ITEM_NAME = "EXTRA_ITEM_NAME";
     public static final String EXTRA_ITEM_IMAGE_RESOURCE = "EXTRA_ITEM_IMAGE_RESOURCE";
     public static MediaPlayer MEDIA_PLAYER;
-    private boolean doubleBackToExitPressedOnce;
+    private boolean exitPressedOnce;
+    private SharedPreferences sharedPref;
+    private Timer timer;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slider);
         Intent intent = getIntent();
+
+        loadAd();
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -69,41 +79,15 @@ public class SliderActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        loadAd();
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.slider);
+        sharedPref = getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
+                Context.MODE_PRIVATE);
+        viewPager = (ViewPager) findViewById(R.id.slider);
         final TextView spell = (TextView) findViewById(R.id.spell);
         final BottomNavigationView bottomNavView =
                 (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
         final String itemName = intent.getStringExtra(MainActivity.EXTRA_ITEM_NAME);
 
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                Log.i("SliderActivity", "TextToSpeech onInit status::::::::" + status);
-                if (status == TextToSpeech.SUCCESS) {
-                    textToSpeech.setLanguage(Locale.getDefault());
-                    textToSpeech.setPitch(1.0f);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        try {
-                            Set<Voice> voices = textToSpeech.getVoices();
-                            for (Voice v : voices) {
-                                if (v.getLocale().equals(Locale.getDefault())) {
-                                    textToSpeech.setVoice(v);
-                                }
-                            }
-                        } catch (Exception ex) {
-                            Log.e("Voice not found", ex.getMessage());
-                        }
-                    }
-                    speak(0, itemName);
-                } else {
-                    Log.i("SliderActivity",
-                            "TextToSpeech onInit failed with status::::::::" + status);
-                }
-            }
-        });
-
+        initTTS(itemName);
         loadItems(itemName);
 
         if ("Numbers".equalsIgnoreCase(itemName)) {
@@ -146,6 +130,88 @@ public class SliderActivity extends AppCompatActivity {
         }
         spell.setTextColor(vibrantColor);
 
+        addPageChangeListener(spell, bottomNavView, itemName);
+        viewPager.setPageTransformer(false, new DepthPageTransformer());
+        addBottomNavListener(bottomNavView, itemName);
+
+        spell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ItemsDTO itemsDTO = items.get(CURRENT_ITEM);
+                Intent intent = new Intent(getApplicationContext(), DragAndDropActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(SliderActivity.EXTRA_ITEM_NAME, itemsDTO.getItemName());
+                intent.putExtra(SliderActivity.EXTRA_ITEM_IMAGE_RESOURCE,
+                        itemsDTO.getImageResource());
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_out_left, 0);
+            }
+        });
+
+        if (items.get(CURRENT_ITEM).getAudioResource() != 0
+                && sharedPref.getBoolean("sound", true)) {
+            MEDIA_PLAYER = MediaPlayer.create(this, items.get(CURRENT_ITEM).getAudioResource());
+            playAudio();
+        }
+
+        if (sharedPref.getBoolean("auto_play", false)) {
+            enableAutoPageSwitcher();
+        }
+    }
+
+    private void initTTS(final String itemName) {
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                Log.i("SliderActivity", "TextToSpeech onInit status::::::::" + status);
+                if (status == TextToSpeech.SUCCESS) {
+                    textToSpeech.setLanguage(Locale.getDefault());
+                    textToSpeech.setPitch(1.0f);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        try {
+                            Set<Voice> voices = textToSpeech.getVoices();
+                            for (Voice v : voices) {
+                                if (v.getLocale().equals(Locale.getDefault())) {
+                                    textToSpeech.setVoice(v);
+                                }
+                            }
+                        } catch (Exception ex) {
+                            Log.e("Voice not found", ex.getMessage());
+                        }
+                    }
+                    speak(0, itemName);
+                } else {
+                    Log.i("SliderActivity",
+                            "TextToSpeech onInit failed with status::::::::" + status);
+                }
+            }
+        });
+    }
+
+    private void addBottomNavListener(BottomNavigationView bottomNavView, final String itemName) {
+        bottomNavView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_previous:
+                                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
+                                break;
+                            case R.id.action_next:
+                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                                break;
+                            case R.id.action_speaker:
+                                speak(CURRENT_ITEM, itemName);
+                                playAudio();
+                                break;
+                        }
+                        return false;
+                    }
+                });
+    }
+
+    private void addPageChangeListener(final TextView spell, final BottomNavigationView bottomNavView,
+                                       final String itemName) {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int posOffsetPixels) {
@@ -173,7 +239,8 @@ public class SliderActivity extends AppCompatActivity {
                     MEDIA_PLAYER.release();
                     MEDIA_PLAYER = null;
                 }
-                if (items.get(CURRENT_ITEM).getAudioResource() != 0) {
+                if (items.get(CURRENT_ITEM).getAudioResource() != 0
+                        && sharedPref.getBoolean("sound", true)) {
                     MEDIA_PLAYER = MediaPlayer.create(SliderActivity.this, items.get(CURRENT_ITEM)
                             .getAudioResource());
                 }
@@ -184,78 +251,47 @@ public class SliderActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-
-        viewPager.setPageTransformer(false, new DepthPageTransformer());
-
-        bottomNavView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_previous:
-                                viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-                                break;
-                            case R.id.action_next:
-                                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                                break;
-                            case R.id.action_speaker:
-                                speak(CURRENT_ITEM, itemName);
-                                playAudio();
-                                break;
-                        }
-                        return false;
-                    }
-                });
-
-        spell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ItemsDTO itemsDTO = items.get(CURRENT_ITEM);
-                Intent intent = new Intent(getApplicationContext(), DragAndDropActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(SliderActivity.EXTRA_ITEM_NAME, itemsDTO.getItemName());
-                intent.putExtra(SliderActivity.EXTRA_ITEM_IMAGE_RESOURCE,
-                        itemsDTO.getImageResource());
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_out_left, 0);
-            }
-        });
-
-        if (items.get(CURRENT_ITEM).getAudioResource() != 0) {
-            MEDIA_PLAYER = MediaPlayer.create(this, items.get(CURRENT_ITEM).getAudioResource());
-            playAudio();
-        }
     }
 
     private void loadItems(String itemName) {
+        List<ItemsDTO> dtos = null;
         switch (itemName) {
             case "Alphabets":
-                items = DataStore.getInstance().getAlphabets();
+                dtos = DataStore.getInstance().getAlphabets();
                 break;
             case "Colors":
-                items = DataStore.getInstance().getColors();
+                dtos = DataStore.getInstance().getColors();
                 break;
             case "Shapes":
-                items = DataStore.getInstance().getShapes();
+                dtos = DataStore.getInstance().getShapes();
                 break;
             case "Numbers":
-                items = DataStore.getInstance().getNumbers();
+                dtos = DataStore.getInstance().getNumbers();
                 break;
             case "Animals":
-                items = DataStore.getInstance().getAnimals();
+                dtos = DataStore.getInstance().getAnimals();
                 break;
             case "Fruits":
-                items = DataStore.getInstance().getFruits();
+                dtos = DataStore.getInstance().getFruits();
                 break;
             case "Vegetables":
-                items = DataStore.getInstance().getVegetables();
+                dtos = DataStore.getInstance().getVegetables();
                 break;
             case "Vehicles":
-                items = DataStore.getInstance().getVehicles();
+                dtos = DataStore.getInstance().getVehicles();
                 break;
             case "Body Parts":
-                items = DataStore.getInstance().getBodyParts();
+                dtos = DataStore.getInstance().getBodyParts();
                 break;
+        }
+        if (sharedPref.getBoolean("random", false)) {
+            if (dtos != null) {
+                items = new ArrayList<>();
+                items.addAll(dtos);
+                Collections.shuffle(items);
+            }
+        } else {
+            items = dtos;
         }
     }
 
@@ -289,22 +325,24 @@ public class SliderActivity extends AppCompatActivity {
     }
 
     private void speak(int position, String itemName) {
-        try {
-            String s;
-            if (itemName.equalsIgnoreCase("Alphabets")) {
-                s = items.get(position).getItemName().substring(0, 1) + " For " +
-                        items.get(position).getItemName();
-            } else {
-                s = items.get(position).getItemName();
-            }
+        if (sharedPref.getBoolean("sound", true)) {
+            try {
+                String s;
+                if (itemName.equalsIgnoreCase("Alphabets")) {
+                    s = items.get(position).getItemName().substring(0, 1) + " For " +
+                            items.get(position).getItemName();
+                } else {
+                    s = items.get(position).getItemName();
+                }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
-            } else {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null, s);
+                } else {
+                    textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+                }
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
             }
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -372,17 +410,44 @@ public class SliderActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!doubleBackToExitPressedOnce) {
-            doubleBackToExitPressedOnce = true;
+        if (!exitPressedOnce) {
+            exitPressedOnce = true;
             Toast.makeText(this, "Please click back again to exit.", Toast.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    doubleBackToExitPressedOnce = false;
+                    exitPressedOnce = false;
                 }
             }, 2000);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void enableAutoPageSwitcher() {
+        timer = new Timer(); // At this line a new Thread will be created
+        timer.scheduleAtFixedRate(new RemindTask(), (sharedPref.getInt("interval", 3) + 2) * 1000,
+                sharedPref.getInt("interval", 3) * 1000);
+    }
+
+    class RemindTask extends TimerTask {
+
+        @Override
+        public void run() {
+
+            // As the TimerTask run on a separate thread from UI thread we have
+            // to call runOnUiThread to do work on UI thread.
+            runOnUiThread(new Runnable() {
+                public void run() {
+
+                    if (viewPager.getCurrentItem() > items.size()) {
+                        timer.cancel();
+                    } else {
+                        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                    }
+                }
+            });
+
         }
     }
 }

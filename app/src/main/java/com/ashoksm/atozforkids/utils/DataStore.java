@@ -96,16 +96,16 @@ public class DataStore {
     public List<ItemsDTO> getNumbers() {
         if (numbers == null) {
             numbers = new ArrayList<>();
-            numbers.add(new ItemsDTO("One"));
-            numbers.add(new ItemsDTO("Two"));
-            numbers.add(new ItemsDTO("Three"));
-            numbers.add(new ItemsDTO("Four"));
-            numbers.add(new ItemsDTO("Five"));
-            numbers.add(new ItemsDTO("Six"));
-            numbers.add(new ItemsDTO("Seven"));
-            numbers.add(new ItemsDTO("Eight"));
-            numbers.add(new ItemsDTO("Nine"));
-            numbers.add(new ItemsDTO("Ten"));
+            numbers.add(new ItemsDTO("One", "1"));
+            numbers.add(new ItemsDTO("Two", "2"));
+            numbers.add(new ItemsDTO("Three", "3"));
+            numbers.add(new ItemsDTO("Four", "4"));
+            numbers.add(new ItemsDTO("Five", "5"));
+            numbers.add(new ItemsDTO("Six", "6"));
+            numbers.add(new ItemsDTO("Seven", "7"));
+            numbers.add(new ItemsDTO("Eight", "8"));
+            numbers.add(new ItemsDTO("Nine", "9"));
+            numbers.add(new ItemsDTO("Ten", "10"));
         }
         return numbers;
     }
@@ -332,7 +332,7 @@ public class DataStore {
     }
 
     public List<String> getStatusValues() {
-        if(statusValues == null) {
+        if (statusValues == null) {
             statusValues = new ArrayList<>();
             statusValues.add("Well Done!!!");
             statusValues.add("Great Job!!!");

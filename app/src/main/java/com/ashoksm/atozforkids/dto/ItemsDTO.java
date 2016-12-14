@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 public class ItemsDTO implements Cloneable {
 
     private String itemName;
+    private String itemNumber;
     private int imageResource;
     private int imageResource2;
     private int vibrantColor;
@@ -25,6 +26,11 @@ public class ItemsDTO implements Cloneable {
         this.itemName = itemName;
         this.imageResource = imageResource;
         this.audioResource = audioResource;
+    }
+
+    public ItemsDTO(String itemName, String itemNumber) {
+        this.itemName = itemName;
+        this.itemNumber = itemNumber;
     }
 
     public String getItemName() {
@@ -86,5 +92,13 @@ public class ItemsDTO implements Cloneable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    public String getItemNumber() {
+        return itemNumber;
+    }
+
+    public void setItemNumber(String itemNumber) {
+        this.itemNumber = itemNumber;
     }
 }

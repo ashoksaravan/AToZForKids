@@ -25,8 +25,8 @@ public class PuzzleActivity extends AppCompatActivity {
     private static final List<ItemsDTO> TITLES = new ArrayList<>();
 
     static {
-        TITLES.add(new ItemsDTO("Spell It", R.drawable.puzzles));
-        TITLES.add(new ItemsDTO("Find Image", R.drawable.puzzles));
+        TITLES.add(new ItemsDTO("Spell Me", R.drawable.puzzles));
+        TITLES.add(new ItemsDTO("Find Me", R.drawable.puzzles));
         TITLES.add(new ItemsDTO("Let's Count", R.drawable.puzzles));
         TITLES.add(new ItemsDTO("Find Pair", R.drawable.puzzles));
     }

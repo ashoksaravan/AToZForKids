@@ -1,7 +1,9 @@
 package com.ashoksm.atozforkids;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -93,8 +95,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     private Bitmap starYellow;
 
     private MediaPlayer mediaPlayer;
-
     private InterstitialAd mInterstitialAd;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,9 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
 
         initComponents();
         position = 1;
+
+        sharedPreferences = getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
+                Context.MODE_PRIVATE);
 
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -147,7 +152,9 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         starYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
                 .star, 10, 10);
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.applause);
+        if (sharedPreferences.getBoolean("sound", true)) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.applause);
+        }
     }
 
     private void initComponents() {
@@ -267,7 +274,9 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
             count = 0;
             position++;
             if (position > 10) {
-                mediaPlayer.start();
+                if (mediaPlayer != null) {
+                    mediaPlayer.start();
+                }
                 new ParticleSystem(LetsCountActivity.this, 100, starBlue, 3000)
                         .setSpeedRange(0.1f, 0.5f).oneShot(row3, 100);
                 new ParticleSystem(LetsCountActivity.this, 100, starGreen, 3000)
@@ -392,17 +401,19 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void speak(String s) {
-        if (s == null) {
-            s = String.valueOf(count);
-        }
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null, s);
-            } else {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null);
+        if (sharedPreferences.getBoolean("sound", true)) {
+            if (s == null) {
+                s = String.valueOf(count);
             }
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null, s);
+                } else {
+                    textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null);
+                }
+            } catch (Exception e) {
+                Toast.makeText(this, "No TTS Found!!!", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -956,7 +967,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mediaPlayer != null) {
+        if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;

@@ -30,4 +30,23 @@
     <string name="vegetables">Vegetables</string>
     <string name="vehicles">Vehicles</string>
     <string name="body_parts">Body Parts</string>
+    <string name="random">Random</string>
+    <string name="sound">Sound</string>
+    <string name="auto_play">Auto Play</string>
+    <string name="set_interval">Set Interval :</string>
+    <string name="prompt">Choose Interval</string>
+    <string name="ok">ok</string>
+
+    <string-array name="intervals">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
 </resources>

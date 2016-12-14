@@ -52,7 +52,7 @@ public class GridPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         final View itemView = mLayoutInflater.inflate(R.layout.slider_grid_view, container, false);
-        final int number = position + 1;
+        final int number = Integer.parseInt(items.get(position).getItemNumber());
 
         //set name
         final TextView name = (TextView) itemView.findViewById(R.id.name);

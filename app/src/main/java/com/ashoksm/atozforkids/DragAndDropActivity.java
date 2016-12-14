@@ -3,7 +3,9 @@ package com.ashoksm.atozforkids;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ClipData;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -51,11 +53,6 @@ public class DragAndDropActivity extends AppCompatActivity {
 
 
     private static final String LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    static {
-
-    }
-
     private ImageView right;
     private Animation fadeInAnimation;
     private TextToSpeech textToSpeech;
@@ -74,6 +71,7 @@ public class DragAndDropActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private InterstitialAd mInterstitialAd;
     private int adCount;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +86,9 @@ public class DragAndDropActivity extends AppCompatActivity {
         display.getSize(size);
         width = size.x;
         height = size.y;
+
+        sharedPreferences = getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
+                Context.MODE_PRIVATE);
 
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -197,7 +198,9 @@ public class DragAndDropActivity extends AppCompatActivity {
         starYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
                 .star, 10, 10);
 
-        mediaPlayer = MediaPlayer.create(this, R.raw.applause);
+        if (sharedPreferences.getBoolean("sound", true)) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.applause);
+        }
     }
 
     private void loadContent() {
@@ -282,14 +285,16 @@ public class DragAndDropActivity extends AppCompatActivity {
     }
 
     private void speak(String s) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null, s);
-            } else {
-                textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null);
+        if (sharedPreferences.getBoolean("sound", true)) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null, s);
+                } else {
+                    textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null);
+                }
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
             }
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -405,7 +410,9 @@ public class DragAndDropActivity extends AppCompatActivity {
                                     break;
                                 }
                             }
-                            mediaPlayer.start();
+                            if (mediaPlayer != null) {
+                                mediaPlayer.start();
+                            }
                             speak(DataStore.getInstance().getStatusValues().get(randInt));
                             new ParticleSystem(DragAndDropActivity.this, 100, starBlue, 3000)
                                     .setSpeedRange(0.1f, 0.5f).oneShot(mainBG, 100);

@@ -2,6 +2,7 @@ package com.ashoksm.atozforkids.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -37,6 +38,7 @@ public class SliderPagerAdapter extends PagerAdapter {
     private int width;
     private int height;
     private String itemName;
+    private SharedPreferences sharedPreferences;
 
     public SliderPagerAdapter(List<ItemsDTO> itemsIn, Activity activityIn, TextToSpeech
             textToSpeech, int widthIn, int heightIn, String itemNameIn) {
@@ -49,6 +51,8 @@ public class SliderPagerAdapter extends PagerAdapter {
         this.width = widthIn;
         this.height = heightIn;
         this.itemName = itemNameIn;
+        this.sharedPreferences = activity.getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
+                Context.MODE_PRIVATE);
     }
 
     @Override
@@ -115,15 +119,17 @@ public class SliderPagerAdapter extends PagerAdapter {
             public void onClick(View v) {
                 v.startAnimation(shake);
                 v.invalidate();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    textToSpeech.speak(items.get(CURRENT_ITEM).getItemName(),
-                            TextToSpeech.QUEUE_FLUSH, null,
-                            items.get(CURRENT_ITEM).getItemName());
-                } else {
-                    textToSpeech.speak(items.get(CURRENT_ITEM).getItemName(),
-                            TextToSpeech.QUEUE_FLUSH, null);
+                if(sharedPreferences.getBoolean("sound", true)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        textToSpeech.speak(items.get(CURRENT_ITEM).getItemName(),
+                                TextToSpeech.QUEUE_FLUSH, null,
+                                items.get(CURRENT_ITEM).getItemName());
+                    } else {
+                        textToSpeech.speak(items.get(CURRENT_ITEM).getItemName(),
+                                TextToSpeech.QUEUE_FLUSH, null);
+                    }
+                    playAudio();
                 }
-                playAudio();
             }
         });
         container.addView(itemView);
