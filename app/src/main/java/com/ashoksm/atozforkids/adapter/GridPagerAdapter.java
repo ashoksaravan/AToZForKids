@@ -1,5 +1,6 @@
 package com.ashoksm.atozforkids.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -10,6 +11,8 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,16 +30,18 @@ import java.util.List;
 public class GridPagerAdapter extends PagerAdapter {
 
     private LayoutInflater mLayoutInflater;
-    private Context context;
+    private Activity context;
     private List<ItemsDTO> items;
     private SparseArray<Bitmap> bitmapCache;
+    private double screenSize;
 
-    public GridPagerAdapter(Context contextIn, List<ItemsDTO> itemsIn) {
+    public GridPagerAdapter(Activity contextIn, List<ItemsDTO> itemsIn) {
         this.context = contextIn;
         this.items = itemsIn;
-        mLayoutInflater =
+        this.mLayoutInflater =
                 (LayoutInflater) contextIn.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        bitmapCache = new SparseArray<>();
+        this.bitmapCache = new SparseArray<>();
+        this.screenSize = getScreenSize();
     }
 
     @Override
@@ -58,26 +63,7 @@ public class GridPagerAdapter extends PagerAdapter {
         final TextView name = (TextView) itemView.findViewById(R.id.name);
         name.setText(items.get(position).getItemName());
 
-        int size;
-        if (context.getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_PORTRAIT && !isLargeScreen()) {
-            size = 2000;
-            if (number == 1) {
-                size = 700;
-            } else if (number == 2) {
-                size = 1400;
-            }
-        } else {
-            size = 1000;
-            if (isLargeScreen()) {
-                size = 750;
-            }
-            if (number == 1) {
-                size = 300;
-            } else if (number == 2) {
-                size = 600;
-            }
-        }
+        int size = getImageSize(number);
         Bitmap imageBitmap = bitmapCache.get(number);
         if (imageBitmap == null) {
             imageBitmap = DecodeSampledBitmapFromResource
@@ -127,6 +113,60 @@ public class GridPagerAdapter extends PagerAdapter {
 
         container.addView(itemView);
         return itemView;
+    }
+
+    private int getImageSize(int number) {
+        int size;
+        if (context.getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
+            size = 750;
+            if (number == 1) {
+                size = 400;
+            } else if (number == 2) {
+                size = 600;
+            }
+        } else if (context.getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_PORTRAIT && screenSize > 4.0d && screenSize <= 5.0d) {
+            size = 1500;
+            if (number == 1) {
+                size = 700;
+            } else if (number == 2) {
+                size = 1200;
+            }
+        } else if (context.getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
+            size = 400;
+            if (number == 1) {
+                size = 250;
+            } else if (number == 2) {
+                size = 300;
+            }
+        } else if (context.getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_LANDSCAPE && screenSize > 4.0d && screenSize <= 5.0d) {
+            size = 900;
+            if (number == 1) {
+                size = 600;
+            }
+        } else if (context.getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_PORTRAIT && !isLargeScreen()) {
+            size = 2000;
+            if (number == 1) {
+                size = 700;
+            } else if (number == 2) {
+                size = 1400;
+            }
+        } else {
+            size = 1000;
+            if (isLargeScreen()) {
+                size = 750;
+            }
+            if (number == 1) {
+                size = 300;
+            } else if (number == 2) {
+                size = 600;
+            }
+        }
+        return size;
     }
 
     @Override
@@ -253,5 +293,18 @@ public class GridPagerAdapter extends PagerAdapter {
                 .SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE ||
                 context.getResources().getConfiguration().orientation ==
                         Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    private double getScreenSize() {
+        DisplayMetrics dm = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        int dens = dm.densityDpi;
+        double wi = (double) width / (double) dens;
+        double hi = (double) height / (double) dens;
+        double x = Math.pow(wi, 2);
+        double y = Math.pow(hi, 2);
+        return Math.sqrt(x + y);
     }
 }

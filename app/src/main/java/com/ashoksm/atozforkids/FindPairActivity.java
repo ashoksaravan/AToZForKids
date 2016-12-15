@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
@@ -53,6 +54,7 @@ public class FindPairActivity extends AppCompatActivity
     private TextToSpeech textToSpeech;
     private MediaPlayer mediaPlayer;
     private SharedPreferences sharedPreferences;
+    private double screenSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,28 @@ public class FindPairActivity extends AppCompatActivity
         sharedPreferences = getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
                 Context.MODE_PRIVATE);
 
+        initTTS();
+
+        viewCount = 0;
+        totalCount = 4;
+        screenSize = getScreenSize();
+        populateImage();
+        renderView();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                imageViews.get(0).setEnabled(true);
+                clickListener(imageViews.get(0));
+            }
+        }, 3000);
+
+        if (sharedPreferences.getBoolean("sound", true)) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.applause);
+        }
+    }
+
+    private void initTTS() {
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -93,23 +117,6 @@ public class FindPairActivity extends AppCompatActivity
                 }
             }
         });
-
-        viewCount = 0;
-        totalCount = 4;
-        populateImage();
-        renderView();
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                imageViews.get(0).setEnabled(true);
-                clickListener(imageViews.get(0));
-            }
-        }, 3000);
-
-        if (sharedPreferences.getBoolean("sound", true)) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.applause);
-        }
     }
 
     private void renderView() {
@@ -120,8 +127,17 @@ public class FindPairActivity extends AppCompatActivity
                 size = 375;
             } else if (isLargeScreenAndLandscape()) {
                 size = 275;
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
+                size = 150;
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
+                size = 200;
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_PORTRAIT) {
+                size = 600;
             } else {
-                size = 400;
+                size = 500;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -146,8 +162,17 @@ public class FindPairActivity extends AppCompatActivity
                 size = 325;
             } else if (isLargeScreenAndLandscape()) {
                 size = 275;
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
+                size = 150;
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
+                size = 175;
+            }  else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_PORTRAIT) {
+                size = 600;
             } else {
-                size = 350;
+                size = 500;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -180,8 +205,14 @@ public class FindPairActivity extends AppCompatActivity
                 size = 250;
             } else if (isLargeScreenAndLandscape()) {
                 size = 225;
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
+                size = 150;
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
+                size = 125;
             } else {
-                size = 300;
+                size = 450;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -219,14 +250,23 @@ public class FindPairActivity extends AppCompatActivity
                 findViewById(R.id.row_3).setVisibility(View.VISIBLE);
                 count = 12;
                 size = 175;
-            } else if (getResources().getConfiguration().orientation ==
-                    Configuration.ORIENTATION_LANDSCAPE) {
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
+                findViewById(R.id.row_3).setVisibility(View.VISIBLE);
+                size = 100;
+                count = 12;
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
+                size = 125;
+                count = 16;
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_PORTRAIT) {
+                count = 16;
+                size = 350;
+            } else {
                 findViewById(R.id.row_3).setVisibility(View.VISIBLE);
                 count = 12;
-                size = 200;
-            } else {
-                count = 16;
-                size = 250;
+                size = 325;
             }
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
                     (getResources(), R.drawable.question_mark, size, size));
@@ -246,8 +286,10 @@ public class FindPairActivity extends AppCompatActivity
         } else if (totalCount == 16) {
             if (isLargeScreenAndPortrait()) {
                 size = 175;
+            } else if (screenSize <= 4.0d) {
+                size = 90;
             } else {
-                size = 200;
+                size = 300;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -407,13 +449,8 @@ public class FindPairActivity extends AppCompatActivity
                                                                             new Runnable() {
                                                                                 @Override
                                                                                 public void run() {
-                                                                                    imageViews
-                                                                                            .get(0)
-                                                                                            .setEnabled(
-                                                                                                    true);
-                                                                                    clickListener(
-                                                                                            imageViews
-                                                                                                    .get(0));
+                                                                                    imageViews.get(0).setEnabled(true);
+                                                                                    clickListener(imageViews.get(0));
                                                                                 }
                                                                             }, 3000);
                                                                 }
@@ -554,5 +591,18 @@ public class FindPairActivity extends AppCompatActivity
             mediaPlayer.release();
             mediaPlayer = null;
         }
+    }
+
+    private double getScreenSize() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        int dens = dm.densityDpi;
+        double wi = (double) width / (double) dens;
+        double hi = (double) height / (double) dens;
+        double x = Math.pow(wi, 2);
+        double y = Math.pow(hi, 2);
+        return Math.sqrt(x + y);
     }
 }

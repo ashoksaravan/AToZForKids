@@ -398,7 +398,9 @@ public class SliderActivity extends AppCompatActivity {
             MEDIA_PLAYER.release();
             MEDIA_PLAYER = null;
         }
-        timer.cancel();
+        if(timer != null) {
+            timer.cancel();
+        }
     }
 
     @Override
@@ -407,7 +409,9 @@ public class SliderActivity extends AppCompatActivity {
         if (MEDIA_PLAYER != null) {
             MEDIA_PLAYER.pause();
         }
-        timer.cancel();
+        if(timer != null) {
+            timer.cancel();
+        }
     }
 
     @Override

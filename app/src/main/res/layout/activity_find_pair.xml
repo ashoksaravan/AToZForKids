@@ -1,9 +1,8 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/find_image_main_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/icons"
+    android:background="#f5f5f5"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -21,9 +20,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image2"
@@ -32,9 +30,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image3"
@@ -43,9 +40,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image4"
@@ -54,9 +50,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
     </LinearLayout>
 
@@ -74,9 +69,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image6"
@@ -85,9 +79,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image7"
@@ -96,9 +89,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image8"
@@ -107,9 +99,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
     </LinearLayout>
 
@@ -127,9 +118,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image10"
@@ -138,9 +128,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image11"
@@ -149,9 +138,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image12"
@@ -160,9 +148,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
     </LinearLayout>
 
@@ -180,9 +167,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image14"
@@ -191,9 +177,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image15"
@@ -202,9 +187,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
         <ImageView
             android:id="@+id/image16"
@@ -213,9 +197,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/main_grid_background"
             android:contentDescription="@string/app_name"
-            android:elevation="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/question_mark"/>
+            android:src="@drawable/question_mark" />
 
     </LinearLayout>
 </LinearLayout>

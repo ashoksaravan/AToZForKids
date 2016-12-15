@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -97,6 +98,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     private MediaPlayer mediaPlayer;
     private InterstitialAd mInterstitialAd;
     private SharedPreferences sharedPreferences;
+    private double screenSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,10 +112,30 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
 
         initComponents();
         position = 1;
+        screenSize = getScreenSize();
 
         sharedPreferences = getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
                 Context.MODE_PRIVATE);
 
+        initTTS();
+        setRandomImage();
+        populateGrid();
+
+        starBlue = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_star_blue, 10, 10);
+        starGreen = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_star_green, 10, 10);
+        starRed = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .ic_star_red, 10, 10);
+        starYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
+                .star, 10, 10);
+
+        if (sharedPreferences.getBoolean("sound", true)) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.applause);
+        }
+    }
+
+    private void initTTS() {
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -139,22 +161,6 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 }
             }
         });
-
-        setRandomImage();
-        populateGrid();
-
-        starBlue = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_star_blue, 10, 10);
-        starGreen = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_star_green, 10, 10);
-        starRed = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_star_red, 10, 10);
-        starYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .star, 10, 10);
-
-        if (sharedPreferences.getBoolean("sound", true)) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.applause);
-        }
     }
 
     private void initComponents() {
@@ -340,26 +346,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         text11.setVisibility(View.GONE);
         text12.setVisibility(View.GONE);
 
-        int size;
-        if (getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_PORTRAIT && !isLargeScreen()) {
-            size = 2000;
-            if (position == 1) {
-                size = 700;
-            } else if (position == 2) {
-                size = 1400;
-            }
-        } else {
-            size = 1000;
-            if (isLargeScreen()) {
-                size = 750;
-            }
-            if (position == 1) {
-                size = 300;
-            } else if (position == 2) {
-                size = 600;
-            }
-        }
+        int size = getImageSize();
+
         switch (position) {
             case 1:
                 one(size / position);
@@ -398,6 +386,60 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 ten(size / position);
                 break;
         }
+    }
+
+    private int getImageSize() {
+        int size;
+        if (getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
+            size = 750;
+            if (position == 1) {
+                size = 400;
+            } else if (position == 2) {
+                size = 600;
+            }
+        } else if (getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_PORTRAIT && screenSize > 4.0d && screenSize <= 5.0d) {
+            size = 1500;
+            if (position == 1) {
+                size = 700;
+            } else if (position == 2) {
+                size = 1200;
+            }
+        } else if (getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
+            size = 400;
+            if (position == 1) {
+                size = 250;
+            } else if (position == 2) {
+                size = 300;
+            }
+        } else if (getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_LANDSCAPE && screenSize > 4.0d && screenSize <= 5.0d) {
+            size = 900;
+            if (position == 1) {
+                size = 600;
+            }
+        } else if (getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_PORTRAIT && !isLargeScreen()) {
+            size = 2000;
+            if (position == 1) {
+                size = 700;
+            } else if (position == 2) {
+                size = 1400;
+            }
+        } else {
+            size = 1000;
+            if (isLargeScreen()) {
+                size = 750;
+            }
+            if (position == 1) {
+                size = 300;
+            } else if (position == 2) {
+                size = 600;
+            }
+        }
+        return size;
     }
 
     private void speak(String s) {
@@ -1007,5 +1049,18 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         overridePendingTransition(R.anim.slide_in_left, 0);
         mInterstitialAd = newInterstitialAd();
         loadInterstitial();
+    }
+
+    private double getScreenSize() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        int dens = dm.densityDpi;
+        double wi = (double) width / (double) dens;
+        double hi = (double) height / (double) dens;
+        double x = Math.pow(wi, 2);
+        double y = Math.pow(hi, 2);
+        return Math.sqrt(x + y);
     }
 }
