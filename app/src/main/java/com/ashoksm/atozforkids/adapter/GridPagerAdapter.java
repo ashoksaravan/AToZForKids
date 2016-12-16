@@ -3,16 +3,18 @@ package com.ashoksm.atozforkids.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.SparseArray;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +34,6 @@ public class GridPagerAdapter extends PagerAdapter {
     private Activity context;
     private List<ItemsDTO> items;
     private SparseArray<Bitmap> bitmapCache;
-    private double screenSize;
 
     public GridPagerAdapter(Activity contextIn, List<ItemsDTO> itemsIn) {
         this.context = contextIn;
@@ -40,7 +41,6 @@ public class GridPagerAdapter extends PagerAdapter {
         this.mLayoutInflater =
                 (LayoutInflater) contextIn.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.bitmapCache = new SparseArray<>();
-        this.screenSize = getScreenSize();
     }
 
     @Override
@@ -56,18 +56,52 @@ public class GridPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
         final View itemView = mLayoutInflater.inflate(R.layout.slider_grid_view, container, false);
-        final int number = Integer.parseInt(items.get(position).getItemNumber());
+
+        Display display = context.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x - 10;
+        int height = size.y - getStatusBarHeight() - (getActionBarHeight() * 2);
+        int number = Integer.parseInt(items.get(position).getItemNumber());
+
+        switch (number) {
+            case 2:
+                height = height / 2;
+                break;
+            case 3:
+                height = height / 2;
+                width = width / 2;
+                break;
+            case 4:
+            case 5:
+                height = height / 3;
+                width = width / 2;
+                break;
+            case 6:
+                height = height / 4;
+                width = width / 2;
+                break;
+            case 7:
+            case 8:
+            case 9:
+                height = height / 5;
+                width = width / 2;
+                break;
+            case 10:
+                height = height / 6;
+                width = width / 2;
+                break;
+        }
 
         //set name
         final TextView name = (TextView) itemView.findViewById(R.id.name);
         name.setText(items.get(position).getItemName());
 
-        int size = getImageSize(number);
         Bitmap imageBitmap = bitmapCache.get(number);
         if (imageBitmap == null) {
             imageBitmap = DecodeSampledBitmapFromResource
                     .execute(context.getResources(), items.get(number - 1)
-                            .getImageResource(), size / number, size / number);
+                            .getImageResource(), width, height);
             bitmapCache.put(number, imageBitmap);
         }
 
@@ -107,97 +141,11 @@ public class GridPagerAdapter extends PagerAdapter {
         gridView.setHasFixedSize(true);
         final GridLayoutManager manager = getGridLayoutManager(number);
         gridView.setLayoutManager(manager);
-        gridView.setAdapter(new GridAdapter(number, size));
+        gridView.setAdapter(new GridAdapter(number, width, height));
 
 
         container.addView(itemView);
         return itemView;
-    }
-
-    private int getImageSize(int number) {
-        int size;
-        if (context.getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
-            size = 750;
-            if (number == 1) {
-                size = 400;
-            } else if (number == 2) {
-                size = 600;
-            }
-        } else if (context.getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_PORTRAIT && screenSize > 4.0d && screenSize <= 5.0d) {
-            size = 1500;
-            if (number == 1) {
-                size = 700;
-            } else if (number == 2) {
-                size = 1200;
-            } else if (number >= 7) {
-                size = 1800;
-            }
-        } else if (context.getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
-            size = 400;
-            if (number == 1) {
-                size = 250;
-            } else if (number == 2) {
-                size = 300;
-            }
-        } else if (context.getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_LANDSCAPE && screenSize > 4.0d && screenSize <= 5.0d) {
-            size = 900;
-            if (number == 1) {
-                size = 600;
-            }
-        } else if (context.getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_PORTRAIT && !isLargeScreen()) {
-            size = 2000;
-            if (number == 1) {
-                size = 700;
-            } else if (number == 2) {
-                size = 1400;
-            }
-        } else if (context.getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_LANDSCAPE && !isLargeScreen()) {
-            size = 1000;
-            if (isLargeScreen()) {
-                size = 750;
-            }
-            if (number == 1) {
-                size = 300;
-            } else if (number == 2) {
-                size = 600;
-            }
-        } else if(isXLargeScreenAndPortrait()) {
-            size = 1500;
-            if (number == 1) {
-                size = 600;
-            } else if (number == 2) {
-                size = 1000;
-            }
-        } else if(isXLargeScreenAndLandscape()) {
-            size = 900;
-            if (number == 1) {
-                size = 500;
-            } else if (number == 2) {
-                size = 600;
-            }
-        } else if (context.getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_PORTRAIT) {
-            size = 1800;
-            if (number == 1) {
-                size = 800;
-            } else if (number == 2) {
-                size = 1400;
-            }
-        } else {
-            size = 1200;
-            if (number == 1) {
-                size = 500;
-            } else if (number == 2) {
-                size = 800;
-            }
-        }
-        return size;
     }
 
     @Override
@@ -222,11 +170,13 @@ public class GridPagerAdapter extends PagerAdapter {
     class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
         private int count;
-        private int size;
+        private int width;
+        private int height;
 
-        GridAdapter(int countIn, int sizeIn) {
+        GridAdapter(int countIn, int widthIn, int heightIn) {
             this.count = countIn;
-            this.size = sizeIn;
+            this.width = widthIn;
+            this.height = heightIn;
         }
 
         @Override
@@ -234,16 +184,15 @@ public class GridPagerAdapter extends PagerAdapter {
             // create a new view
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.grid_image, parent, false);
-            // set the view's size, margins, padding's and layout parameters
+            // set the view's width, margins, padding's and layout parameters
             return new ViewHolder(v);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             holder.titleImg.setImageBitmap(bitmapCache.get(count));
-            holder.titleImg.getLayoutParams().height = size / count;
-            holder.titleImg.getLayoutParams().width = size / count;
-            holder.titleImg.setScaleType(ImageView.ScaleType.FIT_XY);
+            holder.titleImg.getLayoutParams().height = height;
+            holder.titleImg.getLayoutParams().width = width;
         }
 
         @Override
@@ -319,37 +268,22 @@ public class GridPagerAdapter extends PagerAdapter {
         return manager;
     }
 
-    private boolean isLargeScreen() {
-        return (context.getResources().getConfiguration().screenLayout & Configuration
-                .SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE ||
-                context.getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE;
+    private int getActionBarHeight() {
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources()
+                    .getDisplayMetrics());
+        }
+        return actionBarHeight;
     }
 
-    private boolean isXLargeScreenAndPortrait() {
-        return (context.getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
-                context.getApplicationContext().getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_PORTRAIT;
-    }
-
-    private boolean isXLargeScreenAndLandscape() {
-        return (context.getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
-                context.getApplicationContext().getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE;
-    }
-
-    private double getScreenSize() {
-        DisplayMetrics dm = new DisplayMetrics();
-        context.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        int dens = dm.densityDpi;
-        double wi = (double) width / (double) dens;
-        double hi = (double) height / (double) dens;
-        double x = Math.pow(wi, 2);
-        double y = Math.pow(hi, 2);
-        return Math.sqrt(x + y);
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }

@@ -4,8 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,8 +13,9 @@ import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -98,7 +99,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     private MediaPlayer mediaPlayer;
     private InterstitialAd mInterstitialAd;
     private SharedPreferences sharedPreferences;
-    private double screenSize;
+    private int width;
+    private int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,10 +114,15 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
 
         initComponents();
         position = 1;
-        screenSize = getScreenSize();
 
         sharedPreferences = getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
                 Context.MODE_PRIVATE);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x - 10;
+        height = size.y - getStatusBarHeight() - (getActionBarHeight() * 2);
 
         initTTS();
         setRandomImage();
@@ -346,132 +353,44 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         text11.setVisibility(View.GONE);
         text12.setVisibility(View.GONE);
 
-        int size = getImageSize();
-
         switch (position) {
             case 1:
-                one(size / position);
+                one(height, width);
                 break;
             case 2:
-                two(size / position);
+                two(height / 2, width);
                 break;
             case 3:
-                three(size / position);
+                three(height / 2, width / 2);
                 break;
             case 4:
-                four(size / position);
+                four(height / 3, width / 2);
                 break;
             case 5:
                 if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 }
-                five(size / position);
+                five(height / 3, width / 2);
                 break;
             case 6:
-                six(size / position);
+                six(height / 4, width / 2);
                 break;
             case 7:
-                seven(size / position);
+                seven(height / 5, width / 2);
                 break;
             case 8:
-                eight(size / position);
+                eight(height / 5, width / 2);
                 break;
             case 9:
-                nine(size / position);
+                nine(height / 5, width / 2);
                 break;
             case 10:
                 if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
                     mInterstitialAd.show();
                 }
-                ten(size / position);
+                ten(height / 6, width / 2);
                 break;
         }
-    }
-
-    private int getImageSize() {
-        int size;
-        if (getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
-            size = 750;
-            if (position == 1) {
-                size = 400;
-            } else if (position == 2) {
-                size = 600;
-            }
-        } else if (getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_PORTRAIT && screenSize > 4.0d && screenSize <= 5.0d) {
-            size = 1500;
-            if (position == 1) {
-                size = 700;
-            } else if (position == 2) {
-                size = 1200;
-            } else if (position >= 7) {
-                size = 1800;
-            }
-        } else if (getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
-            size = 400;
-            if (position == 1) {
-                size = 250;
-            } else if (position == 2) {
-                size = 300;
-            }
-        } else if (getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_LANDSCAPE && screenSize > 4.0d && screenSize <= 5.0d) {
-            size = 900;
-            if (position == 1) {
-                size = 600;
-            }
-        } else if (getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_PORTRAIT && !isLargeScreen()) {
-            size = 2000;
-            if (position == 1) {
-                size = 700;
-            } else if (position == 2) {
-                size = 1400;
-            }
-        } else if (getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_LANDSCAPE && !isLargeScreen()) {
-            size = 1000;
-            if (isLargeScreen()) {
-                size = 750;
-            }
-            if (position == 1) {
-                size = 300;
-            } else if (position == 2) {
-                size = 600;
-            }
-        } else if(isXLargeScreenAndPortrait()) {
-            size = 1500;
-            if (position == 1) {
-                size = 600;
-            } else if (position == 2) {
-                size = 1000;
-            }
-        } else if(isXLargeScreenAndLandscape()) {
-            size = 900;
-            if (position == 1) {
-                size = 500;
-            } else if (position == 2) {
-                size = 600;
-            }
-        } else if (getResources().getConfiguration().orientation == Configuration
-                .ORIENTATION_PORTRAIT) {
-            size = 1800;
-            if (position == 1) {
-                size = 800;
-            } else if (position == 2) {
-                size = 1400;
-            }
-        } else {
-            size = 1200;
-            if (position == 1) {
-                size = 500;
-            } else if (position == 2) {
-                size = 800;
-            }
-        }
-        return size;
     }
 
     private void speak(String s) {
@@ -491,7 +410,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private void one(int size) {
+    private void one(int height, int width) {
         row1.setVisibility(View.VISIBLE);
         row2.setVisibility(View.GONE);
 
@@ -499,16 +418,16 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         frame2.setVisibility(View.GONE);
 
         Bitmap bitmap = DecodeSampledBitmapFromResource
-                .execute(getResources(), imgResource, size, size);
+                .execute(getResources(), imgResource, width, height);
 
         image1.setImageBitmap(bitmap);
         image1.setEnabled(true);
 
-        image1.getLayoutParams().height = size;
-        image1.getLayoutParams().width = size;
+        image1.getLayoutParams().height = height;
+        image1.getLayoutParams().width = width;
     }
 
-    private void two(int size) {
+    private void two(int height, int width) {
         row1.setVisibility(View.VISIBLE);
         row2.setVisibility(View.VISIBLE);
 
@@ -516,23 +435,23 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         frame3.setVisibility(View.VISIBLE);
 
         Bitmap bitmap = DecodeSampledBitmapFromResource
-                .execute(getResources(), imgResource, size, size);
+                .execute(getResources(), imgResource, width, height);
 
         image1.setImageBitmap(bitmap);
         image1.setEnabled(true);
         image3.setImageBitmap(bitmap);
         image3.setEnabled(true);
 
-        image1.getLayoutParams().height = size;
-        image1.getLayoutParams().width = size;
-        image3.getLayoutParams().height = size;
-        image3.getLayoutParams().width = size;
+        image1.getLayoutParams().height = height;
+        image1.getLayoutParams().width = width;
+        image3.getLayoutParams().height = height;
+        image3.getLayoutParams().width = width;
 
         text1.setText("");
         text3.setText("");
     }
 
-    private void three(int size) {
+    private void three(int height, int width) {
         row1.setVisibility(View.VISIBLE);
         row2.setVisibility(View.VISIBLE);
 
@@ -541,7 +460,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         frame4.setVisibility(View.VISIBLE);
 
         Bitmap bitmap = DecodeSampledBitmapFromResource
-                .execute(getResources(), imgResource, size, size);
+                .execute(getResources(), imgResource, width, height);
 
         image1.setImageBitmap(bitmap);
         image1.setEnabled(true);
@@ -550,19 +469,19 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         image4.setImageBitmap(bitmap);
         image4.setEnabled(true);
 
-        image1.getLayoutParams().height = size;
-        image1.getLayoutParams().width = size;
-        image3.getLayoutParams().height = size;
-        image3.getLayoutParams().width = size;
-        image4.getLayoutParams().height = size;
-        image4.getLayoutParams().width = size;
+        image1.getLayoutParams().height = height;
+        image1.getLayoutParams().width = width;
+        image3.getLayoutParams().height = height;
+        image3.getLayoutParams().width = width;
+        image4.getLayoutParams().height = height;
+        image4.getLayoutParams().width = width;
 
         text1.setText("");
         text3.setText("");
         text4.setText("");
     }
 
-    private void four(int size) {
+    private void four(int height, int width) {
         row1.setVisibility(View.VISIBLE);
         row2.setVisibility(View.VISIBLE);
         row3.setVisibility(View.VISIBLE);
@@ -574,7 +493,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         frame6.setVisibility(View.GONE);
 
         Bitmap bitmap = DecodeSampledBitmapFromResource
-                .execute(getResources(), imgResource, size, size);
+                .execute(getResources(), imgResource, width, height);
 
         image1.setImageBitmap(bitmap);
         image1.setEnabled(true);
@@ -585,14 +504,14 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         image5.setImageBitmap(bitmap);
         image5.setEnabled(true);
 
-        image1.getLayoutParams().height = size;
-        image1.getLayoutParams().width = size;
-        image3.getLayoutParams().height = size;
-        image3.getLayoutParams().width = size;
-        image4.getLayoutParams().height = size;
-        image4.getLayoutParams().width = size;
-        image5.getLayoutParams().height = size;
-        image5.getLayoutParams().width = size;
+        image1.getLayoutParams().height = height;
+        image1.getLayoutParams().width = width;
+        image3.getLayoutParams().height = height;
+        image3.getLayoutParams().width = width;
+        image4.getLayoutParams().height = height;
+        image4.getLayoutParams().width = width;
+        image5.getLayoutParams().height = height;
+        image5.getLayoutParams().width = width;
 
         text1.setText("");
         text3.setText("");
@@ -600,7 +519,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         text5.setText("");
     }
 
-    private void five(int size) {
+    private void five(int height, int width) {
         row1.setVisibility(View.VISIBLE);
         row2.setVisibility(View.VISIBLE);
         row3.setVisibility(View.VISIBLE);
@@ -613,7 +532,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         frame6.setVisibility(View.VISIBLE);
 
         Bitmap bitmap = DecodeSampledBitmapFromResource
-                .execute(getResources(), imgResource, size, size);
+                .execute(getResources(), imgResource, width, height);
 
         image1.setImageBitmap(bitmap);
         image1.setEnabled(true);
@@ -626,16 +545,16 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         image6.setImageBitmap(bitmap);
         image6.setEnabled(true);
 
-        image1.getLayoutParams().height = size;
-        image1.getLayoutParams().width = size;
-        image2.getLayoutParams().height = size;
-        image2.getLayoutParams().width = size;
-        image3.getLayoutParams().height = size;
-        image3.getLayoutParams().width = size;
-        image5.getLayoutParams().height = size;
-        image5.getLayoutParams().width = size;
-        image6.getLayoutParams().height = size;
-        image6.getLayoutParams().width = size;
+        image1.getLayoutParams().height = height;
+        image1.getLayoutParams().width = width;
+        image2.getLayoutParams().height = height;
+        image2.getLayoutParams().width = width;
+        image3.getLayoutParams().height = height;
+        image3.getLayoutParams().width = width;
+        image5.getLayoutParams().height = height;
+        image5.getLayoutParams().width = width;
+        image6.getLayoutParams().height = height;
+        image6.getLayoutParams().width = width;
 
         text1.setText("");
         text2.setText("");
@@ -644,7 +563,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         text6.setText("");
     }
 
-    private void six(int size) {
+    private void six(int height, int width) {
         row1.setVisibility(View.VISIBLE);
         row2.setVisibility(View.VISIBLE);
         row3.setVisibility(View.VISIBLE);
@@ -660,7 +579,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         frame8.setVisibility(View.VISIBLE);
 
         Bitmap bitmap = DecodeSampledBitmapFromResource
-                .execute(getResources(), imgResource, size, size);
+                .execute(getResources(), imgResource, width, height);
 
         image1.setImageBitmap(bitmap);
         image1.setEnabled(true);
@@ -675,18 +594,18 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         image8.setImageBitmap(bitmap);
         image8.setEnabled(true);
 
-        image1.getLayoutParams().height = size;
-        image1.getLayoutParams().width = size;
-        image3.getLayoutParams().height = size;
-        image3.getLayoutParams().width = size;
-        image4.getLayoutParams().height = size;
-        image4.getLayoutParams().width = size;
-        image5.getLayoutParams().height = size;
-        image5.getLayoutParams().width = size;
-        image7.getLayoutParams().height = size;
-        image7.getLayoutParams().width = size;
-        image8.getLayoutParams().height = size;
-        image8.getLayoutParams().width = size;
+        image1.getLayoutParams().height = height;
+        image1.getLayoutParams().width = width;
+        image3.getLayoutParams().height = height;
+        image3.getLayoutParams().width = width;
+        image4.getLayoutParams().height = height;
+        image4.getLayoutParams().width = width;
+        image5.getLayoutParams().height = height;
+        image5.getLayoutParams().width = width;
+        image7.getLayoutParams().height = height;
+        image7.getLayoutParams().width = width;
+        image8.getLayoutParams().height = height;
+        image8.getLayoutParams().width = width;
 
         text1.setText("");
         text3.setText("");
@@ -696,7 +615,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         text8.setText("");
     }
 
-    private void seven(int size) {
+    private void seven(int height, int width) {
         row1.setVisibility(View.VISIBLE);
         row2.setVisibility(View.VISIBLE);
         row3.setVisibility(View.VISIBLE);
@@ -714,7 +633,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         frame9.setVisibility(View.VISIBLE);
 
         Bitmap bitmap = DecodeSampledBitmapFromResource
-                .execute(getResources(), imgResource, size, size);
+                .execute(getResources(), imgResource, width, height);
 
         image1.setImageBitmap(bitmap);
         image1.setEnabled(true);
@@ -731,20 +650,20 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         image9.setImageBitmap(bitmap);
         image9.setEnabled(true);
 
-        image1.getLayoutParams().height = size;
-        image1.getLayoutParams().width = size;
-        image3.getLayoutParams().height = size;
-        image3.getLayoutParams().width = size;
-        image4.getLayoutParams().height = size;
-        image4.getLayoutParams().width = size;
-        image5.getLayoutParams().height = size;
-        image5.getLayoutParams().width = size;
-        image7.getLayoutParams().height = size;
-        image7.getLayoutParams().width = size;
-        image8.getLayoutParams().height = size;
-        image8.getLayoutParams().width = size;
-        image9.getLayoutParams().height = size;
-        image9.getLayoutParams().width = size;
+        image1.getLayoutParams().height = height;
+        image1.getLayoutParams().width = width;
+        image3.getLayoutParams().height = height;
+        image3.getLayoutParams().width = width;
+        image4.getLayoutParams().height = height;
+        image4.getLayoutParams().width = width;
+        image5.getLayoutParams().height = height;
+        image5.getLayoutParams().width = width;
+        image7.getLayoutParams().height = height;
+        image7.getLayoutParams().width = width;
+        image8.getLayoutParams().height = height;
+        image8.getLayoutParams().width = width;
+        image9.getLayoutParams().height = height;
+        image9.getLayoutParams().width = width;
 
         text1.setText("");
         text3.setText("");
@@ -755,7 +674,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         text9.setText("");
     }
 
-    private void eight(int size) {
+    private void eight(int height, int width) {
         row1.setVisibility(View.VISIBLE);
         row2.setVisibility(View.VISIBLE);
         row3.setVisibility(View.VISIBLE);
@@ -773,8 +692,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         frame9.setVisibility(View.VISIBLE);
         frame10.setVisibility(View.VISIBLE);
 
-        Bitmap bitmap = DecodeSampledBitmapFromResource
-                .execute(getResources(), imgResource, size, size);
+        Bitmap bitmap = DecodeSampledBitmapFromResource.execute(getResources(), imgResource, width,
+                height);
 
         image1.setImageBitmap(bitmap);
         image1.setEnabled(true);
@@ -793,22 +712,22 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         image10.setImageBitmap(bitmap);
         image10.setEnabled(true);
 
-        image1.getLayoutParams().height = size;
-        image1.getLayoutParams().width = size;
-        image2.getLayoutParams().height = size;
-        image2.getLayoutParams().width = size;
-        image3.getLayoutParams().height = size;
-        image3.getLayoutParams().width = size;
-        image5.getLayoutParams().height = size;
-        image5.getLayoutParams().width = size;
-        image6.getLayoutParams().height = size;
-        image6.getLayoutParams().width = size;
-        image7.getLayoutParams().height = size;
-        image7.getLayoutParams().width = size;
-        image9.getLayoutParams().height = size;
-        image9.getLayoutParams().width = size;
-        image10.getLayoutParams().height = size;
-        image10.getLayoutParams().width = size;
+        image1.getLayoutParams().height = height;
+        image1.getLayoutParams().width = width;
+        image2.getLayoutParams().height = height;
+        image2.getLayoutParams().width = width;
+        image3.getLayoutParams().height = height;
+        image3.getLayoutParams().width = width;
+        image5.getLayoutParams().height = height;
+        image5.getLayoutParams().width = width;
+        image6.getLayoutParams().height = height;
+        image6.getLayoutParams().width = width;
+        image7.getLayoutParams().height = height;
+        image7.getLayoutParams().width = width;
+        image9.getLayoutParams().height = height;
+        image9.getLayoutParams().width = width;
+        image10.getLayoutParams().height = height;
+        image10.getLayoutParams().width = width;
 
         text1.setText("");
         text2.setText("");
@@ -820,7 +739,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         text10.setText("");
     }
 
-    private void nine(int size) {
+    private void nine(int height, int width) {
         row1.setVisibility(View.VISIBLE);
         row2.setVisibility(View.VISIBLE);
         row3.setVisibility(View.VISIBLE);
@@ -839,7 +758,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         frame10.setVisibility(View.VISIBLE);
 
         Bitmap bitmap = DecodeSampledBitmapFromResource
-                .execute(getResources(), imgResource, size, size);
+                .execute(getResources(), imgResource, width, height);
 
         image1.setImageBitmap(bitmap);
         image1.setEnabled(true);
@@ -860,24 +779,24 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         image10.setImageBitmap(bitmap);
         image10.setEnabled(true);
 
-        image1.getLayoutParams().height = size;
-        image1.getLayoutParams().width = size;
-        image2.getLayoutParams().height = size;
-        image2.getLayoutParams().width = size;
-        image3.getLayoutParams().height = size;
-        image3.getLayoutParams().width = size;
-        image4.getLayoutParams().height = size;
-        image4.getLayoutParams().width = size;
-        image5.getLayoutParams().height = size;
-        image5.getLayoutParams().width = size;
-        image7.getLayoutParams().height = size;
-        image7.getLayoutParams().width = size;
-        image9.getLayoutParams().height = size;
-        image8.getLayoutParams().height = size;
-        image8.getLayoutParams().width = size;
-        image9.getLayoutParams().width = size;
-        image10.getLayoutParams().height = size;
-        image10.getLayoutParams().width = size;
+        image1.getLayoutParams().height = height;
+        image1.getLayoutParams().width = width;
+        image2.getLayoutParams().height = height;
+        image2.getLayoutParams().width = width;
+        image3.getLayoutParams().height = height;
+        image3.getLayoutParams().width = width;
+        image4.getLayoutParams().height = height;
+        image4.getLayoutParams().width = width;
+        image5.getLayoutParams().height = height;
+        image5.getLayoutParams().width = width;
+        image7.getLayoutParams().height = height;
+        image7.getLayoutParams().width = width;
+        image8.getLayoutParams().height = height;
+        image8.getLayoutParams().width = width;
+        image9.getLayoutParams().height = height;
+        image9.getLayoutParams().width = width;
+        image10.getLayoutParams().height = height;
+        image10.getLayoutParams().width = width;
 
         text1.setText("");
         text2.setText("");
@@ -890,7 +809,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         text10.setText("");
     }
 
-    private void ten(int size) {
+    private void ten(int height, int width) {
         row1.setVisibility(View.VISIBLE);
         row2.setVisibility(View.VISIBLE);
         row3.setVisibility(View.VISIBLE);
@@ -912,7 +831,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         frame12.setVisibility(View.VISIBLE);
 
         Bitmap bitmap = DecodeSampledBitmapFromResource
-                .execute(getResources(), imgResource, size, size);
+                .execute(getResources(), imgResource, width, height);
 
         image1.setImageBitmap(bitmap);
         image1.setEnabled(true);
@@ -935,26 +854,26 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         image12.setImageBitmap(bitmap);
         image12.setEnabled(true);
 
-        image1.getLayoutParams().height = size;
-        image1.getLayoutParams().width = size;
-        image2.getLayoutParams().height = size;
-        image2.getLayoutParams().width = size;
-        image3.getLayoutParams().height = size;
-        image3.getLayoutParams().width = size;
-        image5.getLayoutParams().height = size;
-        image5.getLayoutParams().width = size;
-        image6.getLayoutParams().height = size;
-        image6.getLayoutParams().width = size;
-        image7.getLayoutParams().height = size;
-        image7.getLayoutParams().width = size;
-        image8.getLayoutParams().height = size;
-        image8.getLayoutParams().width = size;
-        image9.getLayoutParams().height = size;
-        image9.getLayoutParams().width = size;
-        image11.getLayoutParams().height = size;
-        image11.getLayoutParams().width = size;
-        image12.getLayoutParams().height = size;
-        image12.getLayoutParams().width = size;
+        image1.getLayoutParams().height = height;
+        image1.getLayoutParams().width = width;
+        image2.getLayoutParams().height = height;
+        image2.getLayoutParams().width = width;
+        image3.getLayoutParams().height = height;
+        image3.getLayoutParams().width = width;
+        image5.getLayoutParams().height = height;
+        image5.getLayoutParams().width = width;
+        image6.getLayoutParams().height = height;
+        image6.getLayoutParams().width = width;
+        image7.getLayoutParams().height = height;
+        image7.getLayoutParams().width = width;
+        image8.getLayoutParams().height = height;
+        image8.getLayoutParams().width = width;
+        image9.getLayoutParams().height = height;
+        image9.getLayoutParams().width = width;
+        image11.getLayoutParams().height = height;
+        image11.getLayoutParams().width = width;
+        image12.getLayoutParams().height = height;
+        image12.getLayoutParams().width = width;
 
         text1.setText("");
         text2.setText("");
@@ -995,13 +914,6 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         AdRequest.Builder builder = new AdRequest.Builder();
         AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
         ad.loadAd(adRequest);
-    }
-
-    private boolean isLargeScreen() {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE ||
-                getApplicationContext().getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE;
     }
 
     @Override
@@ -1083,30 +995,22 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         loadInterstitial();
     }
 
-    private double getScreenSize() {
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        int dens = dm.densityDpi;
-        double wi = (double) width / (double) dens;
-        double hi = (double) height / (double) dens;
-        double x = Math.pow(wi, 2);
-        double y = Math.pow(hi, 2);
-        return Math.sqrt(x + y);
+    private int getActionBarHeight() {
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources()
+                    .getDisplayMetrics());
+        }
+        return actionBarHeight;
     }
 
-    private boolean isXLargeScreenAndPortrait() {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
-                getApplicationContext().getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_PORTRAIT;
-    }
-
-    private boolean isXLargeScreenAndLandscape() {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
-                getApplicationContext().getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE;
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }
