@@ -405,6 +405,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 size = 700;
             } else if (position == 2) {
                 size = 1200;
+            } else if (position >= 7) {
+                size = 1800;
             }
         } else if (getResources().getConfiguration().orientation == Configuration
                 .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
@@ -428,7 +430,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
             } else if (position == 2) {
                 size = 1400;
             }
-        } else {
+        } else if (getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_LANDSCAPE && !isLargeScreen()) {
             size = 1000;
             if (isLargeScreen()) {
                 size = 750;
@@ -437,6 +440,35 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 size = 300;
             } else if (position == 2) {
                 size = 600;
+            }
+        } else if(isXLargeScreenAndPortrait()) {
+            size = 1500;
+            if (position == 1) {
+                size = 600;
+            } else if (position == 2) {
+                size = 1000;
+            }
+        } else if(isXLargeScreenAndLandscape()) {
+            size = 900;
+            if (position == 1) {
+                size = 500;
+            } else if (position == 2) {
+                size = 600;
+            }
+        } else if (getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_PORTRAIT) {
+            size = 1800;
+            if (position == 1) {
+                size = 800;
+            } else if (position == 2) {
+                size = 1400;
+            }
+        } else {
+            size = 1200;
+            if (position == 1) {
+                size = 500;
+            } else if (position == 2) {
+                size = 800;
             }
         }
         return size;
@@ -1062,5 +1094,19 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         double x = Math.pow(wi, 2);
         double y = Math.pow(hi, 2);
         return Math.sqrt(x + y);
+    }
+
+    private boolean isXLargeScreenAndPortrait() {
+        return (getApplicationContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
+                getApplicationContext().getResources().getConfiguration().orientation ==
+                        Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    private boolean isXLargeScreenAndLandscape() {
+        return (getApplicationContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
+                getApplicationContext().getResources().getConfiguration().orientation ==
+                        Configuration.ORIENTATION_LANDSCAPE;
     }
 }

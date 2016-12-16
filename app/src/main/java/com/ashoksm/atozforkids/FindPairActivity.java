@@ -123,10 +123,14 @@ public class FindPairActivity extends AppCompatActivity
         imageViews = new ArrayList<>();
         int size;
         if (totalCount == 4) {
-            if (isLargeScreenAndPortrait()) {
+            if (isXLargeScreenAndPortrait()) {
                 size = 375;
+            } else if (isXLargeScreenAndLandscape()) {
+                size = 300;
+            } else if (isLargeScreenAndPortrait()) {
+                size = 500;
             } else if (isLargeScreenAndLandscape()) {
-                size = 275;
+                size = 400;
             } else if (getResources().getConfiguration().orientation == Configuration
                     .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
                 size = 150;
@@ -135,9 +139,9 @@ public class FindPairActivity extends AppCompatActivity
                 size = 200;
             } else if (getResources().getConfiguration().orientation == Configuration
                     .ORIENTATION_PORTRAIT) {
-                size = 600;
-            } else {
                 size = 500;
+            } else {
+                size = 400;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -158,10 +162,14 @@ public class FindPairActivity extends AppCompatActivity
                 }
             }
         } else if (totalCount == 6) {
-            if (isLargeScreenAndPortrait()) {
-                size = 325;
+            if (isXLargeScreenAndPortrait()) {
+                size = 350;
+            } else if (isXLargeScreenAndLandscape()) {
+                size = 300;
+            } else if (isLargeScreenAndPortrait()) {
+                size = 400;
             } else if (isLargeScreenAndLandscape()) {
-                size = 275;
+                size = 350;
             } else if (getResources().getConfiguration().orientation == Configuration
                     .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
                 size = 150;
@@ -170,9 +178,9 @@ public class FindPairActivity extends AppCompatActivity
                 size = 175;
             }  else if (getResources().getConfiguration().orientation == Configuration
                     .ORIENTATION_PORTRAIT) {
-                size = 600;
+                size = 475;
             } else {
-                size = 500;
+                size = 400;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -204,15 +212,18 @@ public class FindPairActivity extends AppCompatActivity
             if (isLargeScreenAndPortrait()) {
                 size = 250;
             } else if (isLargeScreenAndLandscape()) {
-                size = 225;
+                size = 300;
             } else if (getResources().getConfiguration().orientation == Configuration
                     .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
                 size = 150;
             } else if (getResources().getConfiguration().orientation == Configuration
                     .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
                 size = 125;
+            } else if (getResources().getConfiguration().orientation == Configuration
+                    .ORIENTATION_PORTRAIT) {
+                size = 350;
             } else {
-                size = 450;
+                size = 400;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -243,13 +254,20 @@ public class FindPairActivity extends AppCompatActivity
             bitmapCache = new SparseArray<>();
 
             int count;
-            if (isLargeScreenAndPortrait()) {
+            if (isXLargeScreenAndPortrait()) {
                 count = 16;
+                size = 250;
+            } else if (isXLargeScreenAndLandscape()) {
+                findViewById(R.id.row_3).setVisibility(View.VISIBLE);
+                count = 12;
                 size = 200;
+            } else if (isLargeScreenAndPortrait()) {
+                count = 16;
+                size = 275;
             } else if (isLargeScreenAndLandscape()) {
                 findViewById(R.id.row_3).setVisibility(View.VISIBLE);
                 count = 12;
-                size = 175;
+                size = 225;
             } else if (getResources().getConfiguration().orientation == Configuration
                     .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
                 findViewById(R.id.row_3).setVisibility(View.VISIBLE);
@@ -262,11 +280,11 @@ public class FindPairActivity extends AppCompatActivity
             } else if (getResources().getConfiguration().orientation == Configuration
                     .ORIENTATION_PORTRAIT) {
                 count = 16;
-                size = 350;
+                size = 325;
             } else {
                 findViewById(R.id.row_3).setVisibility(View.VISIBLE);
                 count = 12;
-                size = 325;
+                size = 275;
             }
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
                     (getResources(), R.drawable.question_mark, size, size));
@@ -284,12 +302,14 @@ public class FindPairActivity extends AppCompatActivity
                 }
             }
         } else if (totalCount == 16) {
-            if (isLargeScreenAndPortrait()) {
+            if (isXLargeScreenAndPortrait()) {
                 size = 175;
+            } else if (isLargeScreenAndPortrait()) {
+                size = 200;
             } else if (screenSize <= 4.0d) {
                 size = 90;
             } else {
-                size = 300;
+                size = 240;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -528,6 +548,20 @@ public class FindPairActivity extends AppCompatActivity
     private boolean isLargeScreenAndLandscape() {
         return (getApplicationContext().getResources().getConfiguration().screenLayout &
                 Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE &&
+                getApplicationContext().getResources().getConfiguration().orientation ==
+                        Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    private boolean isXLargeScreenAndPortrait() {
+        return (getApplicationContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
+                getApplicationContext().getResources().getConfiguration().orientation ==
+                        Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    private boolean isXLargeScreenAndLandscape() {
+        return (getApplicationContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
                 getApplicationContext().getResources().getConfiguration().orientation ==
                         Configuration.ORIENTATION_LANDSCAPE;
     }

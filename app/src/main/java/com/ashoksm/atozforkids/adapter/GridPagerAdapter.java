@@ -12,7 +12,6 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -132,6 +131,8 @@ public class GridPagerAdapter extends PagerAdapter {
                 size = 700;
             } else if (number == 2) {
                 size = 1200;
+            } else if (number >= 7) {
+                size = 1800;
             }
         } else if (context.getResources().getConfiguration().orientation == Configuration
                 .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
@@ -155,7 +156,8 @@ public class GridPagerAdapter extends PagerAdapter {
             } else if (number == 2) {
                 size = 1400;
             }
-        } else {
+        } else if (context.getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_LANDSCAPE && !isLargeScreen()) {
             size = 1000;
             if (isLargeScreen()) {
                 size = 750;
@@ -164,6 +166,35 @@ public class GridPagerAdapter extends PagerAdapter {
                 size = 300;
             } else if (number == 2) {
                 size = 600;
+            }
+        } else if(isXLargeScreenAndPortrait()) {
+            size = 1500;
+            if (number == 1) {
+                size = 600;
+            } else if (number == 2) {
+                size = 1000;
+            }
+        } else if(isXLargeScreenAndLandscape()) {
+            size = 900;
+            if (number == 1) {
+                size = 500;
+            } else if (number == 2) {
+                size = 600;
+            }
+        } else if (context.getResources().getConfiguration().orientation == Configuration
+                .ORIENTATION_PORTRAIT) {
+            size = 1800;
+            if (number == 1) {
+                size = 800;
+            } else if (number == 2) {
+                size = 1400;
+            }
+        } else {
+            size = 1200;
+            if (number == 1) {
+                size = 500;
+            } else if (number == 2) {
+                size = 800;
             }
         }
         return size;
@@ -292,6 +323,20 @@ public class GridPagerAdapter extends PagerAdapter {
         return (context.getResources().getConfiguration().screenLayout & Configuration
                 .SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE ||
                 context.getResources().getConfiguration().orientation ==
+                        Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    private boolean isXLargeScreenAndPortrait() {
+        return (context.getApplicationContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
+                context.getApplicationContext().getResources().getConfiguration().orientation ==
+                        Configuration.ORIENTATION_PORTRAIT;
+    }
+
+    private boolean isXLargeScreenAndLandscape() {
+        return (context.getApplicationContext().getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
+                context.getApplicationContext().getResources().getConfiguration().orientation ==
                         Configuration.ORIENTATION_LANDSCAPE;
     }
 
