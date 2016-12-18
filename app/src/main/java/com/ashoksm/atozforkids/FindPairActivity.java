@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,9 +14,10 @@ import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,8 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class FindPairActivity extends AppCompatActivity
-        implements OnClickListener, AnimationListener {
+public class FindPairActivity extends AppCompatActivity implements OnClickListener, AnimationListener {
 
     private Animation animation1;
     private Animation animation2;
@@ -54,7 +55,8 @@ public class FindPairActivity extends AppCompatActivity
     private TextToSpeech textToSpeech;
     private MediaPlayer mediaPlayer;
     private SharedPreferences sharedPreferences;
-    private double screenSize;
+    private int width;
+    private int height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,11 @@ public class FindPairActivity extends AppCompatActivity
 
         viewCount = 0;
         totalCount = 4;
-        screenSize = getScreenSize();
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x - 20;
+        height = size.y - getStatusBarHeight() - (getActionBarHeight() * 2) - 10;
         populateImage();
         renderView();
 
@@ -123,25 +129,13 @@ public class FindPairActivity extends AppCompatActivity
         imageViews = new ArrayList<>();
         int size;
         if (totalCount == 4) {
-            if (isXLargeScreenAndPortrait()) {
-                size = 375;
-            } else if (isXLargeScreenAndLandscape()) {
-                size = 300;
-            } else if (isLargeScreenAndPortrait()) {
-                size = 500;
-            } else if (isLargeScreenAndLandscape()) {
-                size = 400;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
-                size = 150;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
-                size = 200;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_PORTRAIT) {
-                size = 500;
-            } else {
-                size = 400;
+            int tempH = height / 2;
+            int tempW = width / 2;
+            size = Double.valueOf(Math.sqrt(tempH * tempW)).intValue();
+            if (size > tempW) {
+                size = tempW;
+            } else if (size > tempH) {
+                size = tempH;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -162,25 +156,20 @@ public class FindPairActivity extends AppCompatActivity
                 }
             }
         } else if (totalCount == 6) {
-            if (isXLargeScreenAndPortrait()) {
-                size = 350;
-            } else if (isXLargeScreenAndLandscape()) {
-                size = 300;
-            } else if (isLargeScreenAndPortrait()) {
-                size = 400;
-            } else if (isLargeScreenAndLandscape()) {
-                size = 350;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
-                size = 150;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
-                size = 175;
-            }  else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_PORTRAIT) {
-                size = 475;
+            int tempH;
+            int tempW;
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                tempH = height / 3;
+                tempW = width / 2;
             } else {
-                size = 400;
+                tempH = height / 2;
+                tempW = width / 3;
+            }
+            size = Double.valueOf(Math.sqrt(tempH * tempW)).intValue();
+            if (size > tempW) {
+                size = tempW;
+            } else if (size > tempH) {
+                size = tempH;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -209,21 +198,20 @@ public class FindPairActivity extends AppCompatActivity
                 }
             }
         } else if (totalCount == 8) {
-            if (isLargeScreenAndPortrait()) {
-                size = 250;
-            } else if (isLargeScreenAndLandscape()) {
-                size = 300;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
-                size = 150;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
-                size = 125;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_PORTRAIT) {
-                size = 350;
+            int tempH;
+            int tempW;
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                tempH = height / 4;
+                tempW = width / 2;
             } else {
-                size = 400;
+                tempH = height / 2;
+                tempW = width / 4;
+            }
+            size = Double.valueOf(Math.sqrt(tempH * tempW)).intValue();
+            if (size > tempW) {
+                size = tempW;
+            } else if (size > tempH) {
+                size = tempH;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -254,37 +242,23 @@ public class FindPairActivity extends AppCompatActivity
             bitmapCache = new SparseArray<>();
 
             int count;
-            if (isXLargeScreenAndPortrait()) {
+            int tempH;
+            int tempW;
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                tempH = height / 4;
+                tempW = width / 3;
                 count = 16;
-                size = 250;
-            } else if (isXLargeScreenAndLandscape()) {
-                findViewById(R.id.row_3).setVisibility(View.VISIBLE);
-                count = 12;
-                size = 200;
-            } else if (isLargeScreenAndPortrait()) {
-                count = 16;
-                size = 275;
-            } else if (isLargeScreenAndLandscape()) {
-                findViewById(R.id.row_3).setVisibility(View.VISIBLE);
-                count = 12;
-                size = 225;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_LANDSCAPE && screenSize <= 4.0d) {
-                findViewById(R.id.row_3).setVisibility(View.VISIBLE);
-                size = 100;
-                count = 12;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_PORTRAIT && screenSize <= 4.0d) {
-                size = 125;
-                count = 16;
-            } else if (getResources().getConfiguration().orientation == Configuration
-                    .ORIENTATION_PORTRAIT) {
-                count = 16;
-                size = 325;
             } else {
-                findViewById(R.id.row_3).setVisibility(View.VISIBLE);
+                tempH = height / 3;
+                tempW = width / 4;
                 count = 12;
-                size = 275;
+                findViewById(R.id.row_3).setVisibility(View.VISIBLE);
+            }
+            size = Double.valueOf(Math.sqrt(tempH * tempW)).intValue();
+            if (size > tempW) {
+                size = tempW;
+            } else if (size > tempH) {
+                size = tempH;
             }
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
                     (getResources(), R.drawable.question_mark, size, size));
@@ -302,14 +276,13 @@ public class FindPairActivity extends AppCompatActivity
                 }
             }
         } else if (totalCount == 16) {
-            if (isXLargeScreenAndPortrait()) {
-                size = 175;
-            } else if (isLargeScreenAndPortrait()) {
-                size = 200;
-            } else if (screenSize <= 4.0d) {
-                size = 90;
-            } else {
-                size = 240;
+            int tempH = height / 4;
+            int tempW = width / 4;
+            size = Double.valueOf(Math.sqrt(tempH * tempW)).intValue();
+            if (size > tempW) {
+                size = tempW;
+            } else if (size > tempH) {
+                size = tempH;
             }
             bitmapCache = new SparseArray<>();
             bitmapCache.put(R.drawable.question_mark, DecodeSampledBitmapFromResource.execute
@@ -538,34 +511,6 @@ public class FindPairActivity extends AppCompatActivity
     public void onAnimationStart(Animation animation) {
     }
 
-    private boolean isLargeScreenAndPortrait() {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE &&
-                getApplicationContext().getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_PORTRAIT;
-    }
-
-    private boolean isLargeScreenAndLandscape() {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE &&
-                getApplicationContext().getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE;
-    }
-
-    private boolean isXLargeScreenAndPortrait() {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
-                getApplicationContext().getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_PORTRAIT;
-    }
-
-    private boolean isXLargeScreenAndLandscape() {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout &
-                Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE &&
-                getApplicationContext().getResources().getConfiguration().orientation ==
-                        Configuration.ORIENTATION_LANDSCAPE;
-    }
-
     private void speak(String s) {
         if (sharedPreferences.getBoolean("sound", true)) {
             try {
@@ -627,16 +572,22 @@ public class FindPairActivity extends AppCompatActivity
         }
     }
 
-    private double getScreenSize() {
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        int dens = dm.densityDpi;
-        double wi = (double) width / (double) dens;
-        double hi = (double) height / (double) dens;
-        double x = Math.pow(wi, 2);
-        double y = Math.pow(hi, 2);
-        return Math.sqrt(x + y);
+    private int getActionBarHeight() {
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources()
+                    .getDisplayMetrics());
+        }
+        return actionBarHeight;
+    }
+
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }
