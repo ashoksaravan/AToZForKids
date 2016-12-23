@@ -90,58 +90,13 @@ public class DragAndDropActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
                 Context.MODE_PRIVATE);
 
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                Log.i("SliderActivity", "TextToSpeech onInit status::::::::" + status);
-                if (status == TextToSpeech.SUCCESS) {
-                    textToSpeech.setLanguage(Locale.getDefault());
-                    textToSpeech.setPitch(0.8f);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        try {
-                            Set<Voice> voices = textToSpeech.getVoices();
-                            for (Voice v : voices) {
-                                if (v.getLocale().equals(Locale.getDefault())) {
-                                    textToSpeech.setVoice(v);
-                                }
-                            }
-                        } catch (Exception ex) {
-                            Log.e("Voice not found", ex.getMessage());
-                        }
-                    }
-                } else {
-                    Log.i("SliderActivity",
-                            "TextToSpeech onInit failed with status::::::::" + status);
-                }
-            }
-        });
+        initTTS();
 
         mainBG = (ImageView) findViewById(R.id.main_bg);
         right = (ImageView) findViewById(R.id.right);
         fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 
-        if (getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_LANDSCAPE &&
-                (getApplicationContext().getResources().getConfiguration().screenLayout &
-                        Configuration.SCREENLAYOUT_SIZE_MASK) >=
-                        Configuration.SCREENLAYOUT_SIZE_XLARGE) {
-            itemCount = 24;
-        } else if (getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_PORTRAIT &&
-                (getApplicationContext().getResources().getConfiguration().screenLayout &
-                        Configuration.SCREENLAYOUT_SIZE_MASK) >=
-                        Configuration.SCREENLAYOUT_SIZE_XLARGE) {
-            itemCount = 20;
-        } else if (getResources().getConfiguration().orientation ==
-                Configuration.ORIENTATION_LANDSCAPE &&
-                (getApplicationContext().getResources().getConfiguration().screenLayout &
-                        Configuration.SCREENLAYOUT_SIZE_MASK) >=
-                        Configuration.SCREENLAYOUT_SIZE_LARGE) {
-            itemCount = 21;
-        } else {
-            itemCount = 16;
-        }
-
+        getCount();
         loadContent();
 
         fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -201,6 +156,61 @@ public class DragAndDropActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("sound", true)) {
             mediaPlayer = MediaPlayer.create(this, R.raw.applause);
         }
+    }
+
+    private void getCount() {
+        if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE &&
+                (getApplicationContext().getResources().getConfiguration().screenLayout &
+                        Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                        Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            itemCount = 24;
+        } else if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_PORTRAIT &&
+                (getApplicationContext().getResources().getConfiguration().screenLayout &
+                        Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                        Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            itemCount = 20;
+        } else if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_LANDSCAPE &&
+                (getApplicationContext().getResources().getConfiguration().screenLayout &
+                        Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                        Configuration.SCREENLAYOUT_SIZE_LARGE) {
+            itemCount = 21;
+        } else {
+            itemCount = 16;
+        }
+    }
+
+    private void initTTS() {
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                Log.i("SliderActivity", "TextToSpeech onInit status::::::::" + status);
+                if (status == TextToSpeech.SUCCESS) {
+                    textToSpeech.setLanguage(Locale.getDefault());
+                    textToSpeech.setPitch(0.8f);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        try {
+                            Set<Voice> voices = textToSpeech.getVoices();
+                            for (Voice v : voices) {
+                                if (v.getLocale().equals(Locale.getDefault())) {
+                                    textToSpeech.setVoice(v);
+                                }
+                            }
+                        } catch (Exception ex) {
+                            Log.e("Voice not found", ex.getMessage());
+                        }
+                    }
+                    if(itemsDTO != null) {
+                        speak(itemsDTO.getItemName());
+                    }
+                } else {
+                    Log.i("SliderActivity",
+                            "TextToSpeech onInit failed with status::::::::" + status);
+                }
+            }
+        });
     }
 
     private void loadContent() {

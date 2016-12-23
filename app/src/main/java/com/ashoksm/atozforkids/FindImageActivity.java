@@ -1,5 +1,6 @@
 package com.ashoksm.atozforkids;
 
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,16 +55,30 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
     private MediaPlayer mediaPlayer;
     private InterstitialAd mInterstitialAd;
     private int adCount;
+    private int size;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_image);
 
+        Display display = getWindowManager().getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        int width = point.x - 100;
+        int height = point.y - getStatusBarHeight() - (getActionBarHeight() * 2) - 10;
+
         loadAd();
         mInterstitialAd = newInterstitialAd();
         loadInterstitial();
         adCount = 1;
+
+        size = Double.valueOf(Math.sqrt((width / 2) * (height / 2))).intValue();
+        if (size > (width / 2)) {
+            size = width / 2;
+        } else if (size > (height / 2)) {
+            size = height / 2;
+        }
 
         view = findViewById(R.id.find_image_main_view);
         image1 = (ImageView) findViewById(R.id.image1);
@@ -73,36 +90,21 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         image31 = (ImageView) findViewById(R.id.image31);
         image41 = (ImageView) findViewById(R.id.image41);
         right = (ImageView) findViewById(R.id.right);
+
+        image1.getLayoutParams().height = size;
+        image1.getLayoutParams().width = size;
+        image2.getLayoutParams().height = size;
+        image2.getLayoutParams().width = size;
+        image3.getLayoutParams().height = size;
+        image3.getLayoutParams().width = size;
+        image4.getLayoutParams().height = size;
+        image4.getLayoutParams().width = size;
+
         fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 
         loadImages(false);
 
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                Log.i("SliderActivity", "TextToSpeech onInit status::::::::" + status);
-                if (status == TextToSpeech.SUCCESS) {
-                    textToSpeech.setLanguage(Locale.getDefault());
-                    textToSpeech.setPitch(0.8f);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        try {
-                            Set<Voice> voices = textToSpeech.getVoices();
-                            for (Voice v : voices) {
-                                if (v.getLocale().equals(Locale.getDefault())) {
-                                    textToSpeech.setVoice(v);
-                                }
-                            }
-                        } catch (Exception ex) {
-                            Log.e("Voice not found", ex.getMessage());
-                        }
-                    }
-                    speak("Click " + itemsDTO.getItemName());
-                } else {
-                    Log.i("SliderActivity",
-                            "TextToSpeech onInit failed with status::::::::" + status);
-                }
-            }
-        });
+        initTTS();
 
         fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -142,6 +144,35 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         mediaPlayer = MediaPlayer.create(this, R.raw.applause);
     }
 
+    private void initTTS() {
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                Log.i("SliderActivity", "TextToSpeech onInit status::::::::" + status);
+                if (status == TextToSpeech.SUCCESS) {
+                    textToSpeech.setLanguage(Locale.getDefault());
+                    textToSpeech.setPitch(0.8f);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        try {
+                            Set<Voice> voices = textToSpeech.getVoices();
+                            for (Voice v : voices) {
+                                if (v.getLocale().equals(Locale.getDefault())) {
+                                    textToSpeech.setVoice(v);
+                                }
+                            }
+                        } catch (Exception ex) {
+                            Log.e("Voice not found", ex.getMessage());
+                        }
+                    }
+                    speak("Click " + itemsDTO.getItemName());
+                } else {
+                    Log.i("SliderActivity",
+                            "TextToSpeech onInit failed with status::::::::" + status);
+                }
+            }
+        });
+    }
+
     private void loadImages(boolean speak) {
         List<ItemsDTO> items = new ArrayList<>();
         items.add(DataStore.getInstance().getAlphabets().get(RandomNumber.randInt(0,
@@ -160,17 +191,19 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
             speak("Click " + itemsDTO.getItemName());
         }
 
+
+
         image1.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
-                items.get(0).getImageResource(), 200, 200));
+                items.get(0).getImageResource(), size, size));
         image11.setTag(items.get(0).getItemName());
         image2.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
-                items.get(1).getImageResource(), 200, 200));
+                items.get(1).getImageResource(), size, size));
         image21.setTag(items.get(1).getItemName());
         image3.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
-                items.get(2).getImageResource(), 200, 200));
+                items.get(2).getImageResource(), size, size));
         image31.setTag(items.get(2).getItemName());
         image4.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
-                items.get(3).getImageResource(), 200, 200));
+                items.get(3).getImageResource(), size, size));
         image41.setTag(items.get(3).getItemName());
 
         image11.setVisibility(View.GONE);
@@ -331,5 +364,24 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         overridePendingTransition(R.anim.slide_in_left, 0);
         mInterstitialAd = newInterstitialAd();
         loadInterstitial();
+    }
+
+    private int getActionBarHeight() {
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources()
+                    .getDisplayMetrics());
+        }
+        return actionBarHeight;
+    }
+
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }

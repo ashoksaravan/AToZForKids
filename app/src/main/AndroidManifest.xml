@@ -44,15 +44,14 @@
         </activity>
         <activity
             android:name=".DragAndDropActivity"
-            android:label="Spell It">
+            android:label="Spell Me">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".PuzzleActivity"/>
         </activity>
         <activity
             android:name=".FindImageActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="Find Image">
+            android:label="Find Me">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".PuzzleActivity"/>

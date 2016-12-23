@@ -32,6 +32,8 @@ import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DataStore;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.RandomNumber;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +59,7 @@ public class FindPairActivity extends AppCompatActivity implements OnClickListen
     private SharedPreferences sharedPreferences;
     private int width;
     private int height;
+    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,9 @@ public class FindPairActivity extends AppCompatActivity implements OnClickListen
         animation1.setAnimationListener(this);
         animation2 = AnimationUtils.loadAnimation(this, R.anim.from_middle);
         animation2.setAnimationListener(this);
+
+        mInterstitialAd = newInterstitialAd();
+        loadInterstitial();
 
         sharedPreferences = getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
                 Context.MODE_PRIVATE);
@@ -532,6 +538,12 @@ public class FindPairActivity extends AppCompatActivity implements OnClickListen
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        showInterstitial();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_refresh, menu);
@@ -589,5 +601,23 @@ public class FindPairActivity extends AppCompatActivity implements OnClickListen
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    private InterstitialAd newInterstitialAd() {
+        InterstitialAd interstitialAd = new InterstitialAd(this);
+        interstitialAd.setAdUnitId(getString(R.string.admob_interstitial_id));
+        return interstitialAd;
+    }
+
+    private void showInterstitial() {
+        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        }
+    }
+
+    private void loadInterstitial() {
+        AdRequest adRequest =
+                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
+        mInterstitialAd.loadAd(adRequest);
     }
 }
