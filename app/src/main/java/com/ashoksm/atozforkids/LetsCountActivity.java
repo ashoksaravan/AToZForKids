@@ -433,6 +433,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
 
         frame1.setVisibility(View.VISIBLE);
         frame3.setVisibility(View.VISIBLE);
+        frame4.setVisibility(View.GONE);
 
         Bitmap bitmap = DecodeSampledBitmapFromResource
                 .execute(getResources(), imgResource, width, height);
@@ -934,6 +935,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 position = 1;
+                count = 0;
                 row1.setVisibility(View.GONE);
                 row2.setVisibility(View.GONE);
                 row3.setVisibility(View.GONE);
@@ -941,6 +943,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 row5.setVisibility(View.GONE);
                 row6.setVisibility(View.GONE);
                 setRandomImage();
+                position = 1;
                 populateGrid();
                 break;
             case android.R.id.home:
