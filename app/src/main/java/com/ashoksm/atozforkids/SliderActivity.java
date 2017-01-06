@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.ashoksm.atozforkids.adapter.GridPagerAdapter;
 import com.ashoksm.atozforkids.adapter.SliderPagerAdapter;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
+import com.ashoksm.atozforkids.utils.AppRater;
 import com.ashoksm.atozforkids.utils.DataStore;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.DepthPageTransformer;
@@ -157,6 +158,8 @@ public class SliderActivity extends AppCompatActivity {
         if (sharedPref.getBoolean("auto_play", false)) {
             enableAutoPageSwitcher();
         }
+
+        AppRater.appLaunched(this);
     }
 
     private void initTTS(final String itemName) {

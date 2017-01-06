@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
+import com.ashoksm.atozforkids.utils.AppRater;
 import com.ashoksm.atozforkids.utils.DataStore;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.RandomNumber;
@@ -142,6 +143,7 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         image4.setTag(image41);
 
         mediaPlayer = MediaPlayer.create(this, R.raw.applause);
+        AppRater.appLaunched(this);
     }
 
     private void initTTS() {

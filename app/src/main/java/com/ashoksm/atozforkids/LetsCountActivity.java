@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ashoksm.atozforkids.utils.AppRater;
 import com.ashoksm.atozforkids.utils.DataStore;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.RandomNumber;
@@ -140,6 +141,8 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         if (sharedPreferences.getBoolean("sound", true)) {
             mediaPlayer = MediaPlayer.create(this, R.raw.applause);
         }
+
+        AppRater.appLaunched(this);
     }
 
     private void initTTS() {

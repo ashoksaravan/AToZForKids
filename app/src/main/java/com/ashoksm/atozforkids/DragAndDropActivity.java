@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
+import com.ashoksm.atozforkids.utils.AppRater;
 import com.ashoksm.atozforkids.utils.DataStore;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.RandomNumber;
@@ -156,6 +157,8 @@ public class DragAndDropActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("sound", true)) {
             mediaPlayer = MediaPlayer.create(this, R.raw.applause);
         }
+
+        AppRater.appLaunched(this);
     }
 
     private void getCount() {

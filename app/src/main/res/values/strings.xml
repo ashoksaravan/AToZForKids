@@ -35,7 +35,11 @@
     <string name="auto_play">Auto Play</string>
     <string name="set_interval">Set Interval :</string>
     <string name="prompt">Choose Interval</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
+    <string name="remind_me_later">Remind me later</string>
+    <string name="no_thanks">No, thanks</string>
+    <string name="rate_content">If you enjoy using this app, please take a moment to rate it. Thanks for your support!</string>
+    <string name="rate_title">Rate ABC flash cards and Games</string>
 
     <string-array name="intervals">
         <item>1</item>
