@@ -1,30 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/gridView"
-        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="50dp"
+        android:layout_marginTop="5dp"
         android:paddingBottom="50dp"
-        android:scrollbars="vertical"/>
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#809C27B0"
-        android:gravity="center"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textColor="@color/primary_text"
-        android:textSize="30sp"
-        android:textStyle="bold"/>
+        android:paddingTop="50dp"
+        android:scrollbars="vertical" />
 
     <TextView
         android:id="@+id/number"
@@ -36,19 +23,19 @@
         android:paddingStart="20dp"
         android:paddingTop="50dp"
         android:textSize="75sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/number_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:paddingBottom="50dp"
         android:paddingEnd="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingStart="20dp"
-        android:paddingBottom="50dp"
-        android:layout_gravity="bottom|end"
         android:textSize="75sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
 </FrameLayout>

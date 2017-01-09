@@ -334,7 +334,6 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                                                 onBackPressed();
                                             }
                                         })
-                                .setIcon(R.drawable.ic_action_done)
                                 .show();
                     }
                 }

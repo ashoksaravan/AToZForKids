@@ -66,7 +66,7 @@ public class AppRater {
         TextView tv = new TextView(mContext);
         tv.setText(R.string.rate_content);
         tv.setWidth(240);
-        tv.setPadding(4, 0, 4, 10);
+        tv.setPadding(4, 0, 4, 0);
         ll.addView(tv);
 
         Button b1 = new Button(mContext);

@@ -7,13 +7,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.support.v7.app.AppCompatActivity;
@@ -24,8 +24,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,7 +39,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
-import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,23 +46,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import tyrantgit.explosionfield.ExplosionField;
+
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class DragAndDropActivity extends AppCompatActivity {
 
 
     private static final String LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private ImageView right;
-    private Animation fadeInAnimation;
     private TextToSpeech textToSpeech;
     private int count = 0;
     private int currentCount = 0;
     private int randInt;
     private ItemsDTO itemsDTO;
     private ImageView mainBG;
-    private Bitmap starBlue;
-    private Bitmap starRed;
-    private Bitmap starGreen;
-    private Bitmap starYellow;
     private int itemCount;
     private int width;
     private int height;
@@ -73,11 +66,13 @@ public class DragAndDropActivity extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
     private int adCount;
     private SharedPreferences sharedPreferences;
+    private ExplosionField explosionField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drag_and_drop);
+        explosionField = ExplosionField.attach2Window(this);
 
         adCount = 1;
         loadAd();
@@ -94,71 +89,44 @@ public class DragAndDropActivity extends AppCompatActivity {
         initTTS();
 
         mainBG = (ImageView) findViewById(R.id.main_bg);
-        right = (ImageView) findViewById(R.id.right);
-        fadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 
         getCount();
         loadContent();
-
-        fadeInAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                right.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                right.setVisibility(View.GONE);
-                if (count == currentCount) {
-                    count = 0;
-                    currentCount = 0;
-                    String itemName = getIntent().getStringExtra(SliderActivity.EXTRA_ITEM_NAME);
-                    if (itemName != null && itemName.trim().length() > 0) {
-                        speak("Well Done!!! Do you want to play again?");
-                        new AlertDialog.Builder(DragAndDropActivity.this)
-                                .setTitle("Well Done!!!")
-                                .setMessage("Do you want to play again?")
-                                .setPositiveButton(R.string.yes,
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                                loadContent();
-                                            }
-                                        })
-                                .setNegativeButton(R.string.no,
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                                onBackPressed();
-                                            }
-                                        })
-                                .setIcon(R.drawable.ic_action_done)
-                                .show();
-                    } else {
-                        loadContent();
-                    }
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-
-        starBlue = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_star_blue, 10, 10);
-        starGreen = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_star_green, 10, 10);
-        starRed = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .ic_star_red, 10, 10);
-        starYellow = DecodeSampledBitmapFromResource.execute(getResources(), R.drawable
-                .star, 10, 10);
 
         if (sharedPreferences.getBoolean("sound", true)) {
             mediaPlayer = MediaPlayer.create(this, R.raw.applause);
         }
 
         AppRater.appLaunched(this);
+    }
+
+    private void reload() {
+        count = 0;
+        currentCount = 0;
+        String itemName = getIntent().getStringExtra(SliderActivity.EXTRA_ITEM_NAME);
+        if (itemName != null && itemName.trim().length() > 0) {
+            speak("Well Done!!! Do you want to play again?");
+            new AlertDialog.Builder(DragAndDropActivity.this)
+                    .setTitle("Well Done!!!")
+                    .setMessage("Do you want to play again?")
+                    .setPositiveButton(R.string.yes,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    loadContent();
+                                }
+                            })
+                    .setNegativeButton(R.string.no,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    onBackPressed();
+                                }
+                            })
+                    .show();
+        } else {
+            loadContent();
+        }
     }
 
     private void getCount() {
@@ -205,7 +173,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                             Log.e("Voice not found", ex.getMessage());
                         }
                     }
-                    if(itemsDTO != null) {
+                    if (itemsDTO != null) {
                         speak(itemsDTO.getItemName());
                     }
                 } else {
@@ -261,6 +229,7 @@ public class DragAndDropActivity extends AppCompatActivity {
         }
         mainBG.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), itemsDTO
                 .getImageResource(), width, height));
+        reset(mainBG);
         speak(itemsDTO.getItemName());
 
         List<String> chars = new ArrayList<>();
@@ -281,6 +250,8 @@ public class DragAndDropActivity extends AppCompatActivity {
             int choiceId = getResources().getIdentifier("choice_" + i, "id", getPackageName());
             TextView option = (TextView) findViewById(optionId);
             TextView choice = (TextView) findViewById(choiceId);
+            reset(option);
+            reset(choice);
             option.setVisibility(View.VISIBLE);
             option.setOnTouchListener(new ChoiceTouchListener());
             option.setText(chars.get(i - 1).toUpperCase());
@@ -295,6 +266,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                 choice.setVisibility(View.GONE);
             }
         }
+        explosionField.clear();
     }
 
     private void speak(String s) {
@@ -391,6 +363,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                     TextView dropped = (TextView) view;
                     if (dropTarget.getText().equals(dropped.getText()) && dropTarget.getTag() ==
                             null) {
+                        explosionField.explode(dropped);
                         //stop displaying the view where it was before it was dragged
                         view.setVisibility(View.INVISIBLE);
                         //update the text in the target view to reflect the data being dropped
@@ -409,7 +382,6 @@ public class DragAndDropActivity extends AppCompatActivity {
                         }
                         //set the tag in the target view being dropped on - to the ID of the view being dropped
                         dropTarget.setTag(dropped.getId());
-                        right.startAnimation(fadeInAnimation);
                         currentCount++;
 
                         speak(dropped.getText().toString());
@@ -427,14 +399,13 @@ public class DragAndDropActivity extends AppCompatActivity {
                                 mediaPlayer.start();
                             }
                             speak(DataStore.getInstance().getStatusValues().get(randInt));
-                            new ParticleSystem(DragAndDropActivity.this, 100, starBlue, 3000)
-                                    .setSpeedRange(0.1f, 0.5f).oneShot(mainBG, 100);
-                            new ParticleSystem(DragAndDropActivity.this, 100, starGreen, 3000)
-                                    .setSpeedRange(0.1f, 0.4f).oneShot(mainBG, 100);
-                            new ParticleSystem(DragAndDropActivity.this, 100, starRed, 3000)
-                                    .setSpeedRange(0.1f, 0.3f).oneShot(mainBG, 100);
-                            new ParticleSystem(DragAndDropActivity.this, 100, starYellow, 3000)
-                                    .setSpeedRange(0.1f, 0.2f).oneShot(mainBG, 100);
+                            explosionField.explode(mainBG);
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    reload();
+                                }
+                            }, 2000);
                         }
                     } else {
                         speak("Wrong choice, Try Again");
@@ -520,5 +491,11 @@ public class DragAndDropActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left, 0);
         mInterstitialAd = newInterstitialAd();
         loadInterstitial();
+    }
+
+    private void reset(View view) {
+        view.setScaleX(1);
+        view.setScaleY(1);
+        view.setAlpha(1);
     }
 }

@@ -556,6 +556,7 @@ public class FindPairActivity extends AppCompatActivity implements OnClickListen
             case R.id.action_refresh:
                 viewCount = 0;
                 totalCount = 4;
+                currentCount = 0;
                 populateImage();
                 renderView();
 

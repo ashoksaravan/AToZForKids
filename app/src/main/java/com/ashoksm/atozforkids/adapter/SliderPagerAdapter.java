@@ -69,8 +69,7 @@ public class SliderPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         final View itemView = mLayoutInflater.inflate(R.layout.slider_image_view, container, false);
 
-        final TextView name = (TextView) itemView.findViewById(R.id.name);
-        name.setText(items.get(position).getItemName());
+
         Bitmap imageBitmap =
                 DecodeSampledBitmapFromResource.execute(activity.getResources(), items.get
                         (position).getImageResource(), width, height);
@@ -92,8 +91,6 @@ public class SliderPagerAdapter extends PagerAdapter {
 
         Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
         if (vibrantSwatch != null) {
-            name.setBackgroundColor(vibrantSwatch.getRgb());
-            name.setTextColor(vibrantSwatch.getTitleTextColor());
             items.get(position).setVibrantColor(vibrantSwatch.getRgb());
             items.get(position)
                     .setColorStateList(ColorStateList.valueOf(vibrantSwatch.getTitleTextColor()));
@@ -101,8 +98,6 @@ public class SliderPagerAdapter extends PagerAdapter {
             List<Palette.Swatch> swatches = palette.getSwatches();
             if (swatches.size() > 0) {
                 Palette.Swatch swatch = swatches.get(0);
-                name.setBackgroundColor(swatch.getRgb());
-                name.setTextColor(swatch.getTitleTextColor());
                 items.get(position).setVibrantColor(swatch.getRgb());
                 items.get(position)
                         .setColorStateList(ColorStateList.valueOf(swatch.getTitleTextColor()));

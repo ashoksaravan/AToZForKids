@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +62,10 @@ public class SliderActivity extends AppCompatActivity {
     private SharedPreferences sharedPref;
     private Timer timer;
     private ViewPager viewPager;
+    private TextView name;
+    private LinearLayout actionLayout;
+    private ImageButton home;
+    private ImageButton refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +88,10 @@ public class SliderActivity extends AppCompatActivity {
         sharedPref = getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
                 Context.MODE_PRIVATE);
         viewPager = (ViewPager) findViewById(R.id.slider);
+        name = (TextView) findViewById(R.id.name);
+        actionLayout = (LinearLayout) findViewById(R.id.action_layout);
+        home = (ImageButton) findViewById(R.id.home);
+        refresh = (ImageButton) findViewById(R.id.refresh);
         final TextView spell = (TextView) findViewById(R.id.spell);
         final BottomNavigationView bottomNavView =
                 (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -91,6 +100,7 @@ public class SliderActivity extends AppCompatActivity {
         initTTS(itemName);
         loadItems(itemName);
 
+        name.setText(items.get(0).getItemName());
         if ("Numbers".equalsIgnoreCase(itemName)) {
             setRandomImage(items);
             viewPager.setAdapter(new GridPagerAdapter(this, items));
@@ -102,26 +112,72 @@ public class SliderActivity extends AppCompatActivity {
         }
 
 
+        setColor(width, height, spell, bottomNavView);
+        addPageChangeListener(spell, bottomNavView, itemName);
+        viewPager.setPageTransformer(false, new DepthPageTransformer());
+        addBottomNavListener(bottomNavView, itemName);
+        addSpellListener(spell);
+
+        if (items.get(CURRENT_ITEM).getAudioResource() != 0
+                && sharedPref.getBoolean("sound", true)) {
+            MEDIA_PLAYER = MediaPlayer.create(this, items.get(CURRENT_ITEM).getAudioResource());
+            playAudio();
+        }
+
+        if (sharedPref.getBoolean("auto_play", false)) {
+            enableAutoPageSwitcher();
+        }
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SliderActivity.super.onBackPressed();
+            }
+        });
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewPager.setCurrentItem(0, true);
+            }
+        });
+
+        AppRater.appLaunched(this);
+    }
+
+    private void setColor(int width, int height, TextView spell, BottomNavigationView bottomNavView) {
         bottomNavView.setItemBackgroundResource(R.drawable.transparent);
         Bitmap imageBitmap = DecodeSampledBitmapFromResource.execute(getResources(), items.get
                 (0).getImageResource(), width, height);
         Palette palette = Palette.from(imageBitmap).generate();
         Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
         if (vibrantSwatch != null) {
+            actionLayout.setBackgroundColor(vibrantSwatch.getRgb());
+            name.setTextColor(vibrantSwatch.getTitleTextColor());
             bottomNavView.setBackgroundColor(vibrantSwatch.getRgb());
             ColorStateList colorStateList =
                     ColorStateList.valueOf(vibrantSwatch.getTitleTextColor());
             bottomNavView.setItemIconTintList(colorStateList);
             bottomNavView.setItemTextColor(colorStateList);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                home.setImageTintList(colorStateList);
+                refresh.setImageTintList(colorStateList);
+            }
         } else {
             List<Palette.Swatch> swatches = palette.getSwatches();
             if (swatches.size() > 0) {
                 Palette.Swatch swatch = swatches.get(0);
+                actionLayout.setBackgroundColor(swatch.getRgb());
+                name.setTextColor(swatch.getTitleTextColor());
                 bottomNavView.setBackgroundColor(swatch.getRgb());
                 ColorStateList colorStateList =
                         ColorStateList.valueOf(swatch.getTitleTextColor());
                 bottomNavView.setItemIconTintList(colorStateList);
                 bottomNavView.setItemTextColor(colorStateList);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    home.setImageTintList(colorStateList);
+                    refresh.setImageTintList(colorStateList);
+                }
             }
         }
 
@@ -130,11 +186,9 @@ public class SliderActivity extends AppCompatActivity {
             vibrantColor = palette.getMutedColor(Color.parseColor("#212121"));
         }
         spell.setTextColor(vibrantColor);
+    }
 
-        addPageChangeListener(spell, bottomNavView, itemName);
-        viewPager.setPageTransformer(false, new DepthPageTransformer());
-        addBottomNavListener(bottomNavView, itemName);
-
+    private void addSpellListener(TextView spell) {
         spell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,18 +202,6 @@ public class SliderActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_out_left, 0);
             }
         });
-
-        if (items.get(CURRENT_ITEM).getAudioResource() != 0
-                && sharedPref.getBoolean("sound", true)) {
-            MEDIA_PLAYER = MediaPlayer.create(this, items.get(CURRENT_ITEM).getAudioResource());
-            playAudio();
-        }
-
-        if (sharedPref.getBoolean("auto_play", false)) {
-            enableAutoPageSwitcher();
-        }
-
-        AppRater.appLaunched(this);
     }
 
     private void initTTS(final String itemName) {
@@ -222,19 +264,8 @@ public class SliderActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if (items.get(position).getColorStateList() != null) {
-                    bottomNavView.setBackgroundColor(items.get(position).getVibrantColor());
-                    bottomNavView.setItemIconTintList(items.get(position).getColorStateList());
-                    bottomNavView.setItemTextColor(items.get(position).getColorStateList());
-                    spell.setTextColor(items.get(position).getVibrantColor());
-                } else {
-                    bottomNavView
-                            .setBackgroundColor(getColor(getApplicationContext(), R.color.primary));
-                    bottomNavView.setItemIconTintList(ColorStateList.valueOf(getColor
-                            (getApplicationContext(), R.color.icons)));
-                    bottomNavView.setItemTextColor(ColorStateList.valueOf(getColor
-                            (getApplicationContext(), R.color.icons)));
-                }
+                name.setText(items.get(position).getItemName());
+                setColor(position);
                 speak(position, itemName);
                 CURRENT_ITEM = position;
                 if (MEDIA_PLAYER != null) {
@@ -248,6 +279,35 @@ public class SliderActivity extends AppCompatActivity {
                             .getAudioResource());
                 }
                 playAudio();
+            }
+
+            private void setColor(int position) {
+                ColorStateList colorStateList = items.get(position).getColorStateList();
+                if (colorStateList != null) {
+                    actionLayout.setBackgroundColor(items.get(position).getVibrantColor());
+                    name.setTextColor(colorStateList);
+                    bottomNavView.setBackgroundColor(items.get(position).getVibrantColor());
+                    bottomNavView.setItemIconTintList(colorStateList);
+                    bottomNavView.setItemTextColor(colorStateList);
+                    spell.setTextColor(items.get(position).getVibrantColor());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        home.setImageTintList(colorStateList);
+                        refresh.setImageTintList(colorStateList);
+                    }
+                } else {
+                    actionLayout.setBackgroundColor(getColor(getApplicationContext(), R.color.primary));
+                    name.setTextColor(getColor(getApplicationContext(), R.color.icons));
+                    bottomNavView
+                            .setBackgroundColor(getColor(getApplicationContext(), R.color.primary));
+                    ColorStateList tint = ColorStateList.valueOf(getColor
+                            (getApplicationContext(), R.color.icons));
+                    bottomNavView.setItemIconTintList(tint);
+                    bottomNavView.setItemTextColor(tint);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        home.setImageTintList(tint);
+                        refresh.setImageTintList(tint);
+                    }
+                }
             }
 
             @Override
@@ -401,7 +461,7 @@ public class SliderActivity extends AppCompatActivity {
             MEDIA_PLAYER.release();
             MEDIA_PLAYER = null;
         }
-        if(timer != null) {
+        if (timer != null) {
             timer.cancel();
         }
     }
@@ -412,7 +472,7 @@ public class SliderActivity extends AppCompatActivity {
         if (MEDIA_PLAYER != null) {
             MEDIA_PLAYER.pause();
         }
-        if(timer != null) {
+        if (timer != null) {
             timer.cancel();
         }
     }

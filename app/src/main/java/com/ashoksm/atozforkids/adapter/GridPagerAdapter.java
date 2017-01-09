@@ -11,7 +11,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Display;
@@ -93,10 +92,6 @@ public class GridPagerAdapter extends PagerAdapter {
                 break;
         }
 
-        //set name
-        final TextView name = (TextView) itemView.findViewById(R.id.name);
-        name.setText(items.get(position).getItemName());
-
         Bitmap imageBitmap = bitmapCache.get(number);
         if (imageBitmap == null) {
             imageBitmap = DecodeSampledBitmapFromResource
@@ -119,8 +114,6 @@ public class GridPagerAdapter extends PagerAdapter {
 
         Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
         if (vibrantSwatch != null) {
-            name.setBackgroundColor(vibrantSwatch.getRgb());
-            name.setTextColor(vibrantSwatch.getTitleTextColor());
             items.get(position).setVibrantColor(vibrantSwatch.getRgb());
             items.get(position)
                     .setColorStateList(ColorStateList.valueOf(vibrantSwatch.getTitleTextColor()));
@@ -128,8 +121,6 @@ public class GridPagerAdapter extends PagerAdapter {
             List<Palette.Swatch> swatches = palette.getSwatches();
             if (swatches.size() > 0) {
                 Palette.Swatch swatch = swatches.get(0);
-                name.setBackgroundColor(swatch.getRgb());
-                name.setTextColor(swatch.getTitleTextColor());
                 items.get(position).setVibrantColor(swatch.getRgb());
                 items.get(position)
                         .setColorStateList(ColorStateList.valueOf(swatch.getTitleTextColor()));

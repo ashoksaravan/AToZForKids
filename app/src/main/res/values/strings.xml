@@ -40,6 +40,7 @@
     <string name="no_thanks">No, thanks</string>
     <string name="rate_content">If you enjoy using this app, please take a moment to rate it. Thanks for your support!</string>
     <string name="rate_title">Rate ABC flash cards and Games</string>
+    <string name="home">Home</string>
 
     <string-array name="intervals">
         <item>1</item>
