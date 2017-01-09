@@ -8,8 +8,8 @@ android {
         applicationId "com.ashoksm.atozforkids"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 41
-        versionName "3.0.9"
+        versionCode 42
+        versionName "3.0.10"
     }
     signingConfigs {
         release {
