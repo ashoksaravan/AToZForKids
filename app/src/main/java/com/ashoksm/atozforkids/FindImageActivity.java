@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -36,6 +35,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class FindImageActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -82,15 +83,15 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         }
 
         view = findViewById(R.id.find_image_main_view);
-        image1 = (ImageView) findViewById(R.id.image1);
-        image2 = (ImageView) findViewById(R.id.image2);
-        image3 = (ImageView) findViewById(R.id.image3);
-        image4 = (ImageView) findViewById(R.id.image4);
-        image11 = (ImageView) findViewById(R.id.image11);
-        image21 = (ImageView) findViewById(R.id.image21);
-        image31 = (ImageView) findViewById(R.id.image31);
-        image41 = (ImageView) findViewById(R.id.image41);
-        right = (ImageView) findViewById(R.id.right);
+        image1 = findViewById(R.id.image1);
+        image2 = findViewById(R.id.image2);
+        image3 = findViewById(R.id.image3);
+        image4 = findViewById(R.id.image4);
+        image11 = findViewById(R.id.image11);
+        image21 = findViewById(R.id.image21);
+        image31 = findViewById(R.id.image31);
+        image41 = findViewById(R.id.image41);
+        right = findViewById(R.id.right);
 
         image1.getLayoutParams().height = size;
         image1.getLayoutParams().width = size;
@@ -244,7 +245,7 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
 
     private void loadAd() {
         // load ad
-        final LinearLayout adParent = (LinearLayout) this.findViewById(R.id.adLayout);
+        final LinearLayout adParent = this.findViewById(R.id.adLayout);
         final AdView ad = new AdView(this);
         ad.setAdUnitId(getString(R.string.admob_banner_id));
         ad.setAdSize(AdSize.SMART_BANNER);

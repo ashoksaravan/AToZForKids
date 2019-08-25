@@ -6,11 +6,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.graphics.Palette;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Display;
@@ -26,6 +21,12 @@ import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.palette.graphics.Palette;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 
 public class GridPagerAdapter extends PagerAdapter {
 
@@ -48,12 +49,13 @@ public class GridPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         final View itemView = mLayoutInflater.inflate(R.layout.slider_grid_view, container, false);
 
         Display display = context.getWindowManager().getDefaultDisplay();
@@ -101,8 +103,8 @@ public class GridPagerAdapter extends PagerAdapter {
         }
 
         Palette palette = Palette.from(imageBitmap).generate();
-        TextView numTextView = (TextView) itemView.findViewById(R.id.number);
-        TextView numBottom = (TextView) itemView.findViewById(R.id.number_bottom);
+        TextView numTextView = itemView.findViewById(R.id.number);
+        TextView numBottom = itemView.findViewById(R.id.number_bottom);
         numTextView.setText(String.valueOf(number));
         numBottom.setText(String.valueOf(number));
         int vibrantColor = palette.getVibrantColor(0x000000);
@@ -128,7 +130,7 @@ public class GridPagerAdapter extends PagerAdapter {
         }
 
         //create image grid
-        final RecyclerView gridView = (RecyclerView) itemView.findViewById(R.id.gridView);
+        final RecyclerView gridView = itemView.findViewById(R.id.gridView);
         gridView.setHasFixedSize(true);
         final GridLayoutManager manager = getGridLayoutManager(number);
         gridView.setLayoutManager(manager);
@@ -140,7 +142,7 @@ public class GridPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(ViewGroup container, int position, @NonNull Object object) {
         container.removeView((FrameLayout) object);
         unbindDrawables((View) object);
         System.gc();
@@ -170,6 +172,7 @@ public class GridPagerAdapter extends PagerAdapter {
             this.height = heightIn;
         }
 
+        @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
@@ -197,7 +200,7 @@ public class GridPagerAdapter extends PagerAdapter {
 
             ViewHolder(View v) {
                 super(v);
-                this.titleImg = (ImageView) v.findViewById(R.id.grid_image);
+                this.titleImg = v.findViewById(R.id.grid_image);
             }
         }
     }

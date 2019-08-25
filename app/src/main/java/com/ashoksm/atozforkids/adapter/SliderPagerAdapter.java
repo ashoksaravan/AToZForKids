@@ -8,8 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +22,10 @@ import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.palette.graphics.Palette;
+import androidx.viewpager.widget.PagerAdapter;
 
 import static com.ashoksm.atozforkids.SliderActivity.CURRENT_ITEM;
 import static com.ashoksm.atozforkids.SliderActivity.MEDIA_PLAYER;
@@ -51,8 +53,9 @@ public class SliderPagerAdapter extends PagerAdapter {
         this.width = widthIn;
         this.height = heightIn;
         this.itemName = itemNameIn;
-        this.sharedPreferences = activity.getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
-                Context.MODE_PRIVATE);
+        this.sharedPreferences =
+                activity.getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
+                        Context.MODE_PRIVATE);
     }
 
     @Override
@@ -61,12 +64,13 @@ public class SliderPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, final int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         final View itemView = mLayoutInflater.inflate(R.layout.slider_image_view, container, false);
 
 
@@ -81,7 +85,7 @@ public class SliderPagerAdapter extends PagerAdapter {
         }
 
         if ("Alphabets".equals(itemName)) {
-            TextView alphabet = (TextView) itemView.findViewById(R.id.alphabet);
+            TextView alphabet = itemView.findViewById(R.id.alphabet);
             alphabet.setVisibility(View.VISIBLE);
             String alp = String.valueOf(items.get(position).getItemName().charAt(0)).toUpperCase()
                     + String.valueOf(items.get(position).getItemName().charAt(0)).toLowerCase();
@@ -104,7 +108,7 @@ public class SliderPagerAdapter extends PagerAdapter {
             }
         }
 
-        final ImageView itemImage = (ImageView) itemView.findViewById(R.id.slider_image);
+        final ImageView itemImage = itemView.findViewById(R.id.slider_image);
         itemImage.setImageBitmap(imageBitmap);
 
 
@@ -114,7 +118,7 @@ public class SliderPagerAdapter extends PagerAdapter {
             public void onClick(View v) {
                 v.startAnimation(shake);
                 v.invalidate();
-                if(sharedPreferences.getBoolean("sound", true)) {
+                if (sharedPreferences.getBoolean("sound", true)) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         textToSpeech.speak(items.get(CURRENT_ITEM).getItemName(),
                                 TextToSpeech.QUEUE_FLUSH, null,
@@ -133,7 +137,7 @@ public class SliderPagerAdapter extends PagerAdapter {
 
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(ViewGroup container, int position, @NonNull Object object) {
         container.removeView((FrameLayout) object);
         unbindDrawables((View) object);
         System.gc();

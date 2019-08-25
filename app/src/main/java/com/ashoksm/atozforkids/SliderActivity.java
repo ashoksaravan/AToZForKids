@@ -14,12 +14,6 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
@@ -41,6 +35,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,6 +44,12 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.palette.graphics.Palette;
+import androidx.viewpager.widget.ViewPager;
 
 public class SliderActivity extends AppCompatActivity {
 
@@ -87,14 +88,14 @@ public class SliderActivity extends AppCompatActivity {
 
         sharedPref = getSharedPreferences("com.ashoksm.atozforkids.ABCFlashCards",
                 Context.MODE_PRIVATE);
-        viewPager = (ViewPager) findViewById(R.id.slider);
-        name = (TextView) findViewById(R.id.name);
-        actionLayout = (LinearLayout) findViewById(R.id.action_layout);
-        home = (ImageButton) findViewById(R.id.home);
-        refresh = (ImageButton) findViewById(R.id.refresh);
-        final TextView spell = (TextView) findViewById(R.id.spell);
+        viewPager = findViewById(R.id.slider);
+        name = findViewById(R.id.name);
+        actionLayout = findViewById(R.id.action_layout);
+        home = findViewById(R.id.home);
+        refresh = findViewById(R.id.refresh);
+        final TextView spell = findViewById(R.id.spell);
         final BottomNavigationView bottomNavView =
-                (BottomNavigationView) findViewById(R.id.bottom_navigation);
+                findViewById(R.id.bottom_navigation);
         final String itemName = intent.getStringExtra(MainActivity.EXTRA_ITEM_NAME);
 
         initTTS(itemName);
@@ -145,7 +146,8 @@ public class SliderActivity extends AppCompatActivity {
         AppRater.appLaunched(this);
     }
 
-    private void setColor(int width, int height, TextView spell, BottomNavigationView bottomNavView) {
+    private void setColor(int width, int height, TextView spell,
+                          BottomNavigationView bottomNavView) {
         bottomNavView.setItemBackgroundResource(R.drawable.transparent);
         Bitmap imageBitmap = DecodeSampledBitmapFromResource.execute(getResources(), items.get
                 (0).getImageResource(), width, height);
@@ -255,7 +257,8 @@ public class SliderActivity extends AppCompatActivity {
                 });
     }
 
-    private void addPageChangeListener(final TextView spell, final BottomNavigationView bottomNavView,
+    private void addPageChangeListener(final TextView spell,
+                                       final BottomNavigationView bottomNavView,
                                        final String itemName) {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -295,7 +298,8 @@ public class SliderActivity extends AppCompatActivity {
                         refresh.setImageTintList(colorStateList);
                     }
                 } else {
-                    actionLayout.setBackgroundColor(getColor(getApplicationContext(), R.color.primary));
+                    actionLayout
+                            .setBackgroundColor(getColor(getApplicationContext(), R.color.primary));
                     name.setTextColor(getColor(getApplicationContext(), R.color.icons));
                     bottomNavView
                             .setBackgroundColor(getColor(getApplicationContext(), R.color.primary));
@@ -404,14 +408,15 @@ public class SliderActivity extends AppCompatActivity {
                     textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
                 }
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG)
+                        .show();
             }
         }
     }
 
     private void loadAd() {
         // load ad
-        final LinearLayout adParent = (LinearLayout) this.findViewById(R.id.adLayout);
+        final LinearLayout adParent = this.findViewById(R.id.adLayout);
         final AdView ad = new AdView(this);
         ad.setAdUnitId(getString(R.string.admob_banner_id));
         ad.setAdSize(AdSize.SMART_BANNER);

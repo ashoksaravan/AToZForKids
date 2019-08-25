@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -41,7 +40,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-public class FindPairActivity extends AppCompatActivity implements OnClickListener, AnimationListener {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class FindPairActivity extends AppCompatActivity
+        implements OnClickListener, AnimationListener {
 
     private Animation animation1;
     private Animation animation2;
@@ -310,7 +312,7 @@ public class FindPairActivity extends AppCompatActivity implements OnClickListen
                     itemsDTOs.get(j).getImageResource(), size, size);
             bitmapCache.put(itemsDTOs.get(j).getImageResource(), bitmap);
         }
-        ImageView imageView = (ImageView) findViewById(imageId);
+        ImageView imageView = findViewById(imageId);
         imageView.setOnClickListener(this);
         imageView.setImageBitmap(bitmap);
         imageView.getLayoutParams().height = size;

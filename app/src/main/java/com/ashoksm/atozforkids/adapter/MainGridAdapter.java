@@ -1,7 +1,6 @@
 package com.ashoksm.atozforkids.adapter;
 
 import android.content.res.Resources;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,9 @@ import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHolder> {
 
     private List<ItemsDTO> titles;
@@ -24,6 +26,7 @@ public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHo
         this.res = resIn;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -53,8 +56,8 @@ public class MainGridAdapter extends RecyclerView.Adapter<MainGridAdapter.ViewHo
 
         ViewHolder(View v) {
             super(v);
-            this.title = (TextView) v.findViewById(R.id.title);
-            this.titleImg = (ImageView) v.findViewById(R.id.titleImg);
+            this.title = v.findViewById(R.id.title);
+            this.titleImg = v.findViewById(R.id.titleImg);
         }
     }
 }

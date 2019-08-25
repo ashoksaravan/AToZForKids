@@ -3,9 +3,6 @@ package com.ashoksm.atozforkids;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -19,6 +16,10 @@ import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class PuzzleActivity extends AppCompatActivity {
 
@@ -38,7 +39,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
         loadAd();
 
-        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.gridView);
+        final RecyclerView recyclerView = findViewById(R.id.gridView);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -86,7 +87,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
     private void loadAd() {
         // load ad
-        final LinearLayout adParent = (LinearLayout) this.findViewById(R.id.adLayout);
+        final LinearLayout adParent = this.findViewById(R.id.adLayout);
         final AdView ad = new AdView(this);
         ad.setAdUnitId(getString(R.string.admob_banner_id));
         ad.setAdSize(AdSize.SMART_BANNER);

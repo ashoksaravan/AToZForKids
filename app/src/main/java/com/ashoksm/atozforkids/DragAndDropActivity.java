@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.DragEvent;
@@ -46,6 +45,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import androidx.appcompat.app.AppCompatActivity;
 import tyrantgit.explosionfield.ExplosionField;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -88,7 +88,7 @@ public class DragAndDropActivity extends AppCompatActivity {
 
         initTTS();
 
-        mainBG = (ImageView) findViewById(R.id.main_bg);
+        mainBG = findViewById(R.id.main_bg);
 
         getCount();
         loadContent();
@@ -198,7 +198,7 @@ public class DragAndDropActivity extends AppCompatActivity {
             itemsDTO = new ItemsDTO(itemName, getIntent().getIntExtra(SliderActivity
                     .EXTRA_ITEM_IMAGE_RESOURCE, 0));
         } else {
-            while (true) {
+            do {
                 int choice = RandomNumber.randInt(1, 5);
                 switch (choice) {
                     case 1:
@@ -214,18 +214,16 @@ public class DragAndDropActivity extends AppCompatActivity {
                                 DataStore.getInstance().getFruits().size() - 1));
                         break;
                     case 4:
-                        itemsDTO = DataStore.getInstance().getVegetables().get(RandomNumber.randInt(0,
-                                DataStore.getInstance().getVegetables().size() - 1));
+                        itemsDTO =
+                                DataStore.getInstance().getVegetables().get(RandomNumber.randInt(0,
+                                        DataStore.getInstance().getVegetables().size() - 1));
                         break;
                     case 5:
                         itemsDTO = DataStore.getInstance().getVehicles().get(RandomNumber.randInt(0,
                                 DataStore.getInstance().getVehicles().size() - 1));
                         break;
                 }
-                if (itemsDTO.getItemName().length() <= itemCount) {
-                    break;
-                }
-            }
+            } while (itemsDTO.getItemName().length() > itemCount);
         }
         mainBG.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(), itemsDTO
                 .getImageResource(), width, height));
@@ -248,8 +246,8 @@ public class DragAndDropActivity extends AppCompatActivity {
         for (int i = 1; i <= itemCount; i++) {
             int optionId = getResources().getIdentifier("option_" + i, "id", getPackageName());
             int choiceId = getResources().getIdentifier("choice_" + i, "id", getPackageName());
-            TextView option = (TextView) findViewById(optionId);
-            TextView choice = (TextView) findViewById(choiceId);
+            TextView option = findViewById(optionId);
+            TextView choice = findViewById(choiceId);
             reset(option);
             reset(choice);
             option.setVisibility(View.VISIBLE);
@@ -278,14 +276,15 @@ public class DragAndDropActivity extends AppCompatActivity {
                     textToSpeech.speak(s, TextToSpeech.QUEUE_ADD, null);
                 }
             } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "No TTS Found!!!", Toast.LENGTH_LONG)
+                        .show();
             }
         }
     }
 
     private void loadAd() {
         // load ad
-        final LinearLayout adParent = (LinearLayout) this.findViewById(R.id.adLayout);
+        final LinearLayout adParent = this.findViewById(R.id.adLayout);
         final AdView ad = new AdView(this);
         ad.setAdUnitId(getString(R.string.admob_banner_id));
         ad.setAdSize(AdSize.SMART_BANNER);
@@ -320,9 +319,9 @@ public class DragAndDropActivity extends AppCompatActivity {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 /*
                  * Drag details: we only need default behavior
-				 * - clip data could be set to pass data as part of drag
-				 * - shadow can be tailored
-				 */
+                 * - clip data could be set to pass data as part of drag
+                 * - shadow can be tailored
+                 */
                 ClipData data = ClipData.newPlainText("", "");
                 View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
                 //start dragging the item touched
@@ -336,6 +335,8 @@ public class DragAndDropActivity extends AppCompatActivity {
                 return false;
             }
         }
+
+
     }
 
     /**
@@ -348,12 +349,6 @@ public class DragAndDropActivity extends AppCompatActivity {
         @Override
         public boolean onDrag(View v, DragEvent event) {
             switch (event.getAction()) {
-                case DragEvent.ACTION_DRAG_STARTED:
-                    break;
-                case DragEvent.ACTION_DRAG_ENTERED:
-                    break;
-                case DragEvent.ACTION_DRAG_EXITED:
-                    break;
                 case DragEvent.ACTION_DROP:
                     //handle the dragged view being dropped over a drop view
                     View view = (View) event.getLocalState();
@@ -411,8 +406,10 @@ public class DragAndDropActivity extends AppCompatActivity {
                         speak("Wrong choice, Try Again");
                     }
                     break;
+                case DragEvent.ACTION_DRAG_STARTED:
+                case DragEvent.ACTION_DRAG_ENTERED:
+                case DragEvent.ACTION_DRAG_EXITED:
                 case DragEvent.ACTION_DRAG_ENDED:
-                    break;
                 default:
                     break;
             }

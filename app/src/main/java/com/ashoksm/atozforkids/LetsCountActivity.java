@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -38,6 +37,8 @@ import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.Locale;
 import java.util.Set;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LetsCountActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -174,51 +175,51 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initComponents() {
-        row1 = (LinearLayout) findViewById(R.id.row_1);
-        row2 = (LinearLayout) findViewById(R.id.row_2);
-        row3 = (LinearLayout) findViewById(R.id.row_3);
-        row4 = (LinearLayout) findViewById(R.id.row_4);
-        row5 = (LinearLayout) findViewById(R.id.row_5);
-        row6 = (LinearLayout) findViewById(R.id.row_6);
+        row1 = findViewById(R.id.row_1);
+        row2 = findViewById(R.id.row_2);
+        row3 = findViewById(R.id.row_3);
+        row4 = findViewById(R.id.row_4);
+        row5 = findViewById(R.id.row_5);
+        row6 = findViewById(R.id.row_6);
 
-        frame1 = (FrameLayout) findViewById(R.id.frame_1);
-        frame2 = (FrameLayout) findViewById(R.id.frame_2);
-        frame3 = (FrameLayout) findViewById(R.id.frame_3);
-        frame4 = (FrameLayout) findViewById(R.id.frame_4);
-        frame5 = (FrameLayout) findViewById(R.id.frame_5);
-        frame6 = (FrameLayout) findViewById(R.id.frame_6);
-        frame7 = (FrameLayout) findViewById(R.id.frame_7);
-        frame8 = (FrameLayout) findViewById(R.id.frame_8);
-        frame9 = (FrameLayout) findViewById(R.id.frame_9);
-        frame10 = (FrameLayout) findViewById(R.id.frame_10);
-        frame11 = (FrameLayout) findViewById(R.id.frame_11);
-        frame12 = (FrameLayout) findViewById(R.id.frame_12);
+        frame1 = findViewById(R.id.frame_1);
+        frame2 = findViewById(R.id.frame_2);
+        frame3 = findViewById(R.id.frame_3);
+        frame4 = findViewById(R.id.frame_4);
+        frame5 = findViewById(R.id.frame_5);
+        frame6 = findViewById(R.id.frame_6);
+        frame7 = findViewById(R.id.frame_7);
+        frame8 = findViewById(R.id.frame_8);
+        frame9 = findViewById(R.id.frame_9);
+        frame10 = findViewById(R.id.frame_10);
+        frame11 = findViewById(R.id.frame_11);
+        frame12 = findViewById(R.id.frame_12);
 
-        image1 = (ImageView) findViewById(R.id.image_1);
-        image2 = (ImageView) findViewById(R.id.image_2);
-        image3 = (ImageView) findViewById(R.id.image_3);
-        image4 = (ImageView) findViewById(R.id.image_4);
-        image5 = (ImageView) findViewById(R.id.image_5);
-        image6 = (ImageView) findViewById(R.id.image_6);
-        image7 = (ImageView) findViewById(R.id.image_7);
-        image8 = (ImageView) findViewById(R.id.image_8);
-        image9 = (ImageView) findViewById(R.id.image_9);
-        image10 = (ImageView) findViewById(R.id.image_10);
-        image11 = (ImageView) findViewById(R.id.image_11);
-        image12 = (ImageView) findViewById(R.id.image_12);
+        image1 = findViewById(R.id.image_1);
+        image2 = findViewById(R.id.image_2);
+        image3 = findViewById(R.id.image_3);
+        image4 = findViewById(R.id.image_4);
+        image5 = findViewById(R.id.image_5);
+        image6 = findViewById(R.id.image_6);
+        image7 = findViewById(R.id.image_7);
+        image8 = findViewById(R.id.image_8);
+        image9 = findViewById(R.id.image_9);
+        image10 = findViewById(R.id.image_10);
+        image11 = findViewById(R.id.image_11);
+        image12 = findViewById(R.id.image_12);
 
-        text1 = (TextView) findViewById(R.id.text_1);
-        text2 = (TextView) findViewById(R.id.text_2);
-        text3 = (TextView) findViewById(R.id.text_3);
-        text4 = (TextView) findViewById(R.id.text_4);
-        text5 = (TextView) findViewById(R.id.text_5);
-        text6 = (TextView) findViewById(R.id.text_6);
-        text7 = (TextView) findViewById(R.id.text_7);
-        text8 = (TextView) findViewById(R.id.text_8);
-        text9 = (TextView) findViewById(R.id.text_9);
-        text10 = (TextView) findViewById(R.id.text_10);
-        text11 = (TextView) findViewById(R.id.text_11);
-        text12 = (TextView) findViewById(R.id.text_12);
+        text1 = findViewById(R.id.text_1);
+        text2 = findViewById(R.id.text_2);
+        text3 = findViewById(R.id.text_3);
+        text4 = findViewById(R.id.text_4);
+        text5 = findViewById(R.id.text_5);
+        text6 = findViewById(R.id.text_6);
+        text7 = findViewById(R.id.text_7);
+        text8 = findViewById(R.id.text_8);
+        text9 = findViewById(R.id.text_9);
+        text10 = findViewById(R.id.text_10);
+        text11 = findViewById(R.id.text_11);
+        text12 = findViewById(R.id.text_12);
 
         image1.setTag(text1);
         image2.setTag(text2);
@@ -892,7 +893,7 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
 
     private void loadAd() {
         // load ad
-        final LinearLayout adParent = (LinearLayout) this.findViewById(R.id.adLayout);
+        final LinearLayout adParent = this.findViewById(R.id.adLayout);
         final AdView ad = new AdView(this);
         ad.setAdUnitId(getString(R.string.admob_banner_id));
         ad.setAdSize(AdSize.SMART_BANNER);

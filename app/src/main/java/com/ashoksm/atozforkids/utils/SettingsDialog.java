@@ -39,19 +39,19 @@ public class SettingsDialog extends Dialog implements CompoundButton.OnCheckedCh
             getWindow().setAttributes(params);
         }
 
-        final Switch random = (Switch) findViewById(R.id.random_button);
+        final Switch random = findViewById(R.id.random_button);
         random.setChecked(sharedPreferences.getBoolean("random", false));
         random.setOnCheckedChangeListener(this);
 
-        final Switch sound = (Switch) findViewById(R.id.sound_button);
+        final Switch sound = findViewById(R.id.sound_button);
         sound.setChecked(sharedPreferences.getBoolean("sound", true));
         sound.setOnCheckedChangeListener(this);
 
-        final Switch autoPlay = (Switch) findViewById(R.id.auto_play_button);
+        final Switch autoPlay = findViewById(R.id.auto_play_button);
         autoPlay.setChecked(sharedPreferences.getBoolean("auto_play", false));
         autoPlay.setOnCheckedChangeListener(this);
 
-        Spinner interval = (Spinner) findViewById(R.id.interval);
+        Spinner interval = findViewById(R.id.interval);
         interval.setSelection(sharedPreferences.getInt("interval", 3) - 1);
         interval.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
