@@ -6,7 +6,7 @@
     android:background="#f5f5f5"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,7 +14,7 @@
         android:layout_margin="5dp"
         android:drawSelectorOnTop="true"
         android:scrollbarThumbVertical="@drawable/scroll_bar"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical" />
 
 
     <LinearLayout

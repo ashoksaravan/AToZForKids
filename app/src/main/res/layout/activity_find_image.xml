@@ -1,174 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ashoksm.atozforkids.FindImageActivity">
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/find_image_main_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/adLayout">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <LinearLayout
-            android:id="@+id/find_image_main_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="0dp"
+            android:layout_weight=".5"
+            android:baselineAligned="false"
+            android:gravity="center"
+            android:orientation="horizontal"
             android:weightSum="1">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".5"
-                android:baselineAligned="false"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="1">
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:layout_weight=".5">
 
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:id="@+id/image1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/content"
+                    android:scaleType="fitCenter" />
+
+                <ImageView
+                    android:id="@+id/image11"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/content"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_content_clear"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:layout_weight=".5">
+
+                <ImageView
+                    android:id="@+id/image2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:layout_margin="1dp"
-                    android:layout_weight=".5">
+                    android:contentDescription="@string/content"
+                    android:scaleType="fitCenter" />
 
-                    <ImageView
-                        android:id="@+id/image1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/content"
-                        android:scaleType="fitCenter" />
+                <ImageView
+                    android:id="@+id/image21"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/content"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_content_clear"
+                    android:visibility="gone" />
 
-                    <ImageView
-                        android:id="@+id/image11"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/content"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_content_clear"
-                        android:visibility="gone" />
+            </FrameLayout>
 
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:layout_weight=".5">
-
-                    <ImageView
-                        android:id="@+id/image2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_margin="1dp"
-                        android:contentDescription="@string/content"
-                        android:scaleType="fitCenter" />
-
-                    <ImageView
-                        android:id="@+id/image21"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/content"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_content_clear"
-                        android:visibility="gone" />
-
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".5"
-                android:baselineAligned="false"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:layout_weight=".5">
-
-                    <ImageView
-                        android:id="@+id/image3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_margin="1dp"
-                        android:contentDescription="@string/content"
-                        android:scaleType="fitCenter" />
-
-                    <ImageView
-                        android:id="@+id/image31"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/content"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_content_clear"
-                        android:visibility="gone" />
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:layout_weight=".5">
-
-                    <ImageView
-                        android:id="@+id/image4"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_margin="1dp"
-                        android:contentDescription="@string/content"
-                        android:scaleType="fitCenter" />
-
-                    <ImageView
-                        android:id="@+id/image41"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/content"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_content_clear"
-                        android:visibility="gone" />
-
-                </FrameLayout>
-            </LinearLayout>
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".5"
+            android:baselineAligned="false"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/right"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/content"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_action_done"
-                android:visibility="gone" />
-        </RelativeLayout>
-    </FrameLayout>
+                android:layout_margin="1dp"
+                android:layout_weight=".5">
 
-    <LinearLayout
-        android:id="@+id/adLayout"
+                <ImageView
+                    android:id="@+id/image3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="1dp"
+                    android:contentDescription="@string/content"
+                    android:scaleType="fitCenter" />
+
+                <ImageView
+                    android:id="@+id/image31"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/content"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_content_clear"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:layout_weight=".5">
+
+                <ImageView
+                    android:id="@+id/image4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="1dp"
+                    android:contentDescription="@string/content"
+                    android:scaleType="fitCenter" />
+
+                <ImageView
+                    android:id="@+id/image41"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/content"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_content_clear"
+                    android:visibility="gone" />
+
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone" />
+        android:layout_height="fill_parent">
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_action_done"
+            android:visibility="gone" />
+    </RelativeLayout>
+</FrameLayout>

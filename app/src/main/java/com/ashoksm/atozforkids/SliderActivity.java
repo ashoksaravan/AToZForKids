@@ -31,10 +31,6 @@ import com.ashoksm.atozforkids.utils.DataStore;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.DepthPageTransformer;
 import com.ashoksm.atozforkids.utils.RandomNumber;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -74,8 +70,6 @@ public class SliderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_slider);
         Intent intent = getIntent();
 
-        loadAd();
-
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -94,8 +88,7 @@ public class SliderActivity extends AppCompatActivity {
         home = findViewById(R.id.home);
         refresh = findViewById(R.id.refresh);
         final TextView spell = findViewById(R.id.spell);
-        final BottomNavigationView bottomNavView =
-                findViewById(R.id.bottom_navigation);
+        final BottomNavigationView bottomNavView = findViewById(R.id.bottom_navigation);
         final String itemName = intent.getStringExtra(MainActivity.EXTRA_ITEM_NAME);
 
         initTTS(itemName);
@@ -223,7 +216,7 @@ public class SliderActivity extends AppCompatActivity {
                                 }
                             }
                         } catch (Exception ex) {
-                            Log.e("Voice not found", ex.getMessage());
+                            Log.e("Voice not found", "Voice not found", ex);
                         }
                     }
                     speak(0, itemName);
@@ -412,35 +405,6 @@ public class SliderActivity extends AppCompatActivity {
                         .show();
             }
         }
-    }
-
-    private void loadAd() {
-        // load ad
-        final LinearLayout adParent = this.findViewById(R.id.adLayout);
-        final AdView ad = new AdView(this);
-        ad.setAdUnitId(getString(R.string.admob_banner_id));
-        ad.setAdSize(AdSize.SMART_BANNER);
-
-        final AdListener listener = new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                adParent.setVisibility(View.VISIBLE);
-                super.onAdLoaded();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adParent.setVisibility(View.GONE);
-                super.onAdFailedToLoad(errorCode);
-            }
-        };
-
-        ad.setAdListener(listener);
-
-        adParent.addView(ad);
-        AdRequest.Builder builder = new AdRequest.Builder();
-        AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        ad.loadAd(adRequest);
     }
 
     private int getColor(Context context, int id) {

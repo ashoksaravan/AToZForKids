@@ -28,11 +28,6 @@ import com.ashoksm.atozforkids.utils.AppRater;
 import com.ashoksm.atozforkids.utils.DataStore;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.RandomNumber;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.Locale;
@@ -99,7 +94,6 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     private Bitmap starYellow;
 
     private MediaPlayer mediaPlayer;
-    private InterstitialAd mInterstitialAd;
     private SharedPreferences sharedPreferences;
     private int width;
     private int height;
@@ -108,11 +102,6 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lets_count);
-
-        //load Ad
-        loadAd();
-        mInterstitialAd = newInterstitialAd();
-        loadInterstitial();
 
         initComponents();
         position = 1;
@@ -370,9 +359,6 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 four(height / 3, width / 2);
                 break;
             case 5:
-                if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                }
                 five(height / 3, width / 2);
                 break;
             case 6:
@@ -388,9 +374,6 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
                 nine(height / 5, width / 2);
                 break;
             case 10:
-                if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
-                    mInterstitialAd.show();
-                }
                 ten(height / 6, width / 2);
                 break;
         }
@@ -891,35 +874,6 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         text12.setText("");
     }
 
-    private void loadAd() {
-        // load ad
-        final LinearLayout adParent = this.findViewById(R.id.adLayout);
-        final AdView ad = new AdView(this);
-        ad.setAdUnitId(getString(R.string.admob_banner_id));
-        ad.setAdSize(AdSize.SMART_BANNER);
-
-        final AdListener listener = new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                adParent.setVisibility(View.VISIBLE);
-                super.onAdLoaded();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adParent.setVisibility(View.GONE);
-                super.onAdFailedToLoad(errorCode);
-            }
-        };
-
-        ad.setAdListener(listener);
-
-        adParent.addView(ad);
-        AdRequest.Builder builder = new AdRequest.Builder();
-        AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        ad.loadAd(adRequest);
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -966,39 +920,10 @@ public class LetsCountActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private InterstitialAd newInterstitialAd() {
-        InterstitialAd interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(getString(R.string.admob_interstitial_id));
-        interstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-            }
-
-            @Override
-            public void onAdClosed() {
-                mInterstitialAd = newInterstitialAd();
-                loadInterstitial();
-            }
-        });
-        return interstitialAd;
-    }
-
-    private void loadInterstitial() {
-        AdRequest adRequest =
-                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        mInterstitialAd.loadAd(adRequest);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         overridePendingTransition(R.anim.slide_in_left, 0);
-        mInterstitialAd = newInterstitialAd();
-        loadInterstitial();
     }
 
     private int getActionBarHeight() {
