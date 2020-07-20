@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -9,4 +9,5 @@
     <dimen name="puzzle_button_margin">16dp</dimen>
     <dimen name="image_margin">25dp</dimen>
     <dimen name="puzzle_grid_size">190dp</dimen>
+    <dimen name="design_bottom_navigation_icon_size" tools:override="true">40dp</dimen>
 </resources>

@@ -11,9 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/adLayout"
-        android:layout_margin="5dp"
-        android:drawSelectorOnTop="true"
-        android:scrollbarThumbVertical="@drawable/scroll_bar"
         android:scrollbars="vertical" />
 
 
