@@ -62,18 +62,17 @@ public class DataStore {
     public List<ItemsDTO> getColors() {
         if (colors == null) {
             colors = new ArrayList<>();
-            colors.add(new ItemsDTO("Red", R.drawable.red));
-            colors.add(new ItemsDTO("Pink", R.drawable.pink));
-            colors.add(new ItemsDTO("Purple", R.drawable.purple));
-            colors.add(new ItemsDTO("Indigo", R.drawable.indigo));
-            colors.add(new ItemsDTO("Blue", R.drawable.blue));
-            colors.add(new ItemsDTO("Cyan", R.drawable.cyan));
-            colors.add(new ItemsDTO("Green", R.drawable.green));
-            colors.add(new ItemsDTO("Yellow", R.drawable.yellow));
-            colors.add(new ItemsDTO("Orange", R.drawable.orange_color));
-            colors.add(new ItemsDTO("Brown", R.drawable.brown));
-            colors.add(new ItemsDTO("Grey", R.drawable.grey));
-            colors.add(new ItemsDTO("Black", R.drawable.black));
+            colors.add(new ItemsDTO("White", R.drawable.milk));
+            colors.add(new ItemsDTO("Red", R.drawable.apple));
+            colors.add(new ItemsDTO("Pink", R.drawable.rose));
+            colors.add(new ItemsDTO("Purple", R.drawable.brinjal));
+            colors.add(new ItemsDTO("Blue", R.drawable.butterfly));
+            colors.add(new ItemsDTO("Green", R.drawable.chilli_green));
+            colors.add(new ItemsDTO("Yellow", R.drawable.banana));
+            colors.add(new ItemsDTO("Orange", R.drawable.orange));
+            colors.add(new ItemsDTO("Brown", R.drawable.bear));
+            colors.add(new ItemsDTO("Grey", R.drawable.elephant));
+            colors.add(new ItemsDTO("Black", R.drawable.crow));
         }
         return colors;
     }

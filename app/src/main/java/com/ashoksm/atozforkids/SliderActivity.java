@@ -113,7 +113,8 @@ public class SliderActivity extends AppCompatActivity {
         addSpellListener(spell);
 
         if (items.get(CURRENT_ITEM).getAudioResource() != 0
-                && sharedPref.getBoolean("sound", true)) {
+                && sharedPref.getBoolean("sound", true)
+                && !"Alphabets".equals(itemName)) {
             MEDIA_PLAYER = MediaPlayer.create(this, items.get(CURRENT_ITEM).getAudioResource());
             playAudio();
         }
@@ -270,7 +271,8 @@ public class SliderActivity extends AppCompatActivity {
                     MEDIA_PLAYER = null;
                 }
                 if (items.get(CURRENT_ITEM).getAudioResource() != 0
-                        && sharedPref.getBoolean("sound", true)) {
+                        && sharedPref.getBoolean("sound", true)
+                        && !"Alphabets".equals(itemName)) {
                     MEDIA_PLAYER = MediaPlayer.create(SliderActivity.this, items.get(CURRENT_ITEM)
                             .getAudioResource());
                 }

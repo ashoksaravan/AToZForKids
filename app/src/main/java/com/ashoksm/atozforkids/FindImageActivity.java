@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.ashoksm.atozforkids.dto.ItemsDTO;
@@ -26,8 +25,6 @@ import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.RandomNumber;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.ArrayList;
@@ -70,12 +67,11 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         int width = point.x - 100;
         int height = point.y - getStatusBarHeight() - (getActionBarHeight() * 2) - 10;
 
-        loadAd();
         mInterstitialAd = newInterstitialAd();
         loadInterstitial();
         adCount = 1;
 
-        size = Double.valueOf(Math.sqrt((width / 2) * (height / 2))).intValue();
+        size = Double.valueOf(Math.sqrt((width / 2d) * (height / 2d))).intValue();
         if (size > (width / 2)) {
             size = width / 2;
         } else if (size > (height / 2)) {
@@ -164,7 +160,7 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
                                 }
                             }
                         } catch (Exception ex) {
-                            Log.e("Voice not found", ex.getMessage());
+                            Log.e("Voice not found", "Voice not found", ex);
                         }
                     }
                     speak("Click " + itemsDTO.getItemName());
@@ -241,35 +237,6 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
                 unbindDrawables(((ViewGroup) view).getChildAt(i));
             }
         }
-    }
-
-    private void loadAd() {
-        // load ad
-        final LinearLayout adParent = this.findViewById(R.id.adLayout);
-        final AdView ad = new AdView(this);
-        ad.setAdUnitId(getString(R.string.admob_banner_id));
-        ad.setAdSize(AdSize.SMART_BANNER);
-
-        final AdListener listener = new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                adParent.setVisibility(View.VISIBLE);
-                super.onAdLoaded();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adParent.setVisibility(View.GONE);
-                super.onAdFailedToLoad(errorCode);
-            }
-        };
-
-        ad.setAdListener(listener);
-
-        adParent.addView(ad);
-        AdRequest.Builder builder = new AdRequest.Builder();
-        AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        ad.loadAd(adRequest);
     }
 
     @Override
