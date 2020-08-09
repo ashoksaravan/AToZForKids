@@ -23,9 +23,6 @@ import com.ashoksm.atozforkids.utils.AppRater;
 import com.ashoksm.atozforkids.utils.DataStore;
 import com.ashoksm.atozforkids.utils.DecodeSampledBitmapFromResource;
 import com.ashoksm.atozforkids.utils.RandomNumber;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,8 +49,6 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
     private View view;
     private int randInt;
     private MediaPlayer mediaPlayer;
-    private InterstitialAd mInterstitialAd;
-    private int adCount;
     private int size;
 
     @Override
@@ -66,10 +61,6 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         display.getSize(point);
         int width = point.x - 100;
         int height = point.y - getStatusBarHeight() - (getActionBarHeight() * 2) - 10;
-
-        mInterstitialAd = newInterstitialAd();
-        loadInterstitial();
-        adCount = 1;
 
         size = Double.valueOf(Math.sqrt((width / 2d) * (height / 2d))).intValue();
         if (size > (width / 2)) {
@@ -115,12 +106,6 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
                 right.setVisibility(View.GONE);
                 unbindDrawables(view);
                 System.gc();
-                adCount++;
-                if (adCount % 5 == 0) {
-                    if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
-                        mInterstitialAd.show();
-                    }
-                }
                 loadImages(true);
             }
 
@@ -189,7 +174,6 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         if (speak) {
             speak("Click " + itemsDTO.getItemName());
         }
-
 
 
         image1.setImageBitmap(DecodeSampledBitmapFromResource.execute(getResources(),
@@ -301,39 +285,11 @@ public class FindImageActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    private InterstitialAd newInterstitialAd() {
-        InterstitialAd interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(getString(R.string.admob_interstitial_id));
-        interstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-            }
-
-            @Override
-            public void onAdClosed() {
-                mInterstitialAd = newInterstitialAd();
-                loadInterstitial();
-            }
-        });
-        return interstitialAd;
-    }
-
-    private void loadInterstitial() {
-        AdRequest adRequest =
-                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        mInterstitialAd.loadAd(adRequest);
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
         overridePendingTransition(R.anim.slide_in_left, 0);
-        mInterstitialAd = newInterstitialAd();
-        loadInterstitial();
     }
 
     private int getActionBarHeight() {

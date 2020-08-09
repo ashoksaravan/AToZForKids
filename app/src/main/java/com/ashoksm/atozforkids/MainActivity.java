@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.ashoksm.atozforkids.adapter.MainGridAdapter;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
@@ -16,17 +15,21 @@ import com.ashoksm.atozforkids.utils.RecyclerItemClickListener;
 import com.ashoksm.atozforkids.utils.SettingsDialog;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static com.google.android.gms.ads.mediation.MediationAdConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         titles.add(new ItemsDTO("Fruits", R.drawable.fruits));
         titles.add(new ItemsDTO("Vegetables", R.drawable.vegetables));
         titles.add(new ItemsDTO("Vehicles", R.drawable.vehicles));
+        titles.add(new ItemsDTO("Solar System", R.drawable.solar_system));
         titles.add(new ItemsDTO("Body Parts", R.drawable.body_parts));
         titles.add(new ItemsDTO("Puzzles", R.drawable.puzzles));
     }
@@ -60,9 +64,22 @@ public class MainActivity extends AppCompatActivity {
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, MY_DATA_CHECK_CODE);
 
-        loadAd();
+        //Initialize ads
+        RequestConfiguration requestConfiguration = MobileAds.getRequestConfiguration()
+                .toBuilder()
+                .setTestDeviceIds(Collections.singletonList("9BC8733BB5188E6CD270A2AEAB2B1FC8"))
+                .setTagForChildDirectedTreatment(TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE)
+                .build();
+
+        // load banner Ad
+        MobileAds.setRequestConfiguration(requestConfiguration);
+        MobileAds.initialize(this);
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         mInterstitialAd = newInterstitialAd();
-        loadInterstitial();
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         final RecyclerView recyclerView = findViewById(R.id.gridView);
 
@@ -91,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void startActivity(Class clazz, String itemName) {
+    private void startActivity(Class<? extends AppCompatActivity> clazz, String itemName) {
         Intent intent = new Intent(getApplicationContext(), clazz);
         intent.putExtra(EXTRA_ITEM_NAME, itemName);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -99,34 +116,6 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_out_left, 0);
     }
 
-    private void loadAd() {
-        // load ad
-        final LinearLayout adParent = this.findViewById(R.id.adLayout);
-        final AdView ad = new AdView(this);
-        ad.setAdUnitId(getString(R.string.admob_banner_id));
-        ad.setAdSize(AdSize.SMART_BANNER);
-
-        final AdListener listener = new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                adParent.setVisibility(View.VISIBLE);
-                super.onAdLoaded();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adParent.setVisibility(View.GONE);
-                super.onAdFailedToLoad(errorCode);
-            }
-        };
-
-        ad.setAdListener(listener);
-
-        adParent.addView(ad);
-        AdRequest.Builder builder = new AdRequest.Builder();
-        AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        ad.loadAd(adRequest);
-    }
 
     private InterstitialAd newInterstitialAd() {
         InterstitialAd interstitialAd = new InterstitialAd(this);
@@ -134,10 +123,6 @@ public class MainActivity extends AppCompatActivity {
         interstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
             }
 
             @Override
@@ -164,18 +149,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadInterstitial() {
-        AdRequest adRequest =
-                new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        mInterstitialAd.loadAd(adRequest);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         overridePendingTransition(R.anim.slide_in_left, 0);
         mInterstitialAd = newInterstitialAd();
-        loadInterstitial();
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

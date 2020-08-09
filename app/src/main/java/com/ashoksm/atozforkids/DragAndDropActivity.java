@@ -199,7 +199,7 @@ public class DragAndDropActivity extends AppCompatActivity {
                     .EXTRA_ITEM_IMAGE_RESOURCE, 0));
         } else {
             do {
-                int choice = RandomNumber.randInt(1, 5);
+                int choice = RandomNumber.randInt(1, 6);
                 switch (choice) {
                     case 1:
                         itemsDTO = DataStore.getInstance().getAlphabets().get(RandomNumber
@@ -221,6 +221,11 @@ public class DragAndDropActivity extends AppCompatActivity {
                     case 5:
                         itemsDTO = DataStore.getInstance().getVehicles().get(RandomNumber.randInt(0,
                                 DataStore.getInstance().getVehicles().size() - 1));
+                        break;
+                    case 6:
+                        itemsDTO =
+                                DataStore.getInstance().getSolarSystem().get(RandomNumber.randInt(0,
+                                        DataStore.getInstance().getSolarSystem().size() - 1));
                         break;
                 }
             } while (itemsDTO.getItemName().length() > itemCount);

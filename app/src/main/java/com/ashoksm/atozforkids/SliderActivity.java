@@ -345,6 +345,9 @@ public class SliderActivity extends AppCompatActivity {
             case "Body Parts":
                 dtos = DataStore.getInstance().getBodyParts();
                 break;
+            case "Solar System":
+                dtos = DataStore.getInstance().getSolarSystem();
+                break;
         }
         if (sharedPref.getBoolean("random", false)) {
             if (dtos != null) {
@@ -360,7 +363,7 @@ public class SliderActivity extends AppCompatActivity {
     private void setRandomImage(List<ItemsDTO> items) {
         for (ItemsDTO item :
                 items) {
-            int i = RandomNumber.randInt(0, 3);
+            int i = RandomNumber.randInt(0, 4);
             switch (i) {
                 case 0:
                     item.setImageResource(DataStore.getInstance().getAlphabets().get(RandomNumber
@@ -380,6 +383,11 @@ public class SliderActivity extends AppCompatActivity {
                 case 3:
                     item.setImageResource(DataStore.getInstance().getVegetables().get(RandomNumber
                             .randInt(0, DataStore.getInstance().getVegetables().size() - 1))
+                            .getImageResource());
+                    break;
+                case 4:
+                    item.setImageResource(DataStore.getInstance().getSolarSystem().get(RandomNumber
+                            .randInt(0, DataStore.getInstance().getSolarSystem().size() - 1))
                             .getImageResource());
                     break;
             }

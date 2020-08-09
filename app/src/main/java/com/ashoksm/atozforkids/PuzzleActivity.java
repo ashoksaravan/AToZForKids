@@ -4,22 +4,24 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.ashoksm.atozforkids.adapter.MainGridAdapter;
 import com.ashoksm.atozforkids.dto.ItemsDTO;
 import com.ashoksm.atozforkids.utils.RecyclerItemClickListener;
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static com.google.android.gms.ads.mediation.MediationAdConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE;
 
 public class PuzzleActivity extends AppCompatActivity {
 
@@ -29,7 +31,7 @@ public class PuzzleActivity extends AppCompatActivity {
         TITLES.add(new ItemsDTO("Spell Me", R.drawable.puzzles));
         TITLES.add(new ItemsDTO("Find Me", R.drawable.puzzles));
         TITLES.add(new ItemsDTO("Let's Count", R.drawable.puzzles));
-        TITLES.add(new ItemsDTO("Find Pair", R.drawable.puzzles));
+        TITLES.add(new ItemsDTO("Memory Game", R.drawable.puzzles));
     }
 
     @Override
@@ -78,7 +80,7 @@ public class PuzzleActivity extends AppCompatActivity {
         );
     }
 
-    private void startActivity(Class clazz) {
+    private void startActivity(Class<? extends AppCompatActivity> clazz) {
         Intent intent = new Intent(getApplicationContext(), clazz);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -86,31 +88,18 @@ public class PuzzleActivity extends AppCompatActivity {
     }
 
     private void loadAd() {
-        // load ad
-        final LinearLayout adParent = this.findViewById(R.id.adLayout);
-        final AdView ad = new AdView(this);
-        ad.setAdUnitId(getString(R.string.admob_banner_id));
-        ad.setAdSize(AdSize.SMART_BANNER);
+        // Initialize ads
+        RequestConfiguration requestConfiguration = MobileAds.getRequestConfiguration()
+                .toBuilder()
+                .setTestDeviceIds(Collections.singletonList("9BC8733BB5188E6CD270A2AEAB2B1FC8"))
+                .setTagForChildDirectedTreatment(TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE)
+                .build();
 
-        final AdListener listener = new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                adParent.setVisibility(View.VISIBLE);
-                super.onAdLoaded();
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                adParent.setVisibility(View.GONE);
-                super.onAdFailedToLoad(errorCode);
-            }
-        };
-
-        ad.setAdListener(listener);
-
-        adParent.addView(ad);
-        AdRequest.Builder builder = new AdRequest.Builder();
-        AdRequest adRequest = builder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        ad.loadAd(adRequest);
+        // load banner Ad
+        MobileAds.setRequestConfiguration(requestConfiguration);
+        MobileAds.initialize(this);
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 }

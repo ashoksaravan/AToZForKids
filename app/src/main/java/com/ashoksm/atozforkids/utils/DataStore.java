@@ -17,6 +17,7 @@ public class DataStore {
     private List<ItemsDTO> vegetables = null;
     private List<ItemsDTO> vehicles = null;
     private List<ItemsDTO> bodyParts = null;
+    private List<ItemsDTO> solarSystem = null;
     private List<String> statusValues = null;
 
     public static DataStore getInstance() {
@@ -328,6 +329,24 @@ public class DataStore {
             bodyParts.add(new ItemsDTO("Foot", R.drawable.foot));
         }
         return bodyParts;
+    }
+
+    public List<ItemsDTO> getSolarSystem() {
+        if (solarSystem == null) {
+            solarSystem = new ArrayList<>();
+            solarSystem.add(new ItemsDTO("Sun", R.drawable.sun));
+            solarSystem.add(new ItemsDTO("Mercury", R.drawable.mercury));
+            solarSystem.add(new ItemsDTO("Venus", R.drawable.venus));
+            solarSystem.add(new ItemsDTO("Earth", R.drawable.earth));
+            solarSystem.add(new ItemsDTO("Moon", R.drawable.moon));
+            solarSystem.add(new ItemsDTO("Mars", R.drawable.mars));
+            solarSystem.add(new ItemsDTO("Jupiter", R.drawable.jupiter));
+            solarSystem.add(new ItemsDTO("Saturn", R.drawable.saturn));
+            solarSystem.add(new ItemsDTO("Uranus", R.drawable.uranus));
+            solarSystem.add(new ItemsDTO("Neptune", R.drawable.neptune));
+            solarSystem.add(new ItemsDTO("Asteroid", R.drawable.asteroid));
+        }
+        return solarSystem;
     }
 
     public List<String> getStatusValues() {
